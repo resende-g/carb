@@ -671,6 +671,7 @@ export default function App() {
   const [limit, setLimit] = useState(6)
   const [profileFilter, setProfileFilter] = useState('')
   const [tagFilter, setTagFilter] = useState('')
+  const [tagMenuProfile, setTagMenuProfile] = useState('')
   const [profiles, setProfiles] = useState(initialProfiles)
   const [siteTags, setSiteTags] = useState(initialTags)
   const [siteNotices, setSiteNotices] = useState(notices)
@@ -723,6 +724,7 @@ export default function App() {
     setTab(next)
     setQuery('')
     setMenuOpen(false)
+    setTagMenuProfile('')
     setLimit(6)
     window.scrollTo({ top: 0 })
   }
@@ -731,6 +733,7 @@ export default function App() {
     changeTab('avisos')
     setProfileFilter('')
     setTagFilter('')
+    setTagMenuProfile('')
   }
 
   const search = normalized(query)
@@ -776,14 +779,18 @@ export default function App() {
             <div className="feed-layout">
               <section className="feed-filters" aria-label="Filtros de publicações">
                 <div className="profile-chips" aria-label="Filtrar pelo perfil autor">
-                  <button className={!profileFilter ? 'filter-chip active' : 'filter-chip'} type="button" aria-pressed={!profileFilter} onClick={() => selectProfile('')}>Todos os perfis</button>
-                  {profiles.map((profile) => <button key={profile.handle} className={profileFilter === profile.handle ? 'filter-chip active' : 'filter-chip'} type="button" aria-pressed={profileFilter === profile.handle} onClick={() => selectProfile(profile.handle)}>@{profile.handle}</button>)}
+                  <button className={!profileFilter ? 'filter-chip active' : 'filter-chip'} type="button" aria-pressed={!profileFilter} onClick={() => { selectProfile(''); setTagMenuProfile('') }}>Todos os perfis</button>
+                  {profiles.map((profile) => <button key={profile.handle} className={profileFilter === profile.handle ? 'filter-chip active' : 'filter-chip'} type="button" aria-pressed={profileFilter === profile.handle} aria-expanded={tagMenuProfile === profile.handle} aria-controls={`tags-${profile.handle}`} onClick={() => { selectProfile(profile.handle); setTagMenuProfile((current) => current === profile.handle ? '' : profile.handle) }}>@{profile.handle} <span aria-hidden="true">⌄</span></button>)}
                 </div>
-                <div className="tag-filters" aria-label="Filtrar pela tag da publicação">
-                  <button className={!tagFilter ? 'tag-chip tag-gray active' : 'tag-chip tag-gray'} type="button" aria-pressed={!tagFilter} onClick={() => setTagFilter('')}>Todas</button>
-                  {availableTags.map((tag) => <TagChip key={tag.id} tag={tag} active={tagFilter === tag.id} onClick={() => { setTagFilter(tag.id); setProfileFilter(tag.profile); setLimit(6) }} />)}
-                </div>
-                {(profileFilter || tagFilter || query) && <div className="active-filters"><span>Filtros ativos:</span>{profileFilter && <button type="button" onClick={() => selectProfile('')}>@{profileFilter} ×</button>}{tagFilter && <button type="button" onClick={() => setTagFilter('')}>{siteTags.find((tag) => tag.id === tagFilter)?.name} ×</button>}{query && <button type="button" onClick={() => setQuery('')}>Busca: “{query}” ×</button>}</div>}
+                {tagMenuProfile && <div className="profile-tag-dropdown" id={`tags-${tagMenuProfile}`} aria-label={`Tags de @${tagMenuProfile}`}>
+                  <strong>Tags de @{tagMenuProfile}</strong>
+                  <div className="tag-filters">
+                    <button className={!tagFilter ? 'tag-chip tag-gray active' : 'tag-chip tag-gray'} type="button" aria-pressed={!tagFilter} onClick={() => { setTagFilter(''); setTagMenuProfile('') }}>Todas</button>
+                    {availableTags.map((tag) => <TagChip key={tag.id} tag={tag} active={tagFilter === tag.id} onClick={() => { setTagFilter(tag.id); setProfileFilter(tag.profile); setTagMenuProfile(''); setLimit(6) }} />)}
+                  </div>
+                  {!availableTags.length && <small>Nenhuma tag disponível para este perfil.</small>}
+                </div>}
+                {(profileFilter || tagFilter || query) && <div className="active-filters"><span>Filtros ativos:</span>{profileFilter && <button type="button" onClick={() => { selectProfile(''); setTagMenuProfile('') }}>@{profileFilter} ×</button>}{tagFilter && <button type="button" onClick={() => setTagFilter('')}>{siteTags.find((tag) => tag.id === tagFilter)?.name} ×</button>}{query && <button type="button" onClick={() => setQuery('')}>Busca: “{query}” ×</button>}</div>}
               </section>
               <div className="feed">
                 {filteredNotices.length ? filteredNotices.slice(0, limit).map((notice) => {

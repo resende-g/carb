@@ -23,7 +23,7 @@ Não existe script de lint neste projeto.
 
 ## Escopo da versão 1.1
 
-- feed com imagens/GIFs, busca combinada e filtros por perfil agregador e tag no grão da publicação;
+- feed com imagens/GIFs, busca combinada e filtros por perfil agregador, com suas tags abertas como subfiltros;
 - perfis iniciais `@carb`, `@fdufba`, `@ufba`, `@extensoes`, `@pesquisa` e `@vagas`, com tags editáveis durante a sessão;
 - menu principal recolhível, tema claro/escuro e busca sempre visível também a partir de 320 px;
 - links públicos compactos, incluindo Pergamum e SIGAA, sem captura de credenciais;

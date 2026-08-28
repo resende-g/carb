@@ -15,7 +15,7 @@ Esta seção registra o estado implementado na branch `v1.1` e prevalece sobre o
 - Perfis iniciais: `@carb`, `@fdufba`, `@ufba`, `@extensoes`, `@pesquisa` e `@vagas`.
 - Tags possuem ID estável, perfil proprietário, nome visível e cor predefinida. `@vagas` inclui Estágio, CLT, Concurso e Monitoria.
 - A publicação é o grão do filtro; perfil é o autor agregador; tag é uma classificação da publicação.
-- Busca, perfil e uma tag ativa são combinados. O painel local permite criar, editar e excluir tags, removendo associações após informar a quantidade afetada e pedir confirmação.
+- Busca, perfil e uma tag ativa são combinados. Cada botão de perfil abre somente suas próprias tags como subfiltros. O painel local permite criar, editar e excluir tags, removendo associações após informar a quantidade afetada e pedir confirmação.
 - Testes verificam autor, existência e propriedade das tags para impedir referências órfãs.
 
 ### Planejador, Sistemas e Acervo
