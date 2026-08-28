@@ -1,0 +1,145 @@
+# Prompt — protótipo local do Portal CARB
+
+Trabalhe diretamente neste repositório e entregue um protótipo funcional do Portal CARB que rode em `localhost`. Não pare na análise: inspecione os arquivos existentes, implemente, teste e deixe os comandos de execução documentados.
+
+## Resultado esperado
+
+Crie uma aplicação web local usando **Vite + React + TypeScript**, inicializada na raiz deste repositório sem apagar ou mover a documentação existente. Use CSS nativo. Não adicione Tailwind, Shadcn, backend, banco, Supabase, autenticação real, Docker, framework de estado ou biblioteca de componentes nesta etapa.
+
+O protótipo deve ser simples, acessível, responsivo e servir como base visual e funcional para validação do CARB. O escopo abaixo prevalece sobre trechos antigos dos documentos do repositório.
+
+## Escopo obrigatório do protótipo
+
+### 1. Estrutura e navegação
+
+- Interface em português do Brasil.
+- Abas: `Avisos`, `Sistemas` e `Planejador`.
+- Busca visível no cabeçalho, aplicada ao conteúdo da aba atual.
+- Layout inspirado na experiência de navegação do X: navegação lateral no desktop, conteúdo central em feed e área auxiliar quando houver espaço; no celular, navegação compacta.
+- Não copie logotipo, ícones exclusivos, textos ou ativos do X.
+- Paleta: branco `#FFFFFF`, preto `#000000` e cinza `#363636` nos botões de ação.
+- Glassmorfismo discreto, somente com contraste legível e fundo opaco de segurança.
+- Use caracteres ou SVGs simples produzidos no próprio código; não dependa de imagens externas.
+
+### 2. Avisos
+
+- Exiba ao menos seis avisos sintéticos com título, texto, categoria, data e estado publicado.
+- Feed vertical com carregamento progressivo por botão `Carregar mais`; não use rolagem infinita automática.
+- Permita reagir com coração ou caveira.
+- Cada navegador pode manter somente uma reação ativa por aviso, podendo trocar ou remover a reação.
+- Armazene a reação apenas em `localStorage` e mostre totais simulados somados à reação local.
+- Nomeie a métrica como `reações registradas`; não use `votos`, `pessoas` ou `estudantes únicos`.
+- Não implemente comentários, perfil ou cadastro de estudantes.
+
+### 3. Sistemas
+
+- Mostre cartões com links sintéticos ou públicos para sistemas institucionais, nome, descrição e categoria.
+- Links externos devem indicar visualmente que abrem outra página e usar `rel="noopener noreferrer"`.
+- Não capture credenciais e não simule login institucional.
+
+### 4. Planejador de matrícula
+
+- Permita selecionar um arquivo CSV local e também carregar um CSV de exemplo incluído no repositório.
+- Todo o processamento deve ocorrer no navegador; não envie nem persista o arquivo.
+- Colunas obrigatórias: `periodo,codigo,componente,turma,dia_semana,hora_inicio,hora_fim`.
+- Colunas opcionais: `docente,local`.
+- Aceite somente UTF-8, cabeçalho único e horários no formato `HH:MM`.
+- Para o protótipo, aceite CSV simples separado por vírgula e rejeite explicitamente campos com aspas ou quebras de linha internas; explique essa limitação na interface.
+- Mostre erros com número da linha, campo e motivo.
+- Permita selecionar e remover turmas.
+- Detecte conflito quando dois intervalos se sobrepõem no mesmo dia. Horários adjacentes, como `10:00–11:00` e `11:00–12:00`, não conflitam.
+- Mostre a grade selecionada e uma lista clara de conflitos.
+
+### 5. Painel editorial demonstrativo
+
+- Inclua uma área `Painel demo`, claramente marcada como **simulação local sem autenticação ou segurança real**.
+- Permita criar um aviso como rascunho, encaminhá-lo para revisão e simular a aprovação pela Presidência.
+- Somente um aviso no estado `aprovado` pode ser publicado.
+- Alterar um aviso publicado deve gerar novo rascunho e exigir nova aprovação.
+- Guarde dados e uma trilha mínima de eventos somente em `localStorage`.
+- Não crie tela de senha, recuperação, matrícula ou autorização real. Esses controles pertencem à fase com backend homologado.
+
+## Limites obrigatórios
+
+- Use somente dados públicos ou sintéticos. Não inclua nomes, e-mails, telefones, matrículas ou outros dados pessoais reais.
+- Não implemente restrição por IP no frontend. Em `localhost`, use apenas o identificador local do navegador e documente que isso não impede múltiplos navegadores, limpeza de armazenamento ou automação.
+- Não implemente nesta fase: Cursos, carteirinha, comentários, conta estudantil, integrações acadêmicas, IA, WhatsApp, importação de redes sociais, Supabase ou implantação em produção.
+- Não altere a matriz normativa para declarar requisitos como atendidos. Este protótipo não é evidência de conformidade de produção.
+- Preserve os arquivos em `docs/` e quaisquer alterações existentes do usuário.
+- Não faça commit, push ou publicação externa.
+
+## Estrutura mínima sugerida
+
+Use poucos arquivos. Uma estrutura suficiente é:
+
+```text
+src/
+  App.tsx
+  data.ts
+  planner.ts
+  planner.test.ts
+  styles.css
+  main.tsx
+public/
+  exemplo-turmas.csv
+```
+
+Adicione arquivos extras somente quando reduzirem duplicação real ou melhorarem a clareza. Não crie camadas, interfaces de provedores, factories ou abstrações para necessidades futuras.
+
+Centralize o acesso ao `localStorage` em funções pequenas, para que a troca por uma API seja localizada posteriormente. Marque os limites reais de evolução com comentários curtos `ponytail:`:
+
+- reações locais → API com proteção antiabuso e regra aprovada de privacidade;
+- painel demo → identidade, autorização server-side, RLS e auditoria;
+- avisos e sistemas sintéticos → PostgreSQL/API;
+- CSV local → contrato e fonte oficial aprovados.
+
+## Qualidade e acessibilidade
+
+- HTML semântico, idioma `pt-BR`, título de página e hierarquia correta de títulos.
+- Link `Pular para o conteúdo` como primeiro controle útil.
+- Navegação completa por teclado, foco visível e ordem lógica.
+- Botões com nomes acessíveis; coração e caveira não podem depender somente do símbolo ou da cor.
+- Regiões de mensagens e erros anunciadas com `aria-live` quando adequado.
+- Contraste legível, zoom e reflow sem perda de função.
+- Respeite `prefers-reduced-motion`.
+- Não use `dangerouslySetInnerHTML`.
+- Não adicione telemetria, cookies de terceiros ou requisições externas.
+
+## Verificação obrigatória
+
+- Adicione um único teste pequeno para a lógica de conflito e validação do CSV. Use Vitest apenas para esse teste.
+- Execute e corrija até passar:
+
+```bash
+npm test -- --run
+npm run build
+```
+
+- Inicie o servidor local e confirme que responde, preferencialmente em `http://localhost:5173`.
+- Atualize o `README.md` com:
+  - pré-requisito de Node.js;
+  - `npm install`, `npm run dev`, `npm test -- --run` e `npm run build`;
+  - escopo implementado;
+  - limitações do protótipo;
+  - próximos limites de integração com Supabase e STI-UFBA, sem implementá-los.
+
+## Critérios de conclusão
+
+Considere concluído somente quando:
+
+1. `npm install` e `npm run dev` forem suficientes para abrir o protótipo;
+2. as três abas e o painel demo funcionarem;
+3. reações persistirem por navegador e puderem ser trocadas ou removidas;
+4. o CSV de exemplo carregar, turmas puderem ser selecionadas e conflitos forem detectados corretamente;
+5. o fluxo rascunho → revisão → aprovação → publicação funcionar localmente;
+6. teclado, foco, contraste e responsividade tiverem sido verificados;
+7. teste e build passarem;
+8. nenhum dado real, segredo ou serviço externo tiver sido usado.
+
+## Forma de trabalho e resposta
+
+- Leia primeiro `AGENTS.md`, `README.md` e os documentos relevantes em `docs/`, mas trate este escopo como a decisão vigente para o protótipo.
+- Use a solução mais simples que satisfaça os critérios. Não pesquise na web nem use subagentes, salvo bloqueio técnico real.
+- Não peça confirmação para escolhas visuais ou técnicas já definidas aqui.
+- Não escreva uma explicação extensa antes de agir.
+- Ao final, informe em no máximo dez linhas: arquivos principais criados, comandos executados, resultado dos testes/build, URL local e limitações mantidas para a próxima fase.
