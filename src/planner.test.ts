@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import academicData from './academic-data.json'
 import { profiles } from './data'
-import { meetingsConflict, selectionProblem, type ClassOffering } from './planner'
+import { meetingsConflict, selectionIssue, selectionProblem, type ClassOffering } from './planner'
 
 const offering = (id: string, code: string, day: string, start: string, end: string): ClassOffering => ({
   id,
@@ -30,6 +30,9 @@ describe('planejador', () => {
     expect(selectionProblem([selected], conflict)).toContain('conflita')
     expect(selectionProblem([selected], adjacent)).toBeNull()
     expect(selectionProblem([selected], duplicate)).toContain('já selecionou')
+
+    const issue = selectionIssue([selected], conflict)
+    expect(issue).toMatchObject({ candidate: { code: 'DIR102' }, conflict: { code: 'DIR101' }, candidateMeeting: { day: 'segunda', start: '09:45', end: '11:35' }, conflictMeeting: { start: '08:00', end: '10:00' } })
   })
 
   it('mantém íntegros os dados extraídos e os @ institucionais', () => {

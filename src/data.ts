@@ -14,6 +14,15 @@ export type Profile = {
   avatarPosition: string
 }
 
+export type TagColor = 'blue' | 'green' | 'gold' | 'violet' | 'red' | 'gray'
+
+export type Tag = {
+  id: string
+  profile: string
+  name: string
+  color: TagColor
+}
+
 export type Notice = {
   id: string
   title: string
@@ -23,6 +32,7 @@ export type Notice = {
   date: string
   state: 'publicado'
   author: string
+  tagIds: string[]
   base: ReactionCounts
 }
 
@@ -43,22 +53,38 @@ export type DocumentItem = {
 }
 
 export const profiles: Profile[] = [
-  { handle: 'carb', name: 'Centro Acadêmico Ruy Barbosa', shortName: 'CA', bio: 'Representação estudantil e avisos gerais do CARB.', avatar: '/og.png', avatarPosition: '30% 76%' },
-  { handle: 'diretoriaacademica', name: 'Diretoria Acadêmica', shortName: 'DA', bio: 'Prazos, matrícula e informações acadêmicas.', avatar: '/og.png', avatarPosition: '51% 76%' },
-  { handle: 'extensaocarb', name: 'Extensão CARB', shortName: 'EX', bio: 'Projetos, oficinas e atividades de extensão.', avatar: '/og.png', avatarPosition: '73% 76%' },
-  { handle: 'comunicacaocarb', name: 'Comunicação CARB', shortName: 'CO', bio: 'Cobertura, agenda e comunicação institucional.', avatar: '/og.png', avatarPosition: '95% 76%' },
+  { handle: 'carb', name: 'Centro Acadêmico Ruy Barbosa', shortName: 'CA', bio: 'Diretorias, áreas e avisos gerais do CARB.', avatar: '/og.png', avatarPosition: '30% 76%' },
+  { handle: 'fdufba', name: 'Faculdade de Direito da UFBA', shortName: 'FD', bio: 'Comunicados públicos da Faculdade de Direito.', avatar: '/og.png', avatarPosition: '51% 76%' },
+  { handle: 'ufba', name: 'Universidade Federal da Bahia', shortName: 'UF', bio: 'Comunicações gerais e serviços públicos da UFBA.', avatar: '/og.png', avatarPosition: '73% 76%' },
+  { handle: 'extensoes', name: 'Extensões', shortName: 'EX', bio: 'Projetos e atividades de extensão.', avatar: '/og.png', avatarPosition: '95% 76%' },
+  { handle: 'pesquisa', name: 'Pesquisa', shortName: 'PQ', bio: 'Grupos e atividades de pesquisa.', avatar: '/og.png', avatarPosition: '73% 76%' },
+  { handle: 'vagas', name: 'Vagas', shortName: 'VG', bio: 'Estágio, emprego, concurso e monitoria.', avatar: '/og.png', avatarPosition: '51% 76%' },
+]
+
+export const tags: Tag[] = [
+  { id: 'carb-comunidade', profile: 'carb', name: 'Comunidade', color: 'blue' },
+  { id: 'carb-diretoria-academica', profile: 'carb', name: 'Diretoria Acadêmica', color: 'green' },
+  { id: 'carb-comunicacao', profile: 'carb', name: 'Comunicação', color: 'gold' },
+  { id: 'fdufba-academico', profile: 'fdufba', name: 'Acadêmico', color: 'blue' },
+  { id: 'ufba-calendario', profile: 'ufba', name: 'Calendário', color: 'violet' },
+  { id: 'extensoes-atividades', profile: 'extensoes', name: 'Atividades de extensão', color: 'green' },
+  { id: 'pesquisa-atividades', profile: 'pesquisa', name: 'Atividades de pesquisa', color: 'violet' },
+  { id: 'vagas-estagio', profile: 'vagas', name: 'Estágio', color: 'blue' },
+  { id: 'vagas-clt', profile: 'vagas', name: 'CLT', color: 'green' },
+  { id: 'vagas-concurso', profile: 'vagas', name: 'Concurso', color: 'gold' },
+  { id: 'vagas-monitoria', profile: 'vagas', name: 'Monitoria', color: 'violet' },
 ]
 
 // ponytail: conteúdo demonstrativo migra para a fonte editorial quando houver backend homologado.
 export const notices: Notice[] = [
-  { id: 'a1', title: 'Semana de acolhimento', text: 'Confira a programação sintética de recepção e os espaços de convivência do campus.', media: { src: '/og.png', alt: 'Identidade visual do portal CARB com quatro retratos da comunidade acadêmica.' }, category: 'Comunidade', date: '25 ago. 2026', state: 'publicado', author: 'carb', base: { heart: 18, point: 11, skull: 2, dance: 7 } },
-  { id: 'a2', title: 'Prazo para ajuste de matrícula', text: 'O período demonstrativo de ajuste termina na sexta-feira, às 18h.', category: 'Acadêmico', date: '24 ago. 2026', state: 'publicado', author: 'diretoriaacademica', base: { heart: 31, point: 23, skull: 4, dance: 3 } },
-  { id: 'a3', title: 'Manutenção na biblioteca', text: 'A sala de estudos do primeiro andar ficará fechada durante a manhã para manutenção.', category: 'Infraestrutura', date: '22 ago. 2026', state: 'publicado', author: 'comunicacaocarb', base: { heart: 7, point: 12, skull: 6, dance: 1 } },
-  { id: 'a4', title: 'Oficina de pesquisa jurídica', text: 'Atividade fictícia sobre busca de jurisprudência, com inscrição gratuita.', category: 'Extensão', date: '20 ago. 2026', state: 'publicado', author: 'extensaocarb', base: { heart: 24, point: 15, skull: 1, dance: 10 } },
-  { id: 'a5', title: 'Atualização do calendário', text: 'Uma versão revisada do calendário acadêmico de demonstração está disponível.', category: 'Acadêmico', date: '18 ago. 2026', state: 'publicado', author: 'diretoriaacademica', base: { heart: 15, point: 19, skull: 3, dance: 2 } },
-  { id: 'a6', title: 'Encontro de grupos de estudo', text: 'Grupos fictícios apresentarão suas linhas de pesquisa no auditório principal.', category: 'Pesquisa', date: '16 ago. 2026', state: 'publicado', author: 'carb', base: { heart: 12, point: 9, skull: 0, dance: 6 } },
-  { id: 'a7', title: 'Plantão de dúvidas do semestre', text: 'Atendimento coletivo simulado para dúvidas sobre componentes e horários.', category: 'Acadêmico', date: '14 ago. 2026', state: 'publicado', author: 'diretoriaacademica', base: { heart: 20, point: 16, skull: 2, dance: 4 } },
-  { id: 'a8', title: 'Feira de projetos estudantis', text: 'Exposição fictícia de iniciativas desenvolvidas pela comunidade acadêmica.', category: 'Comunidade', date: '12 ago. 2026', state: 'publicado', author: 'extensaocarb', base: { heart: 27, point: 18, skull: 1, dance: 13 } },
+  { id: 'a1', title: 'Semana de acolhimento', text: 'Confira a programação sintética de recepção e os espaços de convivência do campus.', media: { src: '/og.png', alt: 'Identidade visual do portal CARB com quatro retratos da comunidade acadêmica.' }, category: 'Comunidade', date: '25 ago. 2026', state: 'publicado', author: 'carb', tagIds: ['carb-comunidade'], base: { heart: 18, point: 11, skull: 2, dance: 7 } },
+  { id: 'a2', title: 'Prazo para ajuste de matrícula', text: 'O período demonstrativo de ajuste termina na sexta-feira, às 18h.', category: 'Acadêmico', date: '24 ago. 2026', state: 'publicado', author: 'carb', tagIds: ['carb-diretoria-academica'], base: { heart: 31, point: 23, skull: 4, dance: 3 } },
+  { id: 'a3', title: 'Manutenção na biblioteca', text: 'A sala de estudos do primeiro andar ficará fechada durante a manhã para manutenção.', category: 'Infraestrutura', date: '22 ago. 2026', state: 'publicado', author: 'carb', tagIds: ['carb-comunicacao'], base: { heart: 7, point: 12, skull: 6, dance: 1 } },
+  { id: 'a4', title: 'Oficina de pesquisa jurídica', text: 'Atividade fictícia sobre busca de jurisprudência, com inscrição gratuita.', category: 'Extensão', date: '20 ago. 2026', state: 'publicado', author: 'extensoes', tagIds: ['extensoes-atividades'], base: { heart: 24, point: 15, skull: 1, dance: 10 } },
+  { id: 'a5', title: 'Atualização do calendário', text: 'Uma versão revisada do calendário acadêmico de demonstração está disponível.', category: 'Acadêmico', date: '18 ago. 2026', state: 'publicado', author: 'carb', tagIds: ['carb-diretoria-academica'], base: { heart: 15, point: 19, skull: 3, dance: 2 } },
+  { id: 'a6', title: 'Encontro de grupos de estudo', text: 'Grupos fictícios apresentarão suas linhas de pesquisa no auditório principal.', category: 'Pesquisa', date: '16 ago. 2026', state: 'publicado', author: 'pesquisa', tagIds: ['pesquisa-atividades'], base: { heart: 12, point: 9, skull: 0, dance: 6 } },
+  { id: 'a7', title: 'Plantão de dúvidas do semestre', text: 'Atendimento coletivo simulado para dúvidas sobre componentes e horários.', category: 'Acadêmico', date: '14 ago. 2026', state: 'publicado', author: 'carb', tagIds: ['carb-diretoria-academica'], base: { heart: 20, point: 16, skull: 2, dance: 4 } },
+  { id: 'a8', title: 'Feira de projetos estudantis', text: 'Exposição fictícia de iniciativas desenvolvidas pela comunidade acadêmica.', category: 'Comunidade', date: '12 ago. 2026', state: 'publicado', author: 'extensoes', tagIds: ['extensoes-atividades'], base: { heart: 27, point: 18, skull: 1, dance: 13 } },
 ]
 
 export const systems: SystemLink[] = [
@@ -66,6 +92,8 @@ export const systems: SystemLink[] = [
   { id: 's2', name: 'Biblioteca Universitária', description: 'Informações públicas sobre bibliotecas, acervo e serviços.', category: 'Biblioteca', url: 'https://sibi.ufba.br/' },
   { id: 's3', name: 'Calendário acadêmico', description: 'Página pública para consulta de calendários e comunicados acadêmicos.', category: 'Acadêmico', url: 'https://supac.ufba.br/' },
   { id: 's4', name: 'Moodle UFBA', description: 'Ambiente virtual institucional; o Portal CARB não solicita credenciais.', category: 'Ensino', url: 'https://www.moodle.ufba.br/' },
+  { id: 's5', name: 'Pergamum UFBA', description: 'Consulta pública ao catálogo das bibliotecas da UFBA.', category: 'Biblioteca', url: 'https://pergamum.bib.ufba.br/' },
+  { id: 's6', name: 'SIGAA UFBA', description: 'Acesso ao sistema acadêmico institucional da UFBA.', category: 'Acadêmico', url: 'https://sigaa.ufba.br/sigaa' },
 ]
 
 export const documents: DocumentItem[] = [

@@ -41,10 +41,33 @@ export function conflictingClass(selected: ClassOffering[], candidate: ClassOffe
   return selected.find((current) => current.meetings.some((first) => candidate.meetings.some((second) => meetingsConflict(first, second))))
 }
 
+export type SelectionIssue = {
+  message: string
+  candidate: ClassOffering
+  conflict?: ClassOffering
+  candidateMeeting?: Meeting
+  conflictMeeting?: Meeting
+}
+
+export function selectionIssue(selected: ClassOffering[], candidate: ClassOffering): SelectionIssue | null {
+  if (selected.some((current) => current.code === candidate.code)) return { message: `Você já selecionou uma turma de ${candidate.code}.`, candidate }
+  for (const conflict of selected) {
+    for (const conflictMeeting of conflict.meetings) {
+      const candidateMeeting = candidate.meetings.find((meeting) => meetingsConflict(conflictMeeting, meeting))
+      if (candidateMeeting) return {
+        message: `${candidate.code} conflita com ${conflict.code} em ${candidateMeeting.day}, ${candidateMeeting.start}-${candidateMeeting.end}.`,
+        candidate,
+        conflict,
+        candidateMeeting,
+        conflictMeeting,
+      }
+    }
+  }
+  return null
+}
+
 export function selectionProblem(selected: ClassOffering[], candidate: ClassOffering) {
-  if (selected.some((current) => current.code === candidate.code)) return `Você já selecionou uma turma de ${candidate.code}.`
-  const conflict = conflictingClass(selected, candidate)
-  return conflict ? `${candidate.code} conflita com ${conflict.code}. Remova a turma conflitante antes de continuar.` : null
+  return selectionIssue(selected, candidate)?.message || null
 }
 
 export const meetingLabel = (meeting: Meeting) => `${meeting.day}, ${meeting.start}-${meeting.end}`

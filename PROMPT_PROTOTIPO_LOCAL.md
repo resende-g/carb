@@ -1,8 +1,35 @@
 # Prompt — protótipo local do Portal CARB
 
-## Estado atual — v1
+## Estado atual — v1.1
 
-Esta seção registra o estado implementado na branch `v1` e prevalece sobre o prompt inicial abaixo quando houver divergência.
+Esta seção registra o estado implementado na branch `v1.1` e prevalece sobre o prompt inicial abaixo quando houver divergência.
+
+### Navegação, busca e densidade
+
+- O cabeçalho usa o logotipo CARB como retorno aos avisos, busca central no desktop e busca compacta sempre visível no mobile.
+- Um botão nativo de três linhas abre Montador de grade, Sistemas, Acervo e tema; navegação, clique externo e `Esc` fecham o menu, enquanto a troca de tema o mantém aberto.
+- A barra inferior da v1 foi removida. Títulos, cartões e espaçamentos foram reduzidos, preservando leitura e áreas de toque.
+
+### Perfis agregadores e tags
+
+- Perfis iniciais: `@carb`, `@fdufba`, `@ufba`, `@extensoes`, `@pesquisa` e `@vagas`.
+- Tags possuem ID estável, perfil proprietário, nome visível e cor predefinida. `@vagas` inclui Estágio, CLT, Concurso e Monitoria.
+- A publicação é o grão do filtro; perfil é o autor agregador; tag é uma classificação da publicação.
+- Busca, perfil e uma tag ativa são combinados. O painel local permite criar, editar e excluir tags, removendo associações após informar a quantidade afetada e pedir confirmação.
+- Testes verificam autor, existência e propriedade das tags para impedir referências órfãs.
+
+### Planejador, Sistemas e Acervo
+
+- Conflitos usam a regra compartilhada de sobreposição e abrem `<dialog>` com turmas, dia e intervalos; horários adjacentes continuam válidos.
+- No mobile, a grade semanal vira uma lista compacta por dia e permanece antes das turmas e da matriz curricular.
+- Sistemas usa cartões compactos com nome, descrição e “Abrir”, incluindo Pergamum e SIGAA.
+- Acervo remove o bloco “PDF”; o texto visível da ação é somente “Baixar”, com nome acessível específico.
+
+### Limitações da v1.1
+
+- Não há backend, banco, Supabase, autenticação institucional, armazenamento persistente de mídia, integração com SIGAA ou hospedagem pela STI.
+- Alterações administrativas, tags e uploads permanecem na sessão; reações e trajetória continuam locais ao navegador.
+- Os perfis e avisos demonstrativos usam somente conteúdo público ou sintético.
 
 ### Avisos com mídia
 

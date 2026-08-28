@@ -1,8 +1,9 @@
-import { ChangeEvent, FormEvent, useEffect, useMemo, useState } from 'react'
+import { ChangeEvent, FormEvent, useEffect, useMemo, useRef, useState } from 'react'
 import academicDataJson from './academic-data.json'
 import { parseOfferingsCsv } from './admin'
-import { documents, notices, profiles as initialProfiles, systems, type DocumentItem, type Notice, type Profile, type ReactionCounts } from './data'
-import { meetingLabel, selectionProblem, TIME_ROWS, type ClassOffering, type Meeting, type Semester, type Shift } from './planner'
+import { documents, notices, profiles as initialProfiles, systems, tags as initialTags, type DocumentItem, type Notice, type Profile, type ReactionCounts, type Tag, type TagColor } from './data'
+import { filterNotices, removeTag } from './feed'
+import { meetingLabel, selectionIssue, TIME_ROWS, type ClassOffering, type Meeting, type SelectionIssue, type Semester, type Shift } from './planner'
 
 type Tab = 'avisos' | 'sistemas' | 'planejador' | 'acervo'
 type Reaction = keyof ReactionCounts
@@ -37,11 +38,16 @@ const REACTION_OPTIONS: { key: Reaction; icon: string; label: string }[] = [
 ]
 const TAB_LABELS: Record<Tab, string> = { avisos: 'Avisos', sistemas: 'Sistemas', planejador: 'Planejador', acervo: 'Acervo documental' }
 const NAVIGATION: { tab: Exclude<Tab, 'avisos'>; label: string; icon: string }[] = [
-  { tab: 'sistemas', label: 'Sistemas', icon: '/icons/configuracoes-24.png' },
   { tab: 'planejador', label: 'Montador de grade', icon: '/icons/calendario-24.png' },
-  { tab: 'acervo', label: 'Acervo documental', icon: '/icons/acervo-24.png' },
+  { tab: 'sistemas', label: 'Sistemas', icon: '/icons/configuracoes-24.png' },
+  { tab: 'acervo', label: 'Acervo', icon: '/icons/acervo-24.png' },
 ]
 const WEEKDAYS = ['segunda', 'terça', 'quarta', 'quinta', 'sexta', 'sábado']
+const WEEKDAY_LABELS: Record<string, string> = { segunda: 'Seg.', terça: 'Ter.', quarta: 'Qua.', quinta: 'Qui.', sexta: 'Sex.', sábado: 'Sáb.' }
+const TAG_COLORS: { value: TagColor; label: string }[] = [
+  { value: 'blue', label: 'Azul' }, { value: 'green', label: 'Verde' }, { value: 'gold', label: 'Dourado' },
+  { value: 'violet', label: 'Violeta' }, { value: 'red', label: 'Vermelho' }, { value: 'gray', label: 'Cinza' },
+]
 
 function readLocal<T>(key: string, fallback: T): T {
   try {
@@ -79,6 +85,13 @@ function Avatar({ profile }: { profile: Profile }) {
       <span>{profile.shortName}</span>
     </span>
   )
+}
+
+function TagChip({ tag, active, onClick }: { tag: Tag; active?: boolean; onClick?: () => void }) {
+  const className = `tag-chip tag-${tag.color}${active ? ' active' : ''}`
+  return onClick
+    ? <button className={className} type="button" aria-pressed={active} onClick={onClick}>{tag.name}</button>
+    : <span className={className}>{tag.name}</span>
 }
 
 function ProfileIconEditor({ profile, onChange }: { profile: Profile; onChange: (avatar: string) => void }) {
@@ -138,7 +151,7 @@ function ProfileCreator({ profiles, onCreate }: { profiles: Profile[]; onCreate:
   return (
     <details className="admin-demo">
       <summary>Criar perfil de entidade</summary>
-      <p>A alteração permanece somente nesta sessão da v0.</p>
+      <p>A alteração permanece somente nesta sessão da v1.1.</p>
       <form onSubmit={submit}>
         <label htmlFor="entity-name">Nome da entidade</label>
         <input id="entity-name" value={name} onChange={(event) => setName(event.target.value)} required />
@@ -215,14 +228,71 @@ function DocumentUploader({ onUpload }: { onUpload: (document: DocumentItem) => 
   )
 }
 
-function PostCreator({ profiles, onCreate }: { profiles: Profile[]; onCreate: (notice: Notice) => void }) {
+function TagManager({ profiles, tags, notices, onCreate, onUpdate, onDelete, onDetach }: {
+  profiles: Profile[]
+  tags: Tag[]
+  notices: Notice[]
+  onCreate: (tag: Tag) => void
+  onUpdate: (tag: Tag) => void
+  onDelete: (tagId: string) => void
+  onDetach: (tagId: string) => void
+}) {
+  const [profile, setProfile] = useState(profiles[0]?.handle || '')
+  const [name, setName] = useState('')
+  const [color, setColor] = useState<TagColor>('blue')
+  const [message, setMessage] = useState('')
+
+  const create = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+    const cleanName = name.trim()
+    if (!cleanName || !profiles.some((item) => item.handle === profile)) return
+    const baseId = `${profile}-${cleanName.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLocaleLowerCase('pt-BR').replace(/[^a-z0-9]+/g, '-')}`.replace(/-+$/, '')
+    const id = tags.some((tag) => tag.id === baseId) ? `${baseId}-${Date.now()}` : baseId
+    onCreate({ id, profile, name: cleanName, color })
+    setName('')
+    setMessage(`Tag “${cleanName}” criada nesta sessão.`)
+  }
+
+  const deleteTag = (tag: Tag) => {
+    const affected = notices.filter((notice) => notice.tagIds.includes(tag.id)).length
+    if (!window.confirm(`Excluir “${tag.name}”? ${affected} publicação(ões) perderá(ão) esta associação.`)) return
+    onDelete(tag.id)
+    setMessage(`Tag “${tag.name}” excluída; ${affected} publicação(ões) afetada(s).`)
+  }
+
+  return (
+    <section className="admin-card tag-manager">
+      <p className="eyebrow">Classificação</p>
+      <h2>Tags por perfil</h2>
+      <form className="admin-form compact-form" onSubmit={create}>
+        <label>Perfil<select value={profile} onChange={(event) => setProfile(event.target.value)}>{profiles.map((item) => <option key={item.handle} value={item.handle}>@{item.handle}</option>)}</select></label>
+        <label>Nome<input value={name} onChange={(event) => setName(event.target.value)} required /></label>
+        <label>Cor<select value={color} onChange={(event) => setColor(event.target.value as TagColor)}>{TAG_COLORS.map((item) => <option key={item.value} value={item.value}>{item.label}</option>)}</select></label>
+        <button className="primary" type="submit">Criar tag</button>
+      </form>
+      <div className="tag-admin-list">
+        {tags.map((tag) => <div key={tag.id} className="tag-admin-row">
+          <span>@{tag.profile}</span>
+          <input aria-label={`Nome da tag ${tag.name}`} value={tag.name} onChange={(event) => onUpdate({ ...tag, name: event.target.value })} />
+          <select aria-label={`Cor da tag ${tag.name}`} value={tag.color} onChange={(event) => onUpdate({ ...tag, color: event.target.value as TagColor })}>{TAG_COLORS.map((item) => <option key={item.value} value={item.value}>{item.label}</option>)}</select>
+          <div className="tag-admin-actions"><button type="button" disabled={!notices.some((notice) => notice.tagIds.includes(tag.id))} onClick={() => { const affected = notices.filter((notice) => notice.tagIds.includes(tag.id)).length; onDetach(tag.id); setMessage(`${affected} associação(ões) removida(s); a tag foi mantida.`) }}>Desassociar</button><button type="button" onClick={() => deleteTag(tag)}>Excluir</button></div>
+        </div>)}
+      </div>
+      {message && <p className="form-message" role="status">{message}</p>}
+    </section>
+  )
+}
+
+function PostCreator({ profiles, tags, onCreate }: { profiles: Profile[]; tags: Tag[]; onCreate: (notice: Notice) => void }) {
   const [author, setAuthor] = useState(profiles[0]?.handle || '')
   const [title, setTitle] = useState('')
   const [category, setCategory] = useState('')
   const [body, setBody] = useState('')
   const [media, setMedia] = useState('')
   const [mediaAlt, setMediaAlt] = useState('')
+  const [tagIds, setTagIds] = useState<string[]>([])
   const [message, setMessage] = useState('')
+  const authorTags = tags.filter((tag) => tag.profile === author)
 
   const changeMedia = (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0]
@@ -245,16 +315,21 @@ function PostCreator({ profiles, onCreate }: { profiles: Profile[]; onCreate: (n
       setMessage('Selecione um perfil autor válido.')
       return
     }
+    if (!tagIds.length || tagIds.some((id) => !authorTags.some((tag) => tag.id === id))) {
+      setMessage('Selecione ao menos uma tag válida do perfil autor.')
+      return
+    }
     if (media && !mediaAlt.trim()) {
       setMessage('Descreva a imagem para leitores de tela.')
       return
     }
-    onCreate({ id: `notice-${Date.now()}`, title: title.trim(), text: body.trim(), ...(media ? { media: { src: media, alt: mediaAlt.trim() } } : {}), category: category.trim(), date: new Intl.DateTimeFormat('pt-BR', { day: '2-digit', month: 'short', year: 'numeric' }).format(new Date()), state: 'publicado', author, base: { heart: 0, point: 0, skull: 0, dance: 0 } })
+    onCreate({ id: `notice-${Date.now()}`, title: title.trim(), text: body.trim(), ...(media ? { media: { src: media, alt: mediaAlt.trim() } } : {}), category: category.trim(), date: new Intl.DateTimeFormat('pt-BR', { day: '2-digit', month: 'short', year: 'numeric' }).format(new Date()), state: 'publicado', author, tagIds, base: { heart: 0, point: 0, skull: 0, dance: 0 } })
     setTitle('')
     setCategory('')
     setBody('')
     setMedia('')
     setMediaAlt('')
+    setTagIds([])
     event.currentTarget.reset()
     setMessage('Publicação criada nesta sessão.')
   }
@@ -264,7 +339,8 @@ function PostCreator({ profiles, onCreate }: { profiles: Profile[]; onCreate: (n
       <p className="eyebrow">Avisos</p>
       <h2>Criar publicação</h2>
       <form className="admin-form" onSubmit={submit}>
-        <label>Perfil autor<select value={author} onChange={(event) => setAuthor(event.target.value)}>{profiles.map((profile) => <option key={profile.handle} value={profile.handle}>{profile.name}</option>)}</select></label>
+        <label>Perfil autor<select value={author} onChange={(event) => { setAuthor(event.target.value); setTagIds([]) }}>{profiles.map((profile) => <option key={profile.handle} value={profile.handle}>{profile.name}</option>)}</select></label>
+        <fieldset className="tag-checkboxes"><legend>Tags</legend>{authorTags.map((tag) => <label key={tag.id}><input type="checkbox" checked={tagIds.includes(tag.id)} onChange={() => setTagIds((current) => current.includes(tag.id) ? current.filter((id) => id !== tag.id) : [...current, tag.id])} /><TagChip tag={tag} /></label>)}{!authorTags.length && <small>Crie uma tag para este perfil antes de publicar.</small>}</fieldset>
         <label>Título<input value={title} onChange={(event) => setTitle(event.target.value)} required /></label>
         <label>Categoria<input value={category} onChange={(event) => setCategory(event.target.value)} required /></label>
         <label>Texto<textarea value={body} onChange={(event) => setBody(event.target.value)} required /></label>
@@ -277,13 +353,19 @@ function PostCreator({ profiles, onCreate }: { profiles: Profile[]; onCreate: (n
   )
 }
 
-function AdminPage({ profiles, theme, onExit, onToggleTheme, onChangeAvatar, onCreateProfile, onImportOfferings, onUploadDocument, onCreatePost }: {
+function AdminPage({ profiles, tags, notices, theme, onExit, onToggleTheme, onChangeAvatar, onCreateProfile, onCreateTag, onUpdateTag, onDeleteTag, onDetachTag, onImportOfferings, onUploadDocument, onCreatePost }: {
   profiles: Profile[]
+  tags: Tag[]
+  notices: Notice[]
   theme: 'dark' | 'light'
   onExit: () => void
   onToggleTheme: () => void
   onChangeAvatar: (handle: string, avatar: string) => void
   onCreateProfile: (profile: Profile) => void
+  onCreateTag: (tag: Tag) => void
+  onUpdateTag: (tag: Tag) => void
+  onDeleteTag: (tagId: string) => void
+  onDetachTag: (tagId: string) => void
   onImportOfferings: (offerings: ClassOffering[]) => void
   onUploadDocument: (document: DocumentItem) => void
   onCreatePost: (notice: Notice) => void
@@ -329,7 +411,7 @@ function AdminPage({ profiles, theme, onExit, onToggleTheme, onChangeAvatar, onC
     <>
       <header className="admin-topbar"><a href="/" onClick={(event) => { event.preventDefault(); onExit() }}>CARB</a><div><button type="button" onClick={onToggleTheme} aria-label={theme === 'dark' ? 'Usar tema claro' : 'Usar tema escuro'}>{theme === 'dark' ? '☼' : '◐'}</button><button type="button" onClick={logout}>Sair</button></div></header>
       <main className="admin-shell">
-        <div className="section-heading"><p className="eyebrow">Sessão administrativa v0</p><h1>Painel editorial</h1><p>As alterações abaixo duram somente nesta aba e não coletam matrícula nem dados estudantis.</p></div>
+        <div className="section-heading"><p className="eyebrow">Sessão administrativa v1.1</p><h1>Painel editorial</h1><p>As alterações abaixo duram somente nesta aba e não coletam matrícula nem dados estudantis.</p></div>
         <div className="admin-grid">
           <section className="admin-card admin-profiles">
             <p className="eyebrow">Entidades</p>
@@ -337,9 +419,10 @@ function AdminPage({ profiles, theme, onExit, onToggleTheme, onChangeAvatar, onC
             {profiles.map((profile) => <div className="profile-row" key={profile.handle}><div className="profile-select"><Avatar profile={profile} /><span><strong>{profile.name}</strong><small>@{profile.handle}</small></span></div><ProfileIconEditor profile={profile} onChange={(avatar) => onChangeAvatar(profile.handle, avatar)} /></div>)}
             <ProfileCreator profiles={profiles} onCreate={onCreateProfile} />
           </section>
+          <TagManager profiles={profiles} tags={tags} notices={notices} onCreate={onCreateTag} onUpdate={onUpdateTag} onDelete={onDeleteTag} onDetach={onDetachTag} />
           <CsvImporter onImport={onImportOfferings} />
           <DocumentUploader onUpload={onUploadDocument} />
-          <PostCreator profiles={profiles} onCreate={onCreatePost} />
+          <PostCreator profiles={profiles} tags={tags} onCreate={onCreatePost} />
         </div>
       </main>
     </>
@@ -380,7 +463,7 @@ function ReactionButtons({ notice, reaction, onReact }: { notice: Notice; reacti
   )
 }
 
-function NoticeCard({ notice, profile, reaction, onReact, onProfile }: { notice: Notice; profile: Profile; reaction?: Reaction; onReact: (reaction: Reaction) => void; onProfile: () => void }) {
+function NoticeCard({ notice, profile, tags, reaction, onReact, onProfile, onTag }: { notice: Notice; profile: Profile; tags: Tag[]; reaction?: Reaction; onReact: (reaction: Reaction) => void; onProfile: () => void; onTag: (tagId: string) => void }) {
   return (
     <article className="card notice-card" id={`aviso-${notice.id}`}>
       <button className="profile-link" type="button" onClick={onProfile}>
@@ -388,6 +471,7 @@ function NoticeCard({ notice, profile, reaction, onReact, onProfile }: { notice:
         <span><strong>{profile.name}</strong><small>@{profile.handle} · {notice.date}</small></span>
       </button>
       <div className="meta"><span>{notice.category}</span><span>{notice.state}</span></div>
+      <div className="notice-tags">{tags.map((tag) => <TagChip key={tag.id} tag={tag} onClick={() => onTag(tag.id)} />)}</div>
       <h2>{notice.title}</h2>
       <p>{notice.text}</p>
       {notice.media && <img className="notice-media" src={notice.media.src} alt={notice.media.alt} loading="lazy" />}
@@ -397,6 +481,7 @@ function NoticeCard({ notice, profile, reaction, onReact, onProfile }: { notice:
 }
 
 function ScheduleTable({ selected }: { selected: ClassOffering[] }) {
+  const scheduled = selected.flatMap((item) => item.meetings.map((meeting) => ({ item, meeting })))
   const meetingAt = (day: string, start: string) => selected.flatMap((item) => item.meetings.map((meeting) => ({ item, meeting }))).find(({ meeting }) => meeting.day === day && meeting.start === start)
   const covers = (day: string, index: number) => selected.some((item) => item.meetings.some((meeting) => {
     if (meeting.day !== day) return false
@@ -406,8 +491,9 @@ function ScheduleTable({ selected }: { selected: ClassOffering[] }) {
   }))
 
   return (
-    <div className="schedule-scroll">
-      <table className="schedule-table">
+    <>
+      <div className="schedule-scroll">
+        <table className="schedule-table">
         <thead><tr><th>Horário</th>{WEEKDAYS.map((day) => <th key={day}>{day}</th>)}</tr></thead>
         <tbody>
           {TIME_ROWS.map(([start, end], index) => (
@@ -423,8 +509,15 @@ function ScheduleTable({ selected }: { selected: ClassOffering[] }) {
             </tr>
           ))}
         </tbody>
-      </table>
-    </div>
+        </table>
+      </div>
+      <div className="mobile-schedule" aria-label="Grade semanal compacta">
+        {WEEKDAYS.map((day) => {
+          const meetings = scheduled.filter(({ meeting }) => meeting.day === day).sort((a, b) => a.meeting.start.localeCompare(b.meeting.start))
+          return <section key={day}><h3>{WEEKDAY_LABELS[day]}</h3><div className="day-meetings">{meetings.length ? meetings.map(({ item, meeting }) => <details key={`${item.id}-${meeting.start}`}><summary><strong>{meeting.start}–{meeting.end}</strong> {item.code} · T{item.class}</summary><p>{item.component} · {item.location}</p></details>) : <p>Sem turmas</p>}</div></section>
+        })}
+      </div>
+    </>
   )
 }
 
@@ -471,6 +564,9 @@ function Planner({ query, offerings }: { query: string; offerings: ClassOffering
   const [selectedIds, setSelectedIds] = useState<string[]>([])
   const [message, setMessage] = useState('Selecione turmas para começar a grade.')
   const [visibleLimit, setVisibleLimit] = useState(24)
+  const [issue, setIssue] = useState<SelectionIssue | null>(null)
+  const dialogRef = useRef<HTMLDialogElement>(null)
+  const conflictTriggerRef = useRef<HTMLButtonElement | null>(null)
   const selected = offerings.filter((item) => selectedIds.includes(item.id))
   const professors = useMemo(() => [...new Set(offerings.map((item) => item.professor))].sort((a, b) => a.localeCompare(b, 'pt-BR')), [offerings])
   const semesterField = track === 'day' ? 'daySemester' : 'nightSemester'
@@ -484,15 +580,21 @@ function Planner({ query, offerings }: { query: string; offerings: ClassOffering
       && (!semester || String(item[semesterField]) === semester)
   })
 
-  const toggle = (item: ClassOffering) => {
+  useEffect(() => {
+    if (issue && !dialogRef.current?.open) dialogRef.current?.showModal()
+  }, [issue])
+
+  const toggle = (item: ClassOffering, trigger?: HTMLButtonElement) => {
     if (selectedIds.includes(item.id)) {
       setSelectedIds((current) => current.filter((id) => id !== item.id))
       setMessage(`${item.code}, turma ${item.class}, removida.`)
       return
     }
-    const problem = selectionProblem(selected, item)
+    const problem = selectionIssue(selected, item)
     if (problem) {
-      setMessage(problem)
+      conflictTriggerRef.current = trigger || null
+      setIssue(problem)
+      setMessage(problem.message)
       return
     }
     setSelectedIds((current) => [...current, item.id])
@@ -519,7 +621,7 @@ function Planner({ query, offerings }: { query: string; offerings: ClassOffering
 
           <aside className="selected-panel" aria-labelledby="selected-title">
             <div className="subheading"><h2 id="selected-title">Turmas na grade</h2><span>{selected.length} turma(s)</span></div>
-            {selected.length ? <ul>{selected.map((item) => <li key={item.id}><span><strong>{item.code} · T{item.class}</strong><small>{item.meetings.map(meetingLabel).join(' · ')}</small></span><button type="button" onClick={() => toggle(item)} aria-label={`Remover ${item.code}`}>×</button></li>)}</ul> : <p>Nenhuma turma selecionada.</p>}
+            {selected.length ? <ul>{selected.map((item) => <li key={item.id}><span><strong>{item.code} · T{item.class}</strong><small>{item.meetings.map(meetingLabel).join(' · ')}</small></span><button type="button" onClick={(event) => toggle(item, event.currentTarget)} aria-label={`Remover ${item.code}`}>×</button></li>)}</ul> : <p>Nenhuma turma selecionada.</p>}
           </aside>
         </section>
 
@@ -537,7 +639,7 @@ function Planner({ query, offerings }: { query: string; offerings: ClassOffering
               const isSelected = selectedIds.includes(item.id)
               return (
                 <article className={isSelected ? 'offering-card selected' : 'offering-card'} key={item.id}>
-                  <div className="offering-title"><div><span>{item.code} · turma {item.class}</span><h3>{item.component}</h3></div><button type="button" onClick={() => toggle(item)}>{isSelected ? 'Remover' : 'Adicionar'}</button></div>
+                  <div className="offering-title"><div><span>{item.code} · turma {item.class}</span><h3>{item.component}</h3></div><button type="button" onClick={(event) => toggle(item, event.currentTarget)}>{isSelected ? 'Remover' : 'Adicionar'}</button></div>
                   <p>{item.professor}</p>
                   <div className="offering-facts"><span>{item.meetings.map(meetingLabel).join(' · ')}</span><span>{item.location}</span><span>{semesterLabel(item[semesterField])}</span><span>{item.enrolled}/{item.capacity} matrículas</span></div>
                 </article>
@@ -550,6 +652,12 @@ function Planner({ query, offerings }: { query: string; offerings: ClassOffering
         </aside>
       </div>
       <Trajectory track={track} selected={selected} offerings={offerings} />
+      <dialog ref={dialogRef} className="conflict-dialog" onClose={() => { setIssue(null); conflictTriggerRef.current?.focus() }}>
+        <p className="eyebrow">Conflito de horário</p>
+        <h2>Esta turma não foi adicionada</h2>
+        {issue?.conflict && issue.candidateMeeting && issue.conflictMeeting ? <p><strong>{issue.candidate.code} · T{issue.candidate.class}</strong> coincide com <strong>{issue.conflict.code} · T{issue.conflict.class}</strong> em {WEEKDAY_LABELS[issue.candidateMeeting.day] || issue.candidateMeeting.day}: {issue.candidateMeeting.start}–{issue.candidateMeeting.end} e {issue.conflictMeeting.start}–{issue.conflictMeeting.end}.</p> : <p>{issue?.message}</p>}
+        <button className="primary" type="button" autoFocus onClick={() => dialogRef.current?.close()}>Entendi</button>
+      </dialog>
     </section>
   )
 }
@@ -559,15 +667,19 @@ export default function App() {
   const [isAdminRoute, setIsAdminRoute] = useState(adminPath)
   const [tab, setTab] = useState<Tab>('avisos')
   const [query, setQuery] = useState('')
-  const [searchOpen, setSearchOpen] = useState(false)
+  const [menuOpen, setMenuOpen] = useState(false)
   const [limit, setLimit] = useState(6)
   const [profileFilter, setProfileFilter] = useState('')
+  const [tagFilter, setTagFilter] = useState('')
   const [profiles, setProfiles] = useState(initialProfiles)
+  const [siteTags, setSiteTags] = useState(initialTags)
   const [siteNotices, setSiteNotices] = useState(notices)
   const [siteDocuments, setSiteDocuments] = useState(documents)
   const [offerings, setOfferings] = useState(academicData.offerings)
   const [theme, setTheme] = useState<'dark' | 'light'>(() => readLocal<'dark' | 'light'>(THEME_KEY, 'dark') === 'light' ? 'light' : 'dark')
   const [reactions, setReactions] = useState<Record<string, Reaction>>(() => readLocal(REACTIONS_KEY, {}))
+  const menuRef = useRef<HTMLDivElement>(null)
+  const menuButtonRef = useRef<HTMLButtonElement>(null)
   const labels = TAB_LABELS
 
   useEffect(() => {
@@ -581,6 +693,24 @@ export default function App() {
     return () => window.removeEventListener('popstate', route)
   }, [])
 
+  useEffect(() => {
+    if (!menuOpen) return
+    const closeOutside = (event: PointerEvent) => {
+      if (!menuRef.current?.contains(event.target as Node)) setMenuOpen(false)
+    }
+    const closeWithEscape = (event: KeyboardEvent) => {
+      if (event.key !== 'Escape') return
+      setMenuOpen(false)
+      menuButtonRef.current?.focus()
+    }
+    document.addEventListener('pointerdown', closeOutside)
+    document.addEventListener('keydown', closeWithEscape)
+    return () => {
+      document.removeEventListener('pointerdown', closeOutside)
+      document.removeEventListener('keydown', closeWithEscape)
+    }
+  }, [menuOpen])
+
   const react = (noticeId: string, selected: Reaction) => {
     const next = { ...reactions }
     if (next[noticeId] === selected) delete next[noticeId]
@@ -592,7 +722,7 @@ export default function App() {
   const changeTab = (next: Tab) => {
     setTab(next)
     setQuery('')
-    setSearchOpen(false)
+    setMenuOpen(false)
     setLimit(6)
     window.scrollTo({ top: 0 })
   }
@@ -600,31 +730,43 @@ export default function App() {
   const goHome = () => {
     changeTab('avisos')
     setProfileFilter('')
+    setTagFilter('')
   }
 
   const search = normalized(query)
-  const filteredNotices = siteNotices.filter((notice) => {
-    const profile = profiles.find((item) => item.handle === notice.author)
-    return (!profileFilter || notice.author === profileFilter) && (!search || [notice.title, notice.text, notice.category, profile?.name || '', notice.author].some((value) => value.toLocaleLowerCase('pt-BR').includes(search)))
-  })
+  const filteredNotices = filterNotices(siteNotices, profiles, siteTags, { query, profile: profileFilter, tag: tagFilter })
   const filteredSystems = systems.filter((system) => !search || [system.name, system.description, system.category].some((value) => value.toLocaleLowerCase('pt-BR').includes(search)))
   const filteredDocuments = siteDocuments.filter((document) => !search || [document.title, document.description, document.updatedAt].some((value) => value.toLocaleLowerCase('pt-BR').includes(search)))
   const activeProfile = profiles.find((profile) => profile.handle === profileFilter)
+  const availableTags = siteTags.filter((tag) => !profileFilter || tag.profile === profileFilter)
   const updateProfileAvatar = (handle: string, avatar: string) => setProfiles((current) => current.map((profile) => profile.handle === handle ? { ...profile, avatar, avatarPosition: 'center' } : profile))
+  const selectProfile = (handle: string) => {
+    setProfileFilter(handle)
+    if (tagFilter && siteTags.find((tag) => tag.id === tagFilter)?.profile !== handle) setTagFilter('')
+    setLimit(6)
+  }
+  const deleteSiteTag = (tagId: string) => {
+    const next = removeTag(siteTags, siteNotices, tagId)
+    setSiteTags(next.tags)
+    setSiteNotices(next.notices)
+    if (tagFilter === tagId) setTagFilter('')
+  }
 
-  if (isAdminRoute) return <AdminPage profiles={profiles} theme={theme} onExit={() => { history.pushState({}, '', '/'); setIsAdminRoute(false) }} onToggleTheme={() => setTheme((current) => current === 'dark' ? 'light' : 'dark')} onChangeAvatar={updateProfileAvatar} onCreateProfile={(profile) => setProfiles((current) => [...current, profile])} onImportOfferings={setOfferings} onUploadDocument={(document) => setSiteDocuments((current) => [document, ...current])} onCreatePost={(notice) => setSiteNotices((current) => [notice, ...current])} />
+  if (isAdminRoute) return <AdminPage profiles={profiles} tags={siteTags} notices={siteNotices} theme={theme} onExit={() => { history.pushState({}, '', '/'); setIsAdminRoute(false) }} onToggleTheme={() => setTheme((current) => current === 'dark' ? 'light' : 'dark')} onChangeAvatar={updateProfileAvatar} onCreateProfile={(profile) => setProfiles((current) => [...current, profile])} onCreateTag={(tag) => setSiteTags((current) => [...current, tag])} onUpdateTag={(tag) => setSiteTags((current) => current.map((item) => item.id === tag.id ? tag : item))} onDeleteTag={deleteSiteTag} onDetachTag={(tagId) => setSiteNotices((current) => current.map((notice) => notice.tagIds.includes(tagId) ? { ...notice, tagIds: notice.tagIds.filter((id) => id !== tagId) } : notice))} onImportOfferings={setOfferings} onUploadDocument={(document) => setSiteDocuments((current) => [document, ...current])} onCreatePost={(notice) => setSiteNotices((current) => [notice, ...current])} />
 
   return (
     <>
       <a className="skip-link" href="#conteudo">Pular para o conteúdo</a>
       <header className="topbar" id="top">
         <button className="brand-button" type="button" onClick={goHome} aria-label="CARB — voltar aos avisos" title="Voltar aos avisos"><img src="/logo-carb.png" alt="" aria-hidden="true" /></button>
-        <button className="search-toggle" type="button" aria-label={searchOpen ? 'Fechar busca' : 'Abrir busca'} aria-expanded={searchOpen} aria-controls="site-search" onClick={() => setSearchOpen((current) => !current)}><img src="/icons/busca-24.png" alt="" aria-hidden="true" /></button>
-        <div className={searchOpen ? 'search-box open' : 'search-box'} id="site-search"><img src="/icons/busca-24.png" alt="" aria-hidden="true" /><label className="sr-only" htmlFor="search">Buscar em {labels[tab]}</label><input id="search" type="search" value={query} onChange={(event) => setQuery(event.target.value)} placeholder={`Buscar em ${labels[tab].toLocaleLowerCase('pt-BR')}`} /></div>
-        <nav aria-label="Navegação principal">
-          <button className="nav-button theme-toggle" type="button" data-label={theme === 'dark' ? 'Tema claro' : 'Tema escuro'} aria-label={theme === 'dark' ? 'Usar tema claro' : 'Usar tema escuro'} aria-pressed={theme === 'light'} onClick={() => setTheme((current) => current === 'dark' ? 'light' : 'dark')}><span aria-hidden="true">{theme === 'dark' ? '☼' : '◐'}</span></button>
-          {NAVIGATION.map((item) => <button key={item.tab} className={tab === item.tab ? 'nav-button active' : 'nav-button'} data-label={item.label} aria-label={item.label} aria-current={tab === item.tab ? 'page' : undefined} onClick={() => changeTab(item.tab)}><img src={item.icon} alt="" aria-hidden="true" /></button>)}
-        </nav>
+        <div className="search-box" id="site-search"><img src="/icons/busca-24.png" alt="" aria-hidden="true" /><label className="sr-only" htmlFor="search">Buscar em {labels[tab]}</label><input id="search" type="search" value={query} onChange={(event) => setQuery(event.target.value)} placeholder={`Buscar em ${labels[tab].toLocaleLowerCase('pt-BR')}`} />{query && <button className="search-clear" type="button" aria-label="Limpar busca" onClick={() => setQuery('')}>×</button>}</div>
+        <div className="menu-wrap" ref={menuRef}>
+          <button ref={menuButtonRef} className="menu-button" type="button" aria-label={menuOpen ? 'Fechar menu principal' : 'Abrir menu principal'} aria-expanded={menuOpen} aria-controls="main-menu" onClick={() => setMenuOpen((current) => !current)}><span /><span /><span /></button>
+          <nav className="main-menu" id="main-menu" aria-label="Navegação principal" hidden={!menuOpen}>
+            {NAVIGATION.map((item) => <button key={item.tab} className={tab === item.tab ? 'menu-item active' : 'menu-item'} aria-current={tab === item.tab ? 'page' : undefined} onClick={() => changeTab(item.tab)}><img src={item.icon} alt="" aria-hidden="true" /><span>{item.label}</span></button>)}
+            <button className="menu-item" type="button" aria-label={theme === 'dark' ? 'Usar tema claro' : 'Usar tema escuro'} aria-pressed={theme === 'light'} onClick={() => setTheme((current) => current === 'dark' ? 'light' : 'dark')}><span className="theme-symbol" aria-hidden="true">{theme === 'dark' ? '☼' : '◐'}</span><span>{theme === 'dark' ? 'Modo claro' : 'Modo escuro'}</span></button>
+          </nav>
+        </div>
       </header>
 
       <main id="conteudo" tabIndex={-1}>
@@ -632,14 +774,24 @@ export default function App() {
           <section className="content-section" aria-labelledby="notices-title">
             <div className="section-heading notices-heading"><h1 id="notices-title">{activeProfile ? activeProfile.name : 'Avisos'}</h1><p>{activeProfile ? `@${activeProfile.handle} · ${activeProfile.bio}` : 'Publicações da Faculdade de Direito da UFBA em um só lugar.'}</p></div>
             <div className="feed-layout">
+              <section className="feed-filters" aria-label="Filtros de publicações">
+                <div className="profile-chips" aria-label="Filtrar pelo perfil autor">
+                  <button className={!profileFilter ? 'filter-chip active' : 'filter-chip'} type="button" aria-pressed={!profileFilter} onClick={() => selectProfile('')}>Todos os perfis</button>
+                  {profiles.map((profile) => <button key={profile.handle} className={profileFilter === profile.handle ? 'filter-chip active' : 'filter-chip'} type="button" aria-pressed={profileFilter === profile.handle} onClick={() => selectProfile(profile.handle)}>@{profile.handle}</button>)}
+                </div>
+                <div className="tag-filters" aria-label="Filtrar pela tag da publicação">
+                  <button className={!tagFilter ? 'tag-chip tag-gray active' : 'tag-chip tag-gray'} type="button" aria-pressed={!tagFilter} onClick={() => setTagFilter('')}>Todas</button>
+                  {availableTags.map((tag) => <TagChip key={tag.id} tag={tag} active={tagFilter === tag.id} onClick={() => { setTagFilter(tag.id); setProfileFilter(tag.profile); setLimit(6) }} />)}
+                </div>
+                {(profileFilter || tagFilter || query) && <div className="active-filters"><span>Filtros ativos:</span>{profileFilter && <button type="button" onClick={() => selectProfile('')}>@{profileFilter} ×</button>}{tagFilter && <button type="button" onClick={() => setTagFilter('')}>{siteTags.find((tag) => tag.id === tagFilter)?.name} ×</button>}{query && <button type="button" onClick={() => setQuery('')}>Busca: “{query}” ×</button>}</div>}
+              </section>
               <div className="feed">
                 {filteredNotices.length ? filteredNotices.slice(0, limit).map((notice) => {
                   const profile = profiles.find((item) => item.handle === notice.author) || profiles[0]
-                  return <NoticeCard key={notice.id} notice={notice} profile={profile} reaction={reactions[notice.id]} onReact={(choice) => react(notice.id, choice)} onProfile={() => setProfileFilter(profile.handle)} />
+                  return <NoticeCard key={notice.id} notice={notice} profile={profile} tags={siteTags.filter((tag) => notice.tagIds.includes(tag.id))} reaction={reactions[notice.id]} onReact={(choice) => react(notice.id, choice)} onProfile={() => selectProfile(profile.handle)} onTag={(tagId) => { setTagFilter(tagId); setProfileFilter(profile.handle) }} />
                 }) : <p className="empty" role="status">Nenhum aviso corresponde à busca.</p>}
                 {limit < filteredNotices.length && <button className="load-more" type="button" onClick={() => setLimit((value) => value + 3)}>Carregar mais</button>}
               </div>
-              <aside className="profiles-panel"><p className="eyebrow">Perfis institucionais</p><h2>Quem publica</h2><div className="profile-row"><button className={!profileFilter ? 'profile-select active' : 'profile-select'} type="button" aria-pressed={!profileFilter} onClick={() => setProfileFilter('')}><span><strong>Todas as publicações</strong><small>Remover filtro de perfil</small></span></button></div>{profiles.map((profile) => <div className="profile-row" key={profile.handle}><button className={profileFilter === profile.handle ? 'profile-select active' : 'profile-select'} type="button" aria-pressed={profileFilter === profile.handle} onClick={() => setProfileFilter(profile.handle)}><Avatar profile={profile} /><span><strong>{profile.name}</strong><small>@{profile.handle}</small></span></button></div>)}</aside>
             </div>
           </section>
         )}
@@ -647,7 +799,7 @@ export default function App() {
         {tab === 'sistemas' && (
           <section className="content-section" aria-labelledby="systems-title">
             <div className="section-heading"><p className="eyebrow">Atalhos públicos</p><h1 id="systems-title">Sistemas</h1><p>Links externos curados; nenhuma credencial é solicitada pelo portal.</p></div>
-            <div className="system-grid">{filteredSystems.map((system) => <article className="card system-card" key={system.id}><p className="eyebrow">{system.category}</p><h2>{system.name}</h2><p>{system.description}</p><a href={system.url} target="_blank" rel="noopener noreferrer">Abrir página externa <span aria-hidden="true">↗</span><span className="sr-only"> em nova aba</span></a></article>)}</div>
+            <div className="system-grid">{filteredSystems.map((system) => <article className="card system-card" key={system.id}><h2>{system.name}</h2><p>{system.description}</p><a className="primary" href={system.url} target="_blank" rel="noopener noreferrer" aria-label={`Abrir ${system.name} em nova aba`}>Abrir</a></article>)}</div>
             {!filteredSystems.length && <p className="empty" role="status">Nenhum sistema corresponde à busca.</p>}
           </section>
         )}
@@ -656,8 +808,8 @@ export default function App() {
 
         {tab === 'acervo' && (
           <section className="content-section" aria-labelledby="documents-title">
-            <div className="section-heading"><p className="eyebrow">Acervo documental do CARB</p><h1 id="documents-title">Documentos</h1><p>Consulte a descrição e baixe o arquivo em PDF.</p></div>
-            <div className="document-grid">{filteredDocuments.map((document) => <article className="document-card" key={document.id}><span className="document-icon" aria-hidden="true">PDF</span><div><p className="eyebrow">{document.updatedAt}</p><h2>{document.title}</h2><p>{document.description}</p><a className="primary" href={document.file} download>Baixar PDF ↓</a></div></article>)}</div>
+            <div className="section-heading"><p className="eyebrow">Acervo documental do CARB</p><h1 id="documents-title">Documentos</h1><p>Consulte a descrição e baixe o arquivo disponível.</p></div>
+            <div className="document-grid">{filteredDocuments.map((document) => <article className="document-card" key={document.id}><p className="eyebrow">{document.updatedAt}</p><h2>{document.title}</h2><p>{document.description}</p><a className="primary" href={document.file} download aria-label={`Baixar ${document.title}`}>Baixar</a></article>)}</div>
             {!filteredDocuments.length && <p className="empty" role="status">Nenhum documento corresponde à busca.</p>}
           </section>
         )}
