@@ -18,6 +18,7 @@ export type Notice = {
   id: string
   title: string
   text: string
+  media?: { src: string; alt: string }
   category: string
   date: string
   state: 'publicado'
@@ -50,7 +51,7 @@ export const profiles: Profile[] = [
 
 // ponytail: conteúdo demonstrativo migra para a fonte editorial quando houver backend homologado.
 export const notices: Notice[] = [
-  { id: 'a1', title: 'Semana de acolhimento', text: 'Confira a programação sintética de recepção e os espaços de convivência do campus.', category: 'Comunidade', date: '25 ago. 2026', state: 'publicado', author: 'carb', base: { heart: 18, point: 11, skull: 2, dance: 7 } },
+  { id: 'a1', title: 'Semana de acolhimento', text: 'Confira a programação sintética de recepção e os espaços de convivência do campus.', media: { src: '/og.png', alt: 'Identidade visual do portal CARB com quatro retratos da comunidade acadêmica.' }, category: 'Comunidade', date: '25 ago. 2026', state: 'publicado', author: 'carb', base: { heart: 18, point: 11, skull: 2, dance: 7 } },
   { id: 'a2', title: 'Prazo para ajuste de matrícula', text: 'O período demonstrativo de ajuste termina na sexta-feira, às 18h.', category: 'Acadêmico', date: '24 ago. 2026', state: 'publicado', author: 'diretoriaacademica', base: { heart: 31, point: 23, skull: 4, dance: 3 } },
   { id: 'a3', title: 'Manutenção na biblioteca', text: 'A sala de estudos do primeiro andar ficará fechada durante a manhã para manutenção.', category: 'Infraestrutura', date: '22 ago. 2026', state: 'publicado', author: 'comunicacaocarb', base: { heart: 7, point: 12, skull: 6, dance: 1 } },
   { id: 'a4', title: 'Oficina de pesquisa jurídica', text: 'Atividade fictícia sobre busca de jurisprudência, com inscrição gratuita.', category: 'Extensão', date: '20 ago. 2026', state: 'publicado', author: 'extensaocarb', base: { heart: 24, point: 15, skull: 1, dance: 10 } },

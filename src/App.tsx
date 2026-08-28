@@ -29,17 +29,17 @@ const THEME_KEY = 'carb:theme'
 const ADMIN_SESSION_KEY = 'carb:admin-session'
 const ADMIN_USERNAME = import.meta.env.VITE_ADMIN_USERNAME || ''
 const ADMIN_PASSWORD_HASH = import.meta.env.VITE_ADMIN_PASSWORD_HASH || ''
-const REACTION_OPTIONS: { key: Reaction; emoji: string; label: string }[] = [
-  { key: 'heart', emoji: '♥', label: 'Coração' },
-  { key: 'point', emoji: '☝', label: 'Indicador' },
-  { key: 'skull', emoji: '☠', label: 'Caveira' },
-  { key: 'dance', emoji: '💃', label: 'Dançarina' },
+const REACTION_OPTIONS: { key: Reaction; icon: string; label: string }[] = [
+  { key: 'heart', icon: '/icons/coracao-24.png', label: 'Coração' },
+  { key: 'point', icon: '/icons/dedo-24.png', label: 'Indicador' },
+  { key: 'skull', icon: '/icons/caveira-24.png', label: 'Caveira' },
+  { key: 'dance', icon: '/icons/danca-24.png', label: 'Dançarina' },
 ]
 const TAB_LABELS: Record<Tab, string> = { avisos: 'Avisos', sistemas: 'Sistemas', planejador: 'Planejador', acervo: 'Acervo documental' }
 const NAVIGATION: { tab: Exclude<Tab, 'avisos'>; label: string; icon: string }[] = [
-  { tab: 'sistemas', label: 'Sistemas', icon: '⚙' },
-  { tab: 'planejador', label: 'Planejador', icon: '▦' },
-  { tab: 'acervo', label: 'Acervo documental', icon: '▤' },
+  { tab: 'sistemas', label: 'Sistemas', icon: '/icons/configuracoes-24.png' },
+  { tab: 'planejador', label: 'Montador de grade', icon: '/icons/calendario-24.png' },
+  { tab: 'acervo', label: 'Acervo documental', icon: '/icons/acervo-24.png' },
 ]
 const WEEKDAYS = ['segunda', 'terça', 'quarta', 'quinta', 'sexta', 'sábado']
 
@@ -113,7 +113,7 @@ function ProfileCreator({ profiles, onCreate }: { profiles: Profile[]; onCreate:
   const [handle, setHandle] = useState('')
   const [message, setMessage] = useState('')
 
-  const submit = (event: FormEvent) => {
+  const submit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     const cleanHandle = handle.toLocaleLowerCase('pt-BR')
     const cleanName = name.trim()
@@ -220,18 +220,42 @@ function PostCreator({ profiles, onCreate }: { profiles: Profile[]; onCreate: (n
   const [title, setTitle] = useState('')
   const [category, setCategory] = useState('')
   const [body, setBody] = useState('')
+  const [media, setMedia] = useState('')
+  const [mediaAlt, setMediaAlt] = useState('')
   const [message, setMessage] = useState('')
 
-  const submit = (event: FormEvent) => {
+  const changeMedia = (event: ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0]
+    setMedia('')
+    if (!file) return
+    if (!['image/jpeg', 'image/png', 'image/webp', 'image/gif'].includes(file.type) || file.size > 8 * 1024 * 1024) {
+      setMessage('Use uma imagem JPG, PNG, WebP ou GIF de até 8 MB.')
+      event.target.value = ''
+      return
+    }
+    const reader = new FileReader()
+    reader.onload = () => { setMedia(String(reader.result)); setMessage('') }
+    reader.onerror = () => setMessage('Não foi possível ler a imagem.')
+    reader.readAsDataURL(file)
+  }
+
+  const submit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     if (!profiles.some((profile) => profile.handle === author)) {
       setMessage('Selecione um perfil autor válido.')
       return
     }
-    onCreate({ id: `notice-${Date.now()}`, title: title.trim(), text: body.trim(), category: category.trim(), date: new Intl.DateTimeFormat('pt-BR', { day: '2-digit', month: 'short', year: 'numeric' }).format(new Date()), state: 'publicado', author, base: { heart: 0, point: 0, skull: 0, dance: 0 } })
+    if (media && !mediaAlt.trim()) {
+      setMessage('Descreva a imagem para leitores de tela.')
+      return
+    }
+    onCreate({ id: `notice-${Date.now()}`, title: title.trim(), text: body.trim(), ...(media ? { media: { src: media, alt: mediaAlt.trim() } } : {}), category: category.trim(), date: new Intl.DateTimeFormat('pt-BR', { day: '2-digit', month: 'short', year: 'numeric' }).format(new Date()), state: 'publicado', author, base: { heart: 0, point: 0, skull: 0, dance: 0 } })
     setTitle('')
     setCategory('')
     setBody('')
+    setMedia('')
+    setMediaAlt('')
+    event.currentTarget.reset()
     setMessage('Publicação criada nesta sessão.')
   }
 
@@ -244,6 +268,8 @@ function PostCreator({ profiles, onCreate }: { profiles: Profile[]; onCreate: (n
         <label>Título<input value={title} onChange={(event) => setTitle(event.target.value)} required /></label>
         <label>Categoria<input value={category} onChange={(event) => setCategory(event.target.value)} required /></label>
         <label>Texto<textarea value={body} onChange={(event) => setBody(event.target.value)} required /></label>
+        <label>Imagem ou GIF (opcional)<input type="file" accept="image/jpeg,image/png,image/webp,image/gif" onChange={changeMedia} /></label>
+        {media && <label>Descrição da imagem<input value={mediaAlt} onChange={(event) => setMediaAlt(event.target.value)} required /></label>}
         <button className="primary" type="submit">Publicar</button>
       </form>
       {message && <p className="form-message" role="status">{message}</p>}
@@ -338,15 +364,15 @@ function ReactionButtons({ notice, reaction, onReact }: { notice: Notice; reacti
 
   return (
     <div className="reaction-area">
-      <p className="reaction-summary">{REACTION_OPTIONS.map(({ key, emoji }) => `${counts[key]} ${emoji}`).join('  ·  ')}</p>
+      <p className="reaction-summary">{REACTION_OPTIONS.map(({ key, icon, label }) => <span key={key}>{counts[key]} <img src={icon} alt={label} /></span>)}</p>
       <div className="reactions" aria-label={`Reações ao aviso ${notice.title}`}>
-        {REACTION_OPTIONS.map(({ key, emoji, label }) => (
+        {REACTION_OPTIONS.map(({ key, icon, label }) => (
           <button key={key} className={reaction === key ? 'reaction active' : 'reaction'} aria-label={label} aria-pressed={reaction === key} title={label} onClick={() => onReact(key)}>
-            <span aria-hidden="true">{emoji}</span>
+            <img src={icon} alt="" aria-hidden="true" />
           </button>
         ))}
         <button className="reaction share" type="button" onClick={share} aria-label="Compartilhar link do aviso" title="Compartilhar">
-          <span aria-hidden="true">↗</span>
+          <img src="/icons/cursor-24.png" alt="" aria-hidden="true" />
         </button>
       </div>
       {shareMessage && <p className="share-message" role="status">{shareMessage}</p>}
@@ -364,6 +390,7 @@ function NoticeCard({ notice, profile, reaction, onReact, onProfile }: { notice:
       <div className="meta"><span>{notice.category}</span><span>{notice.state}</span></div>
       <h2>{notice.title}</h2>
       <p>{notice.text}</p>
+      {notice.media && <img className="notice-media" src={notice.media.src} alt={notice.media.alt} loading="lazy" />}
       <ReactionButtons notice={notice} reaction={reaction} onReact={onReact} />
     </article>
   )
@@ -532,6 +559,7 @@ export default function App() {
   const [isAdminRoute, setIsAdminRoute] = useState(adminPath)
   const [tab, setTab] = useState<Tab>('avisos')
   const [query, setQuery] = useState('')
+  const [searchOpen, setSearchOpen] = useState(false)
   const [limit, setLimit] = useState(6)
   const [profileFilter, setProfileFilter] = useState('')
   const [profiles, setProfiles] = useState(initialProfiles)
@@ -564,7 +592,14 @@ export default function App() {
   const changeTab = (next: Tab) => {
     setTab(next)
     setQuery('')
+    setSearchOpen(false)
     setLimit(6)
+    window.scrollTo({ top: 0 })
+  }
+
+  const goHome = () => {
+    changeTab('avisos')
+    setProfileFilter('')
   }
 
   const search = normalized(query)
@@ -583,11 +618,12 @@ export default function App() {
     <>
       <a className="skip-link" href="#conteudo">Pular para o conteúdo</a>
       <header className="topbar" id="top">
-        <div className="brand"><strong>CARB</strong><button className="home-button" type="button" onClick={() => changeTab('avisos')} aria-label="Ir para avisos" title="Avisos"><span aria-hidden="true">⌂</span></button></div>
-        <div className="search-box"><span aria-hidden="true">⌕</span><label className="sr-only" htmlFor="search">Buscar em {labels[tab]}</label><input id="search" type="search" value={query} onChange={(event) => setQuery(event.target.value)} placeholder={`Buscar em ${labels[tab].toLocaleLowerCase('pt-BR')}`} /></div>
+        <button className="brand-button" type="button" onClick={goHome} aria-label="CARB — voltar aos avisos" title="Voltar aos avisos"><img src="/logo-carb.png" alt="" aria-hidden="true" /></button>
+        <button className="search-toggle" type="button" aria-label={searchOpen ? 'Fechar busca' : 'Abrir busca'} aria-expanded={searchOpen} aria-controls="site-search" onClick={() => setSearchOpen((current) => !current)}><img src="/icons/busca-24.png" alt="" aria-hidden="true" /></button>
+        <div className={searchOpen ? 'search-box open' : 'search-box'} id="site-search"><img src="/icons/busca-24.png" alt="" aria-hidden="true" /><label className="sr-only" htmlFor="search">Buscar em {labels[tab]}</label><input id="search" type="search" value={query} onChange={(event) => setQuery(event.target.value)} placeholder={`Buscar em ${labels[tab].toLocaleLowerCase('pt-BR')}`} /></div>
         <nav aria-label="Navegação principal">
           <button className="nav-button theme-toggle" type="button" data-label={theme === 'dark' ? 'Tema claro' : 'Tema escuro'} aria-label={theme === 'dark' ? 'Usar tema claro' : 'Usar tema escuro'} aria-pressed={theme === 'light'} onClick={() => setTheme((current) => current === 'dark' ? 'light' : 'dark')}><span aria-hidden="true">{theme === 'dark' ? '☼' : '◐'}</span></button>
-          {NAVIGATION.map((item) => <button key={item.tab} className={tab === item.tab ? 'nav-button active' : 'nav-button'} data-label={item.label} aria-label={item.label} aria-current={tab === item.tab ? 'page' : undefined} onClick={() => changeTab(item.tab)}><span aria-hidden="true">{item.icon}</span></button>)}
+          {NAVIGATION.map((item) => <button key={item.tab} className={tab === item.tab ? 'nav-button active' : 'nav-button'} data-label={item.label} aria-label={item.label} aria-current={tab === item.tab ? 'page' : undefined} onClick={() => changeTab(item.tab)}><img src={item.icon} alt="" aria-hidden="true" /></button>)}
         </nav>
       </header>
 
