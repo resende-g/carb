@@ -1,5 +1,43 @@
 # Prompt — protótipo local do Portal CARB
 
+## Estado atual — v1
+
+Esta seção registra o estado implementado na branch `v1` e prevalece sobre o prompt inicial abaixo quando houver divergência.
+
+### Avisos com mídia
+
+- Publicações aceitam uma imagem ou GIF opcional pelo painel administrativo.
+- Formatos permitidos: JPG, PNG, WebP e GIF, com limite de 8 MB.
+- A descrição acessível é obrigatória quando uma mídia é anexada.
+- A mídia usa `object-fit: contain`, largura limitada ao cartão e altura máxima de 560 px no desktop e 390 px no mobile.
+- O upload permanece somente na sessão aberta, pois ainda não existe armazenamento persistente no backend.
+
+### Identidade e navegação
+
+- `public/logo-carb.png` substitui o texto e o botão de home anteriores; o próprio logotipo retorna à área de avisos e remove busca e filtro de perfil ativos.
+- Os ícones autorais ficam em `public/icons/`, com versões PNG transparentes de 24×24 e 48×48 px.
+- A navegação usa `configuracoes-24.png`, `calendario-24.png` e `acervo-24.png` para Sistemas, Montador de grade e Acervo.
+- Busca, reações e compartilhamento usam os demais ícones do mesmo conjunto.
+- Cabeçalho e barra de navegação usam fundos translúcidos; no mobile, a barra inferior mantém desfoque próprio sem alterar o posicionamento fixo.
+
+### Comportamento mobile
+
+- O breakpoint existente de `760px` foi preservado.
+- A busca vira um botão que abre e fecha o campo de pesquisa.
+- Tema, Sistemas, Montador de grade e Acervo ficam em uma barra fixa inferior.
+- O painel `Quem publica` não é exibido no mobile.
+- Fonte, títulos, espaçamentos e cartões foram reduzidos moderadamente.
+- O corpo reserva espaço para a barra inferior, incluindo `safe-area-inset-bottom`, evitando sobreposição do conteúdo.
+
+### Verificação da v1
+
+- `npm run build`: aprovado.
+- `npm test -- --run`: 3 testes aprovados em 2 arquivos.
+- Não existe script de lint configurado no projeto.
+- Verificação visual realizada no desktop e em viewport mobile de 390×844 px.
+- Confirmados: retorno aos avisos pelo logotipo, ícones corretos, mídia nos avisos, busca recolhível, ausência de `Quem publica` no mobile e barra inferior sem cobrir o conteúdo.
+- Branch remota: `v1`; commit inicial da versão: `749f307` (`feat: adiciona mídia e navegação responsiva`).
+
 Trabalhe diretamente neste repositório e entregue um protótipo funcional do Portal CARB que rode em `localhost`. Não pare na análise: inspecione os arquivos existentes, implemente, teste e deixe os comandos de execução documentados.
 
 ## Resultado esperado
