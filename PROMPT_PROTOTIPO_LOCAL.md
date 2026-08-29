@@ -1,5 +1,31 @@
 # Prompt — protótipo local do Portal CARB
 
+## Estado atual — v1.2
+
+Esta seção registra o estado implementado na branch `v1.2` e prevalece sobre os registros históricos da v1.1, v1 e do prompt inicial abaixo.
+
+### Fundação visual
+
+- Tailwind CSS 4 está integrado ao Vite pelo plugin oficial; Shadcn/ui usa CSS variables, estilo Radix Nova e alias `@/*` compartilhado por Vite e TypeScript.
+- Tokens dos temas CARB, foco, superfícies, bordas, sombras e paleta de hashtags ficam em `src/styles.css` e são expostos ao Tailwind por `@theme inline`.
+- A migração é incremental: busca, cartões, links de ação, separador e hashtags usam componentes da nova base; layout, planejador, painel, impressão e regras responsivas ainda reutilizam CSS nativo verificado.
+- O projeto agora possui `npm run lint`, `npm run typecheck`, testes Vitest e build Vite documentados.
+
+### Hashtags globais
+
+- Tags vinculadas a perfis foram substituídas por hashtags exclusivamente temáticas e globais.
+- O perfil permanece como autor público agregador; a hashtag não representa autor, organização, usuário, conta ou permissão.
+- O catálogo canônico possui ID estável, nome, slug previsível, cor e estado ativo. Publicações guardam somente `hashtagIds` deduplicados e podem ter várias hashtags.
+- Nome e slug são validados sem diferenciar maiúsculas/minúsculas. Hashtags inativas não aparecem para novas associações, mas continuam visíveis em publicações históricas.
+- Busca textual, perfil autor e uma hashtag filtram simultaneamente no grão da publicação. Cor é acompanhada por `#` e nome textual.
+- Criação, edição, ativação, desativação, desassociação e exclusão pelo painel continuam limitadas à sessão; exclusão informa a quantidade de publicações afetadas e exige confirmação.
+
+### Documentação e limites
+
+- A migração visual está descrita em `docs/ui-migration-v1.2.md`; o modelo e as regras estão em `docs/hashtags.md`; mudanças de versão estão em `CHANGELOG.md`.
+- Continuam ausentes backend, banco, Supabase, persistência de mídia, autenticação e autorização reais, integração SIGAA, infraestrutura e homologação pela STI-UFBA.
+- O painel `/admin` é demonstrativo e não deve tratar dados pessoais reais nem ser apresentado como controle de segurança.
+
 ## Estado atual — v1.1
 
 Esta seção registra o estado implementado na branch `v1.1` e prevalece sobre o prompt inicial abaixo quando houver divergência.
