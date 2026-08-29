@@ -1,9 +1,16 @@
 import { ChangeEvent, FormEvent, useEffect, useMemo, useRef, useState } from 'react'
 import academicDataJson from './academic-data.json'
 import { parseOfferingsCsv } from './admin'
-import { documents, notices, profiles as initialProfiles, systems, tags as initialTags, type DocumentItem, type Notice, type Profile, type ReactionCounts, type Tag, type TagColor } from './data'
-import { filterNotices, removeTag } from './feed'
-import { meetingLabel, selectionIssue, TIME_ROWS, type ClassOffering, type Meeting, type SelectionIssue, type Semester, type Shift } from './planner'
+import { HashtagChip } from './components/HashtagChip'
+import { Button } from './components/ui/button'
+import { Card } from './components/ui/card'
+import { Input } from './components/ui/input'
+import { Label } from './components/ui/label'
+import { Separator } from './components/ui/separator'
+import { documents, hashtags as initialHashtags, notices, profiles as initialProfiles, systems, type DocumentItem, type Hashtag, type HashtagColor, type Notice, type Profile, type ReactionCounts } from './data'
+import { filterNotices, removeHashtag } from './feed'
+import { activeHashtags, hashtagSlug, normalizeHashtagName, uniqueHashtagIds } from './hashtags'
+import { meetingLabel, selectionIssue, TIME_ROWS, type ClassOffering, type SelectionIssue, type Semester, type Shift } from './planner'
 
 type Tab = 'avisos' | 'sistemas' | 'planejador' | 'acervo'
 type Reaction = keyof ReactionCounts
@@ -44,12 +51,13 @@ const NAVIGATION: { tab: Exclude<Tab, 'avisos'>; label: string; icon: string }[]
 ]
 const WEEKDAYS = ['segunda', 'terça', 'quarta', 'quinta', 'sexta', 'sábado']
 const WEEKDAY_LABELS: Record<string, string> = { segunda: 'Seg.', terça: 'Ter.', quarta: 'Qua.', quinta: 'Qui.', sexta: 'Sex.', sábado: 'Sáb.' }
-const TAG_COLORS: { value: TagColor; label: string }[] = [
+const HASHTAG_COLORS: { value: HashtagColor; label: string }[] = [
   { value: 'blue', label: 'Azul' }, { value: 'green', label: 'Verde' }, { value: 'gold', label: 'Dourado' },
   { value: 'violet', label: 'Violeta' }, { value: 'red', label: 'Vermelho' }, { value: 'gray', label: 'Cinza' },
 ]
 
 function readLocal<T>(key: string, fallback: T): T {
+  if (typeof window === 'undefined') return fallback
   try {
     const value = localStorage.getItem(key)
     return value ? JSON.parse(value) as T : fallback
@@ -59,6 +67,7 @@ function readLocal<T>(key: string, fallback: T): T {
 }
 
 function writeLocal<T>(key: string, value: T) {
+  if (typeof window === 'undefined') return
   try {
     localStorage.setItem(key, JSON.stringify(value))
   } catch {
@@ -67,6 +76,7 @@ function writeLocal<T>(key: string, value: T) {
 }
 
 const readAdminSession = () => {
+  if (typeof window === 'undefined') return false
   try {
     return sessionStorage.getItem(ADMIN_SESSION_KEY) === 'authenticated'
   } catch {
@@ -85,13 +95,6 @@ function Avatar({ profile }: { profile: Profile }) {
       <span>{profile.shortName}</span>
     </span>
   )
-}
-
-function TagChip({ tag, active, onClick }: { tag: Tag; active?: boolean; onClick?: () => void }) {
-  const className = `tag-chip tag-${tag.color}${active ? ' active' : ''}`
-  return onClick
-    ? <button className={className} type="button" aria-pressed={active} onClick={onClick}>{tag.name}</button>
-    : <span className={className}>{tag.name}</span>
 }
 
 function ProfileIconEditor({ profile, onChange }: { profile: Profile; onChange: (avatar: string) => void }) {
@@ -151,7 +154,7 @@ function ProfileCreator({ profiles, onCreate }: { profiles: Profile[]; onCreate:
   return (
     <details className="admin-demo">
       <summary>Criar perfil de entidade</summary>
-      <p>A alteração permanece somente nesta sessão da v1.1.</p>
+      <p>A alteração permanece somente nesta sessão da v1.2.</p>
       <form onSubmit={submit}>
         <label htmlFor="entity-name">Nome da entidade</label>
         <input id="entity-name" value={name} onChange={(event) => setName(event.target.value)} required />
@@ -205,7 +208,7 @@ function DocumentUploader({ onUpload }: { onUpload: (document: DocumentItem) => 
       setMessage('Use um PDF de até 10 MB.')
       return
     }
-    onUpload({ id: `document-${Date.now()}`, title: title.trim(), description: description.trim(), updatedAt: `Adicionado em ${new Intl.DateTimeFormat('pt-BR').format(new Date())}`, file: URL.createObjectURL(file) })
+    onUpload({ id: `document-${Math.round(event.timeStamp)}`, title: title.trim(), description: description.trim(), updatedAt: `Adicionado em ${new Intl.DateTimeFormat('pt-BR').format(new Date())}`, file: URL.createObjectURL(file) })
     setTitle('')
     setDescription('')
     setFile(null)
@@ -228,54 +231,66 @@ function DocumentUploader({ onUpload }: { onUpload: (document: DocumentItem) => 
   )
 }
 
-function TagManager({ profiles, tags, notices, onCreate, onUpdate, onDelete, onDetach }: {
-  profiles: Profile[]
-  tags: Tag[]
+function HashtagManager({ hashtags, notices, onCreate, onUpdate, onDelete, onDetach }: {
+  hashtags: Hashtag[]
   notices: Notice[]
-  onCreate: (tag: Tag) => void
-  onUpdate: (tag: Tag) => void
-  onDelete: (tagId: string) => void
-  onDetach: (tagId: string) => void
+  onCreate: (hashtag: Hashtag) => void
+  onUpdate: (hashtag: Hashtag) => void
+  onDelete: (hashtagId: string) => void
+  onDetach: (hashtagId: string) => void
 }) {
-  const [profile, setProfile] = useState(profiles[0]?.handle || '')
   const [name, setName] = useState('')
-  const [color, setColor] = useState<TagColor>('blue')
+  const [color, setColor] = useState<HashtagColor>('blue')
   const [message, setMessage] = useState('')
 
   const create = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-    const cleanName = name.trim()
-    if (!cleanName || !profiles.some((item) => item.handle === profile)) return
-    const baseId = `${profile}-${cleanName.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLocaleLowerCase('pt-BR').replace(/[^a-z0-9]+/g, '-')}`.replace(/-+$/, '')
-    const id = tags.some((tag) => tag.id === baseId) ? `${baseId}-${Date.now()}` : baseId
-    onCreate({ id, profile, name: cleanName, color })
+    const cleanName = normalizeHashtagName(name)
+    const slug = hashtagSlug(cleanName)
+    if (!cleanName || !slug) return
+    if (hashtags.some((hashtag) => normalized(hashtag.name) === normalized(cleanName) || normalized(hashtag.slug) === normalized(slug))) {
+      setMessage('Já existe uma hashtag com esse nome ou slug.')
+      return
+    }
+    onCreate({ id: `hashtag-${slug}`, name: cleanName, slug, color, active: true })
     setName('')
-    setMessage(`Tag “${cleanName}” criada nesta sessão.`)
+    setMessage(`Hashtag “#${cleanName}” criada nesta sessão.`)
   }
 
-  const deleteTag = (tag: Tag) => {
-    const affected = notices.filter((notice) => notice.tagIds.includes(tag.id)).length
-    if (!window.confirm(`Excluir “${tag.name}”? ${affected} publicação(ões) perderá(ão) esta associação.`)) return
-    onDelete(tag.id)
-    setMessage(`Tag “${tag.name}” excluída; ${affected} publicação(ões) afetada(s).`)
+  const rename = (hashtag: Hashtag, value: string) => {
+    const cleanName = normalizeHashtagName(value)
+    const slug = hashtagSlug(cleanName)
+    if (!cleanName || !slug || hashtags.some((item) => item.id !== hashtag.id && (normalized(item.name) === normalized(cleanName) || normalized(item.slug) === normalized(slug)))) {
+      setMessage('Nome inválido ou já utilizado; a hashtag não foi alterada.')
+      return
+    }
+    onUpdate({ ...hashtag, name: cleanName, slug })
+    setMessage(`Hashtag atualizada para #${cleanName}.`)
+  }
+
+  const deleteHashtag = (hashtag: Hashtag) => {
+    const affected = notices.filter((notice) => notice.hashtagIds.includes(hashtag.id)).length
+    if (!window.confirm(`Excluir “#${hashtag.name}”? ${affected} publicação(ões) perderá(ão) esta associação.`)) return
+    onDelete(hashtag.id)
+    setMessage(`Hashtag “#${hashtag.name}” excluída; ${affected} publicação(ões) afetada(s).`)
   }
 
   return (
-    <section className="admin-card tag-manager">
+    <section className="admin-card hashtag-manager">
       <p className="eyebrow">Classificação</p>
-      <h2>Tags por perfil</h2>
+      <h2>Hashtags globais</h2>
+      <p>Classificam temas e podem ser usadas por publicações de qualquer perfil.</p>
       <form className="admin-form compact-form" onSubmit={create}>
-        <label>Perfil<select value={profile} onChange={(event) => setProfile(event.target.value)}>{profiles.map((item) => <option key={item.handle} value={item.handle}>@{item.handle}</option>)}</select></label>
         <label>Nome<input value={name} onChange={(event) => setName(event.target.value)} required /></label>
-        <label>Cor<select value={color} onChange={(event) => setColor(event.target.value as TagColor)}>{TAG_COLORS.map((item) => <option key={item.value} value={item.value}>{item.label}</option>)}</select></label>
-        <button className="primary" type="submit">Criar tag</button>
+        <label>Cor<select value={color} onChange={(event) => setColor(event.target.value as HashtagColor)}>{HASHTAG_COLORS.map((item) => <option key={item.value} value={item.value}>{item.label}</option>)}</select></label>
+        <button className="primary" type="submit">Criar hashtag</button>
       </form>
-      <div className="tag-admin-list">
-        {tags.map((tag) => <div key={tag.id} className="tag-admin-row">
-          <span>@{tag.profile}</span>
-          <input aria-label={`Nome da tag ${tag.name}`} value={tag.name} onChange={(event) => onUpdate({ ...tag, name: event.target.value })} />
-          <select aria-label={`Cor da tag ${tag.name}`} value={tag.color} onChange={(event) => onUpdate({ ...tag, color: event.target.value as TagColor })}>{TAG_COLORS.map((item) => <option key={item.value} value={item.value}>{item.label}</option>)}</select>
-          <div className="tag-admin-actions"><button type="button" disabled={!notices.some((notice) => notice.tagIds.includes(tag.id))} onClick={() => { const affected = notices.filter((notice) => notice.tagIds.includes(tag.id)).length; onDetach(tag.id); setMessage(`${affected} associação(ões) removida(s); a tag foi mantida.`) }}>Desassociar</button><button type="button" onClick={() => deleteTag(tag)}>Excluir</button></div>
+      <div className="hashtag-admin-list">
+        {hashtags.map((hashtag) => <div key={hashtag.id} className="hashtag-admin-row">
+          <input aria-label={`Nome da hashtag ${hashtag.name}`} defaultValue={hashtag.name} onBlur={(event) => rename(hashtag, event.target.value)} />
+          <select aria-label={`Cor da hashtag ${hashtag.name}`} value={hashtag.color} onChange={(event) => onUpdate({ ...hashtag, color: event.target.value as HashtagColor })}>{HASHTAG_COLORS.map((item) => <option key={item.value} value={item.value}>{item.label}</option>)}</select>
+          <label className="hashtag-active"><input type="checkbox" checked={hashtag.active} onChange={(event) => onUpdate({ ...hashtag, active: event.target.checked })} />Ativa</label>
+          <div className="hashtag-admin-actions"><button type="button" disabled={!notices.some((notice) => notice.hashtagIds.includes(hashtag.id))} onClick={() => { const affected = notices.filter((notice) => notice.hashtagIds.includes(hashtag.id)).length; onDetach(hashtag.id); setMessage(`${affected} associação(ões) removida(s); a hashtag foi mantida.`) }}>Desassociar</button><button type="button" onClick={() => deleteHashtag(hashtag)}>Excluir</button></div>
         </div>)}
       </div>
       {message && <p className="form-message" role="status">{message}</p>}
@@ -283,16 +298,16 @@ function TagManager({ profiles, tags, notices, onCreate, onUpdate, onDelete, onD
   )
 }
 
-function PostCreator({ profiles, tags, onCreate }: { profiles: Profile[]; tags: Tag[]; onCreate: (notice: Notice) => void }) {
+function PostCreator({ profiles, hashtags, onCreate }: { profiles: Profile[]; hashtags: Hashtag[]; onCreate: (notice: Notice) => void }) {
   const [author, setAuthor] = useState(profiles[0]?.handle || '')
   const [title, setTitle] = useState('')
   const [category, setCategory] = useState('')
   const [body, setBody] = useState('')
   const [media, setMedia] = useState('')
   const [mediaAlt, setMediaAlt] = useState('')
-  const [tagIds, setTagIds] = useState<string[]>([])
+  const [hashtagIds, setHashtagIds] = useState<string[]>([])
   const [message, setMessage] = useState('')
-  const authorTags = tags.filter((tag) => tag.profile === author)
+  const selectableHashtags = activeHashtags(hashtags)
 
   const changeMedia = (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0]
@@ -315,21 +330,21 @@ function PostCreator({ profiles, tags, onCreate }: { profiles: Profile[]; tags: 
       setMessage('Selecione um perfil autor válido.')
       return
     }
-    if (!tagIds.length || tagIds.some((id) => !authorTags.some((tag) => tag.id === id))) {
-      setMessage('Selecione ao menos uma tag válida do perfil autor.')
+    if (!hashtagIds.length || hashtagIds.some((id) => !selectableHashtags.some((hashtag) => hashtag.id === id))) {
+      setMessage('Selecione ao menos uma hashtag ativa.')
       return
     }
     if (media && !mediaAlt.trim()) {
       setMessage('Descreva a imagem para leitores de tela.')
       return
     }
-    onCreate({ id: `notice-${Date.now()}`, title: title.trim(), text: body.trim(), ...(media ? { media: { src: media, alt: mediaAlt.trim() } } : {}), category: category.trim(), date: new Intl.DateTimeFormat('pt-BR', { day: '2-digit', month: 'short', year: 'numeric' }).format(new Date()), state: 'publicado', author, tagIds, base: { heart: 0, point: 0, skull: 0, dance: 0 } })
+    onCreate({ id: `notice-${Math.round(event.timeStamp)}`, title: title.trim(), text: body.trim(), ...(media ? { media: { src: media, alt: mediaAlt.trim() } } : {}), category: category.trim(), date: new Intl.DateTimeFormat('pt-BR', { day: '2-digit', month: 'short', year: 'numeric' }).format(new Date()), state: 'publicado', author, hashtagIds: uniqueHashtagIds(hashtagIds), base: { heart: 0, point: 0, skull: 0, dance: 0 } })
     setTitle('')
     setCategory('')
     setBody('')
     setMedia('')
     setMediaAlt('')
-    setTagIds([])
+    setHashtagIds([])
     event.currentTarget.reset()
     setMessage('Publicação criada nesta sessão.')
   }
@@ -339,8 +354,8 @@ function PostCreator({ profiles, tags, onCreate }: { profiles: Profile[]; tags: 
       <p className="eyebrow">Avisos</p>
       <h2>Criar publicação</h2>
       <form className="admin-form" onSubmit={submit}>
-        <label>Perfil autor<select value={author} onChange={(event) => { setAuthor(event.target.value); setTagIds([]) }}>{profiles.map((profile) => <option key={profile.handle} value={profile.handle}>{profile.name}</option>)}</select></label>
-        <fieldset className="tag-checkboxes"><legend>Tags</legend>{authorTags.map((tag) => <label key={tag.id}><input type="checkbox" checked={tagIds.includes(tag.id)} onChange={() => setTagIds((current) => current.includes(tag.id) ? current.filter((id) => id !== tag.id) : [...current, tag.id])} /><TagChip tag={tag} /></label>)}{!authorTags.length && <small>Crie uma tag para este perfil antes de publicar.</small>}</fieldset>
+        <label>Perfil autor<select value={author} onChange={(event) => setAuthor(event.target.value)}>{profiles.map((profile) => <option key={profile.handle} value={profile.handle}>{profile.name}</option>)}</select></label>
+        <fieldset className="hashtag-checkboxes"><legend>Hashtags</legend>{selectableHashtags.map((hashtag) => <label key={hashtag.id}><input type="checkbox" checked={hashtagIds.includes(hashtag.id)} onChange={() => setHashtagIds((current) => current.includes(hashtag.id) ? current.filter((id) => id !== hashtag.id) : uniqueHashtagIds([...current, hashtag.id]))} /><HashtagChip hashtag={hashtag} /></label>)}{!selectableHashtags.length && <small>Ative ou crie uma hashtag antes de publicar.</small>}</fieldset>
         <label>Título<input value={title} onChange={(event) => setTitle(event.target.value)} required /></label>
         <label>Categoria<input value={category} onChange={(event) => setCategory(event.target.value)} required /></label>
         <label>Texto<textarea value={body} onChange={(event) => setBody(event.target.value)} required /></label>
@@ -353,19 +368,19 @@ function PostCreator({ profiles, tags, onCreate }: { profiles: Profile[]; tags: 
   )
 }
 
-function AdminPage({ profiles, tags, notices, theme, onExit, onToggleTheme, onChangeAvatar, onCreateProfile, onCreateTag, onUpdateTag, onDeleteTag, onDetachTag, onImportOfferings, onUploadDocument, onCreatePost }: {
+function AdminPage({ profiles, hashtags, notices, theme, onExit, onToggleTheme, onChangeAvatar, onCreateProfile, onCreateHashtag, onUpdateHashtag, onDeleteHashtag, onDetachHashtag, onImportOfferings, onUploadDocument, onCreatePost }: {
   profiles: Profile[]
-  tags: Tag[]
+  hashtags: Hashtag[]
   notices: Notice[]
   theme: 'dark' | 'light'
   onExit: () => void
   onToggleTheme: () => void
   onChangeAvatar: (handle: string, avatar: string) => void
   onCreateProfile: (profile: Profile) => void
-  onCreateTag: (tag: Tag) => void
-  onUpdateTag: (tag: Tag) => void
-  onDeleteTag: (tagId: string) => void
-  onDetachTag: (tagId: string) => void
+  onCreateHashtag: (hashtag: Hashtag) => void
+  onUpdateHashtag: (hashtag: Hashtag) => void
+  onDeleteHashtag: (hashtagId: string) => void
+  onDetachHashtag: (hashtagId: string) => void
   onImportOfferings: (offerings: ClassOffering[]) => void
   onUploadDocument: (document: DocumentItem) => void
   onCreatePost: (notice: Notice) => void
@@ -411,7 +426,7 @@ function AdminPage({ profiles, tags, notices, theme, onExit, onToggleTheme, onCh
     <>
       <header className="admin-topbar"><a href="/" onClick={(event) => { event.preventDefault(); onExit() }}>CARB</a><div><button type="button" onClick={onToggleTheme} aria-label={theme === 'dark' ? 'Usar tema claro' : 'Usar tema escuro'}>{theme === 'dark' ? '☼' : '◐'}</button><button type="button" onClick={logout}>Sair</button></div></header>
       <main className="admin-shell">
-        <div className="section-heading"><p className="eyebrow">Sessão administrativa v1.1</p><h1>Painel editorial</h1><p>As alterações abaixo duram somente nesta aba e não coletam matrícula nem dados estudantis.</p></div>
+        <div className="section-heading"><p className="eyebrow">Sessão administrativa v1.2</p><h1>Painel editorial demonstrativo</h1><p>As alterações abaixo duram somente nesta aba e não coletam matrícula nem dados estudantis.</p></div>
         <div className="admin-grid">
           <section className="admin-card admin-profiles">
             <p className="eyebrow">Entidades</p>
@@ -419,10 +434,10 @@ function AdminPage({ profiles, tags, notices, theme, onExit, onToggleTheme, onCh
             {profiles.map((profile) => <div className="profile-row" key={profile.handle}><div className="profile-select"><Avatar profile={profile} /><span><strong>{profile.name}</strong><small>@{profile.handle}</small></span></div><ProfileIconEditor profile={profile} onChange={(avatar) => onChangeAvatar(profile.handle, avatar)} /></div>)}
             <ProfileCreator profiles={profiles} onCreate={onCreateProfile} />
           </section>
-          <TagManager profiles={profiles} tags={tags} notices={notices} onCreate={onCreateTag} onUpdate={onUpdateTag} onDelete={onDeleteTag} onDetach={onDetachTag} />
+          <HashtagManager hashtags={hashtags} notices={notices} onCreate={onCreateHashtag} onUpdate={onUpdateHashtag} onDelete={onDeleteHashtag} onDetach={onDetachHashtag} />
           <CsvImporter onImport={onImportOfferings} />
           <DocumentUploader onUpload={onUploadDocument} />
-          <PostCreator profiles={profiles} tags={tags} onCreate={onCreatePost} />
+          <PostCreator profiles={profiles} hashtags={hashtags} onCreate={onCreatePost} />
         </div>
       </main>
     </>
@@ -463,19 +478,21 @@ function ReactionButtons({ notice, reaction, onReact }: { notice: Notice; reacti
   )
 }
 
-function NoticeCard({ notice, profile, tags, reaction, onReact, onProfile, onTag }: { notice: Notice; profile: Profile; tags: Tag[]; reaction?: Reaction; onReact: (reaction: Reaction) => void; onProfile: () => void; onTag: (tagId: string) => void }) {
+function NoticeCard({ notice, profile, hashtags, reaction, onReact, onProfile, onHashtag }: { notice: Notice; profile: Profile; hashtags: Hashtag[]; reaction?: Reaction; onReact: (reaction: Reaction) => void; onProfile: () => void; onHashtag: (hashtagId: string) => void }) {
   return (
-    <article className="card notice-card" id={`aviso-${notice.id}`}>
-      <button className="profile-link" type="button" onClick={onProfile}>
-        <Avatar profile={profile} />
-        <span><strong>{profile.name}</strong><small>@{profile.handle} · {notice.date}</small></span>
-      </button>
-      <div className="meta"><span>{notice.category}</span><span>{notice.state}</span></div>
-      <div className="notice-tags">{tags.map((tag) => <TagChip key={tag.id} tag={tag} onClick={() => onTag(tag.id)} />)}</div>
-      <h2>{notice.title}</h2>
-      <p>{notice.text}</p>
-      {notice.media && <img className="notice-media" src={notice.media.src} alt={notice.media.alt} loading="lazy" />}
-      <ReactionButtons notice={notice} reaction={reaction} onReact={onReact} />
+    <article id={`aviso-${notice.id}`}>
+      <Card className="card notice-card gap-0 py-0">
+        <button className="profile-link" type="button" onClick={onProfile}>
+          <Avatar profile={profile} />
+          <span><strong>{profile.name}</strong><small>@{profile.handle} · {notice.date}</small></span>
+        </button>
+        <div className="meta"><span>{notice.category}</span><span>{notice.state}</span></div>
+        <div className="notice-hashtags">{hashtags.map((hashtag) => <HashtagChip key={hashtag.id} hashtag={hashtag} onClick={() => onHashtag(hashtag.id)} />)}</div>
+        <h2>{notice.title}</h2>
+        <p>{notice.text}</p>
+        {notice.media && <img className="notice-media" src={notice.media.src} alt={notice.media.alt} loading="lazy" />}
+        <ReactionButtons notice={notice} reaction={reaction} onReact={onReact} />
+      </Card>
     </article>
   )
 }
@@ -496,7 +513,7 @@ function ScheduleTable({ selected }: { selected: ClassOffering[] }) {
         <table className="schedule-table">
         <thead><tr><th>Horário</th>{WEEKDAYS.map((day) => <th key={day}>{day}</th>)}</tr></thead>
         <tbody>
-          {TIME_ROWS.map(([start, end], index) => (
+          {TIME_ROWS.map(([start], index) => (
             <tr key={start}>
               <th>{start}</th>
               {WEEKDAYS.map((day) => {
@@ -663,17 +680,16 @@ function Planner({ query, offerings }: { query: string; offerings: ClassOffering
 }
 
 export default function App() {
-  const adminPath = () => window.location.pathname.replace(/\/+$/, '') === '/admin'
+  const adminPath = () => typeof window !== 'undefined' && window.location.pathname.replace(/\/+$/, '') === '/admin'
   const [isAdminRoute, setIsAdminRoute] = useState(adminPath)
   const [tab, setTab] = useState<Tab>('avisos')
   const [query, setQuery] = useState('')
   const [menuOpen, setMenuOpen] = useState(false)
   const [limit, setLimit] = useState(6)
   const [profileFilter, setProfileFilter] = useState('')
-  const [tagFilter, setTagFilter] = useState('')
-  const [tagMenuProfile, setTagMenuProfile] = useState('')
+  const [hashtagFilter, setHashtagFilter] = useState('')
   const [profiles, setProfiles] = useState(initialProfiles)
-  const [siteTags, setSiteTags] = useState(initialTags)
+  const [siteHashtags, setSiteHashtags] = useState(initialHashtags)
   const [siteNotices, setSiteNotices] = useState(notices)
   const [siteDocuments, setSiteDocuments] = useState(documents)
   const [offerings, setOfferings] = useState(academicData.offerings)
@@ -724,7 +740,6 @@ export default function App() {
     setTab(next)
     setQuery('')
     setMenuOpen(false)
-    setTagMenuProfile('')
     setLimit(6)
     window.scrollTo({ top: 0 })
   }
@@ -732,41 +747,39 @@ export default function App() {
   const goHome = () => {
     changeTab('avisos')
     setProfileFilter('')
-    setTagFilter('')
-    setTagMenuProfile('')
+    setHashtagFilter('')
   }
 
   const search = normalized(query)
-  const filteredNotices = filterNotices(siteNotices, profiles, siteTags, { query, profile: profileFilter, tag: tagFilter })
+  const filteredNotices = filterNotices(siteNotices, profiles, siteHashtags, { query, profile: profileFilter, hashtag: hashtagFilter })
   const filteredSystems = systems.filter((system) => !search || [system.name, system.description, system.category].some((value) => value.toLocaleLowerCase('pt-BR').includes(search)))
   const filteredDocuments = siteDocuments.filter((document) => !search || [document.title, document.description, document.updatedAt].some((value) => value.toLocaleLowerCase('pt-BR').includes(search)))
   const activeProfile = profiles.find((profile) => profile.handle === profileFilter)
-  const availableTags = siteTags.filter((tag) => !profileFilter || tag.profile === profileFilter)
   const updateProfileAvatar = (handle: string, avatar: string) => setProfiles((current) => current.map((profile) => profile.handle === handle ? { ...profile, avatar, avatarPosition: 'center' } : profile))
   const selectProfile = (handle: string) => {
     setProfileFilter(handle)
-    if (tagFilter && siteTags.find((tag) => tag.id === tagFilter)?.profile !== handle) setTagFilter('')
     setLimit(6)
   }
-  const deleteSiteTag = (tagId: string) => {
-    const next = removeTag(siteTags, siteNotices, tagId)
-    setSiteTags(next.tags)
+  const deleteSiteHashtag = (hashtagId: string) => {
+    const next = removeHashtag(siteHashtags, siteNotices, hashtagId)
+    setSiteHashtags(next.hashtags)
     setSiteNotices(next.notices)
-    if (tagFilter === tagId) setTagFilter('')
+    if (hashtagFilter === hashtagId) setHashtagFilter('')
   }
 
-  if (isAdminRoute) return <AdminPage profiles={profiles} tags={siteTags} notices={siteNotices} theme={theme} onExit={() => { history.pushState({}, '', '/'); setIsAdminRoute(false) }} onToggleTheme={() => setTheme((current) => current === 'dark' ? 'light' : 'dark')} onChangeAvatar={updateProfileAvatar} onCreateProfile={(profile) => setProfiles((current) => [...current, profile])} onCreateTag={(tag) => setSiteTags((current) => [...current, tag])} onUpdateTag={(tag) => setSiteTags((current) => current.map((item) => item.id === tag.id ? tag : item))} onDeleteTag={deleteSiteTag} onDetachTag={(tagId) => setSiteNotices((current) => current.map((notice) => notice.tagIds.includes(tagId) ? { ...notice, tagIds: notice.tagIds.filter((id) => id !== tagId) } : notice))} onImportOfferings={setOfferings} onUploadDocument={(document) => setSiteDocuments((current) => [document, ...current])} onCreatePost={(notice) => setSiteNotices((current) => [notice, ...current])} />
+  if (isAdminRoute) return <AdminPage profiles={profiles} hashtags={siteHashtags} notices={siteNotices} theme={theme} onExit={() => { history.pushState({}, '', '/'); setIsAdminRoute(false) }} onToggleTheme={() => setTheme((current) => current === 'dark' ? 'light' : 'dark')} onChangeAvatar={updateProfileAvatar} onCreateProfile={(profile) => setProfiles((current) => [...current, profile])} onCreateHashtag={(hashtag) => setSiteHashtags((current) => [...current, hashtag])} onUpdateHashtag={(hashtag) => setSiteHashtags((current) => current.map((item) => item.id === hashtag.id ? hashtag : item))} onDeleteHashtag={deleteSiteHashtag} onDetachHashtag={(hashtagId) => setSiteNotices((current) => current.map((notice) => notice.hashtagIds.includes(hashtagId) ? { ...notice, hashtagIds: notice.hashtagIds.filter((id) => id !== hashtagId) } : notice))} onImportOfferings={setOfferings} onUploadDocument={(document) => setSiteDocuments((current) => [document, ...current])} onCreatePost={(notice) => setSiteNotices((current) => [notice, ...current])} />
 
   return (
     <>
       <a className="skip-link" href="#conteudo">Pular para o conteúdo</a>
       <header className="topbar" id="top">
         <button className="brand-button" type="button" onClick={goHome} aria-label="CARB — voltar aos avisos" title="Voltar aos avisos"><img src="/logo-carb.png" alt="" aria-hidden="true" /></button>
-        <div className="search-box" id="site-search"><img src="/icons/busca-24.png" alt="" aria-hidden="true" /><label className="sr-only" htmlFor="search">Buscar em {labels[tab]}</label><input id="search" type="search" value={query} onChange={(event) => setQuery(event.target.value)} placeholder={`Buscar em ${labels[tab].toLocaleLowerCase('pt-BR')}`} />{query && <button className="search-clear" type="button" aria-label="Limpar busca" onClick={() => setQuery('')}>×</button>}</div>
+        <div className="search-box" id="site-search"><img src="/icons/busca-24.png" alt="" aria-hidden="true" /><Label className="sr-only" htmlFor="search">Buscar em {labels[tab]}</Label><Input id="search" type="search" value={query} onChange={(event) => setQuery(event.target.value)} placeholder={`Buscar em ${labels[tab].toLocaleLowerCase('pt-BR')}`} />{query && <button className="search-clear" type="button" aria-label="Limpar busca" onClick={() => setQuery('')}>×</button>}</div>
         <div className="menu-wrap" ref={menuRef}>
           <button ref={menuButtonRef} className="menu-button" type="button" aria-label={menuOpen ? 'Fechar menu principal' : 'Abrir menu principal'} aria-expanded={menuOpen} aria-controls="main-menu" onClick={() => setMenuOpen((current) => !current)}><span /><span /><span /></button>
           <nav className="main-menu" id="main-menu" aria-label="Navegação principal" hidden={!menuOpen}>
             {NAVIGATION.map((item) => <button key={item.tab} className={tab === item.tab ? 'menu-item active' : 'menu-item'} aria-current={tab === item.tab ? 'page' : undefined} onClick={() => changeTab(item.tab)}><img src={item.icon} alt="" aria-hidden="true" /><span>{item.label}</span></button>)}
+            <Separator />
             <button className="menu-item" type="button" aria-label={theme === 'dark' ? 'Usar tema claro' : 'Usar tema escuro'} aria-pressed={theme === 'light'} onClick={() => setTheme((current) => current === 'dark' ? 'light' : 'dark')}><span className="theme-symbol" aria-hidden="true">{theme === 'dark' ? '☼' : '◐'}</span><span>{theme === 'dark' ? 'Modo claro' : 'Modo escuro'}</span></button>
           </nav>
         </div>
@@ -779,24 +792,20 @@ export default function App() {
             <div className="feed-layout">
               <section className="feed-filters" aria-label="Filtros de publicações">
                 <div className="profile-chips" aria-label="Filtrar pelo perfil autor">
-                  <button className={!profileFilter ? 'filter-chip active' : 'filter-chip'} type="button" aria-pressed={!profileFilter} onClick={() => { selectProfile(''); setTagMenuProfile('') }}>Todos os perfis</button>
-                  {profiles.map((profile) => <button key={profile.handle} className={profileFilter === profile.handle ? 'filter-chip active' : 'filter-chip'} type="button" aria-pressed={profileFilter === profile.handle} aria-expanded={tagMenuProfile === profile.handle} aria-controls={`tags-${profile.handle}`} onClick={() => { selectProfile(profile.handle); setTagMenuProfile((current) => current === profile.handle ? '' : profile.handle) }}>@{profile.handle} <span aria-hidden="true">⌄</span></button>)}
+                  <button className={!profileFilter ? 'filter-chip active' : 'filter-chip'} type="button" aria-pressed={!profileFilter} onClick={() => selectProfile('')}>Todos os perfis</button>
+                  {profiles.map((profile) => <button key={profile.handle} className={profileFilter === profile.handle ? 'filter-chip active' : 'filter-chip'} type="button" aria-pressed={profileFilter === profile.handle} onClick={() => selectProfile(profile.handle)}>@{profile.handle}</button>)}
                 </div>
-                {tagMenuProfile && <div className="profile-tag-dropdown" id={`tags-${tagMenuProfile}`} aria-label={`Tags de @${tagMenuProfile}`}>
-                  <strong>Tags de @{tagMenuProfile}</strong>
-                  <div className="tag-filters">
-                    <button className={!tagFilter ? 'tag-chip tag-gray active' : 'tag-chip tag-gray'} type="button" aria-pressed={!tagFilter} onClick={() => { setTagFilter(''); setTagMenuProfile('') }}>Todas</button>
-                    {availableTags.map((tag) => <TagChip key={tag.id} tag={tag} active={tagFilter === tag.id} onClick={() => { setTagFilter(tag.id); setProfileFilter(tag.profile); setTagMenuProfile(''); setLimit(6) }} />)}
-                  </div>
-                  {!availableTags.length && <small>Nenhuma tag disponível para este perfil.</small>}
-                </div>}
-                {(profileFilter || tagFilter || query) && <div className="active-filters"><span>Filtros ativos:</span>{profileFilter && <button type="button" onClick={() => { selectProfile(''); setTagMenuProfile('') }}>@{profileFilter} ×</button>}{tagFilter && <button type="button" onClick={() => setTagFilter('')}>{siteTags.find((tag) => tag.id === tagFilter)?.name} ×</button>}{query && <button type="button" onClick={() => setQuery('')}>Busca: “{query}” ×</button>}</div>}
+                <div className="hashtag-filters" aria-label="Filtrar por hashtag temática">
+                  <button className={!hashtagFilter ? 'filter-chip active' : 'filter-chip'} type="button" aria-pressed={!hashtagFilter} onClick={() => { setHashtagFilter(''); setLimit(6) }}>Todas as hashtags</button>
+                  {siteHashtags.map((hashtag) => <HashtagChip key={hashtag.id} hashtag={hashtag} active={hashtagFilter === hashtag.id} onClick={() => { setHashtagFilter(hashtag.id); setLimit(6) }} />)}
+                </div>
+                {(profileFilter || hashtagFilter || query) && <div className="active-filters"><span>Filtros ativos:</span>{profileFilter && <button type="button" onClick={() => selectProfile('')}>@{profileFilter} ×</button>}{hashtagFilter && <button type="button" onClick={() => setHashtagFilter('')}>#{siteHashtags.find((hashtag) => hashtag.id === hashtagFilter)?.name} ×</button>}{query && <button type="button" onClick={() => setQuery('')}>Busca: “{query}” ×</button>}</div>}
               </section>
               <div className="feed">
                 {filteredNotices.length ? filteredNotices.slice(0, limit).map((notice) => {
                   const profile = profiles.find((item) => item.handle === notice.author) || profiles[0]
-                  return <NoticeCard key={notice.id} notice={notice} profile={profile} tags={siteTags.filter((tag) => notice.tagIds.includes(tag.id))} reaction={reactions[notice.id]} onReact={(choice) => react(notice.id, choice)} onProfile={() => selectProfile(profile.handle)} onTag={(tagId) => { setTagFilter(tagId); setProfileFilter(profile.handle) }} />
-                }) : <p className="empty" role="status">Nenhum aviso corresponde à busca.</p>}
+                  return <NoticeCard key={notice.id} notice={notice} profile={profile} hashtags={siteHashtags.filter((hashtag) => notice.hashtagIds.includes(hashtag.id))} reaction={reactions[notice.id]} onReact={(choice) => react(notice.id, choice)} onProfile={() => selectProfile(profile.handle)} onHashtag={(hashtagId) => { setHashtagFilter(hashtagId); setLimit(6) }} />
+                }) : <p className="empty" role="status">Nenhum aviso corresponde aos filtros ativos.</p>}
                 {limit < filteredNotices.length && <button className="load-more" type="button" onClick={() => setLimit((value) => value + 3)}>Carregar mais</button>}
               </div>
             </div>
@@ -806,7 +815,7 @@ export default function App() {
         {tab === 'sistemas' && (
           <section className="content-section" aria-labelledby="systems-title">
             <div className="section-heading"><p className="eyebrow">Atalhos públicos</p><h1 id="systems-title">Sistemas</h1><p>Links externos curados; nenhuma credencial é solicitada pelo portal.</p></div>
-            <div className="system-grid">{filteredSystems.map((system) => <article className="card system-card" key={system.id}><h2>{system.name}</h2><p>{system.description}</p><a className="primary" href={system.url} target="_blank" rel="noopener noreferrer" aria-label={`Abrir ${system.name} em nova aba`}>Abrir</a></article>)}</div>
+            <div className="system-grid">{filteredSystems.map((system) => <article key={system.id}><Card className="card system-card gap-0 py-0"><h2>{system.name}</h2><p>{system.description}</p><Button asChild className="primary"><a href={system.url} target="_blank" rel="noopener noreferrer" aria-label={`Abrir ${system.name} em nova aba`}>Abrir</a></Button></Card></article>)}</div>
             {!filteredSystems.length && <p className="empty" role="status">Nenhum sistema corresponde à busca.</p>}
           </section>
         )}
@@ -816,7 +825,7 @@ export default function App() {
         {tab === 'acervo' && (
           <section className="content-section" aria-labelledby="documents-title">
             <div className="section-heading"><p className="eyebrow">Acervo documental do CARB</p><h1 id="documents-title">Documentos</h1><p>Consulte a descrição e baixe o arquivo disponível.</p></div>
-            <div className="document-grid">{filteredDocuments.map((document) => <article className="document-card" key={document.id}><p className="eyebrow">{document.updatedAt}</p><h2>{document.title}</h2><p>{document.description}</p><a className="primary" href={document.file} download aria-label={`Baixar ${document.title}`}>Baixar</a></article>)}</div>
+            <div className="document-grid">{filteredDocuments.map((document) => <article key={document.id}><Card className="document-card gap-0 py-0"><p className="eyebrow">{document.updatedAt}</p><h2>{document.title}</h2><p>{document.description}</p><Button asChild className="primary"><a href={document.file} download aria-label={`Baixar ${document.title}`}>Baixar</a></Button></Card></article>)}</div>
             {!filteredDocuments.length && <p className="empty" role="status">Nenhum documento corresponde à busca.</p>}
           </section>
         )}

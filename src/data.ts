@@ -14,13 +14,14 @@ export type Profile = {
   avatarPosition: string
 }
 
-export type TagColor = 'blue' | 'green' | 'gold' | 'violet' | 'red' | 'gray'
+export type HashtagColor = 'blue' | 'green' | 'gold' | 'violet' | 'red' | 'gray'
 
-export type Tag = {
+export type Hashtag = {
   id: string
-  profile: string
   name: string
-  color: TagColor
+  slug: string
+  color: HashtagColor
+  active: boolean
 }
 
 export type Notice = {
@@ -32,7 +33,7 @@ export type Notice = {
   date: string
   state: 'publicado'
   author: string
-  tagIds: string[]
+  hashtagIds: string[]
   base: ReactionCounts
 }
 
@@ -61,30 +62,30 @@ export const profiles: Profile[] = [
   { handle: 'vagas', name: 'Vagas', shortName: 'VG', bio: 'Estágio, emprego, concurso e monitoria.', avatar: '/og.png', avatarPosition: '51% 76%' },
 ]
 
-export const tags: Tag[] = [
-  { id: 'carb-comunidade', profile: 'carb', name: 'Comunidade', color: 'blue' },
-  { id: 'carb-diretoria-academica', profile: 'carb', name: 'Diretoria Acadêmica', color: 'green' },
-  { id: 'carb-comunicacao', profile: 'carb', name: 'Comunicação', color: 'gold' },
-  { id: 'fdufba-academico', profile: 'fdufba', name: 'Acadêmico', color: 'blue' },
-  { id: 'ufba-calendario', profile: 'ufba', name: 'Calendário', color: 'violet' },
-  { id: 'extensoes-atividades', profile: 'extensoes', name: 'Atividades de extensão', color: 'green' },
-  { id: 'pesquisa-atividades', profile: 'pesquisa', name: 'Atividades de pesquisa', color: 'violet' },
-  { id: 'vagas-estagio', profile: 'vagas', name: 'Estágio', color: 'blue' },
-  { id: 'vagas-clt', profile: 'vagas', name: 'CLT', color: 'green' },
-  { id: 'vagas-concurso', profile: 'vagas', name: 'Concurso', color: 'gold' },
-  { id: 'vagas-monitoria', profile: 'vagas', name: 'Monitoria', color: 'violet' },
+export const hashtags: Hashtag[] = [
+  { id: 'hashtag-comunidade', name: 'Comunidade', slug: 'comunidade', color: 'blue', active: true },
+  { id: 'hashtag-matricula', name: 'Matrícula', slug: 'matricula', color: 'green', active: true },
+  { id: 'hashtag-comunicacao', name: 'Comunicação', slug: 'comunicacao', color: 'gold', active: true },
+  { id: 'hashtag-infraestrutura', name: 'Infraestrutura', slug: 'infraestrutura', color: 'gray', active: true },
+  { id: 'hashtag-extensao', name: 'Extensão', slug: 'extensao', color: 'green', active: true },
+  { id: 'hashtag-pesquisa', name: 'Pesquisa', slug: 'pesquisa', color: 'violet', active: true },
+  { id: 'hashtag-calendario', name: 'Calendário', slug: 'calendario', color: 'violet', active: true },
+  { id: 'hashtag-estagio', name: 'Estágio', slug: 'estagio', color: 'blue', active: true },
+  { id: 'hashtag-clt', name: 'CLT', slug: 'clt', color: 'green', active: true },
+  { id: 'hashtag-concurso', name: 'Concurso', slug: 'concurso', color: 'gold', active: true },
+  { id: 'hashtag-monitoria', name: 'Monitoria', slug: 'monitoria', color: 'red', active: true },
 ]
 
 // ponytail: conteúdo demonstrativo migra para a fonte editorial quando houver backend homologado.
 export const notices: Notice[] = [
-  { id: 'a1', title: 'Semana de acolhimento', text: 'Confira a programação sintética de recepção e os espaços de convivência do campus.', media: { src: '/og.png', alt: 'Identidade visual do portal CARB com quatro retratos da comunidade acadêmica.' }, category: 'Comunidade', date: '25 ago. 2026', state: 'publicado', author: 'carb', tagIds: ['carb-comunidade'], base: { heart: 18, point: 11, skull: 2, dance: 7 } },
-  { id: 'a2', title: 'Prazo para ajuste de matrícula', text: 'O período demonstrativo de ajuste termina na sexta-feira, às 18h.', category: 'Acadêmico', date: '24 ago. 2026', state: 'publicado', author: 'carb', tagIds: ['carb-diretoria-academica'], base: { heart: 31, point: 23, skull: 4, dance: 3 } },
-  { id: 'a3', title: 'Manutenção na biblioteca', text: 'A sala de estudos do primeiro andar ficará fechada durante a manhã para manutenção.', category: 'Infraestrutura', date: '22 ago. 2026', state: 'publicado', author: 'carb', tagIds: ['carb-comunicacao'], base: { heart: 7, point: 12, skull: 6, dance: 1 } },
-  { id: 'a4', title: 'Oficina de pesquisa jurídica', text: 'Atividade fictícia sobre busca de jurisprudência, com inscrição gratuita.', category: 'Extensão', date: '20 ago. 2026', state: 'publicado', author: 'extensoes', tagIds: ['extensoes-atividades'], base: { heart: 24, point: 15, skull: 1, dance: 10 } },
-  { id: 'a5', title: 'Atualização do calendário', text: 'Uma versão revisada do calendário acadêmico de demonstração está disponível.', category: 'Acadêmico', date: '18 ago. 2026', state: 'publicado', author: 'carb', tagIds: ['carb-diretoria-academica'], base: { heart: 15, point: 19, skull: 3, dance: 2 } },
-  { id: 'a6', title: 'Encontro de grupos de estudo', text: 'Grupos fictícios apresentarão suas linhas de pesquisa no auditório principal.', category: 'Pesquisa', date: '16 ago. 2026', state: 'publicado', author: 'pesquisa', tagIds: ['pesquisa-atividades'], base: { heart: 12, point: 9, skull: 0, dance: 6 } },
-  { id: 'a7', title: 'Plantão de dúvidas do semestre', text: 'Atendimento coletivo simulado para dúvidas sobre componentes e horários.', category: 'Acadêmico', date: '14 ago. 2026', state: 'publicado', author: 'carb', tagIds: ['carb-diretoria-academica'], base: { heart: 20, point: 16, skull: 2, dance: 4 } },
-  { id: 'a8', title: 'Feira de projetos estudantis', text: 'Exposição fictícia de iniciativas desenvolvidas pela comunidade acadêmica.', category: 'Comunidade', date: '12 ago. 2026', state: 'publicado', author: 'extensoes', tagIds: ['extensoes-atividades'], base: { heart: 27, point: 18, skull: 1, dance: 13 } },
+  { id: 'a1', title: 'Semana de acolhimento', text: 'Confira a programação sintética de recepção e os espaços de convivência do campus.', media: { src: '/og.png', alt: 'Identidade visual do portal CARB com quatro retratos da comunidade acadêmica.' }, category: 'Comunidade', date: '25 ago. 2026', state: 'publicado', author: 'carb', hashtagIds: ['hashtag-comunidade'], base: { heart: 18, point: 11, skull: 2, dance: 7 } },
+  { id: 'a2', title: 'Prazo para ajuste de matrícula', text: 'O período demonstrativo de ajuste termina na sexta-feira, às 18h.', category: 'Acadêmico', date: '24 ago. 2026', state: 'publicado', author: 'carb', hashtagIds: ['hashtag-matricula', 'hashtag-calendario'], base: { heart: 31, point: 23, skull: 4, dance: 3 } },
+  { id: 'a3', title: 'Manutenção na biblioteca', text: 'A sala de estudos do primeiro andar ficará fechada durante a manhã para manutenção.', category: 'Infraestrutura', date: '22 ago. 2026', state: 'publicado', author: 'carb', hashtagIds: ['hashtag-infraestrutura', 'hashtag-comunicacao'], base: { heart: 7, point: 12, skull: 6, dance: 1 } },
+  { id: 'a4', title: 'Oficina de pesquisa jurídica', text: 'Atividade fictícia sobre busca de jurisprudência, com inscrição gratuita.', category: 'Extensão', date: '20 ago. 2026', state: 'publicado', author: 'extensoes', hashtagIds: ['hashtag-extensao', 'hashtag-pesquisa'], base: { heart: 24, point: 15, skull: 1, dance: 10 } },
+  { id: 'a5', title: 'Atualização do calendário', text: 'Uma versão revisada do calendário acadêmico de demonstração está disponível.', category: 'Acadêmico', date: '18 ago. 2026', state: 'publicado', author: 'carb', hashtagIds: ['hashtag-calendario', 'hashtag-matricula'], base: { heart: 15, point: 19, skull: 3, dance: 2 } },
+  { id: 'a6', title: 'Encontro de grupos de estudo', text: 'Grupos fictícios apresentarão suas linhas de pesquisa no auditório principal.', category: 'Pesquisa', date: '16 ago. 2026', state: 'publicado', author: 'pesquisa', hashtagIds: ['hashtag-pesquisa'], base: { heart: 12, point: 9, skull: 0, dance: 6 } },
+  { id: 'a7', title: 'Plantão de dúvidas do semestre', text: 'Atendimento coletivo simulado para dúvidas sobre componentes e horários.', category: 'Acadêmico', date: '14 ago. 2026', state: 'publicado', author: 'carb', hashtagIds: ['hashtag-matricula'], base: { heart: 20, point: 16, skull: 2, dance: 4 } },
+  { id: 'a8', title: 'Feira de projetos estudantis', text: 'Exposição fictícia de iniciativas desenvolvidas pela comunidade acadêmica.', category: 'Comunidade', date: '12 ago. 2026', state: 'publicado', author: 'extensoes', hashtagIds: ['hashtag-comunidade', 'hashtag-extensao'], base: { heart: 27, point: 18, skull: 1, dance: 13 } },
 ]
 
 export const systems: SystemLink[] = [
