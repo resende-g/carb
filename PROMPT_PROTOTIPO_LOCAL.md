@@ -17,7 +17,9 @@ Esta seção registra o estado implementado na branch `v1.2` e prevalece sobre o
 - O perfil permanece como autor público agregador; a hashtag não representa autor, organização, usuário, conta ou permissão.
 - O catálogo canônico possui ID estável, nome, slug previsível, cor e estado ativo. Publicações guardam somente `hashtagIds` deduplicados e podem ter várias hashtags.
 - Nome e slug são validados sem diferenciar maiúsculas/minúsculas. Hashtags inativas não aparecem para novas associações, mas continuam visíveis em publicações históricas.
-- Busca textual, perfil autor e uma hashtag filtram simultaneamente no grão da publicação. Cor é acompanhada por `#` e nome textual.
+- No desktop, `Quem publica` lista até os 5 autores distintos mais recentes; abaixo, `Top trends` mostra as 5 hashtags mais frequentes nos 10 avisos mais recentes, contando cada hashtag no máximo uma vez por publicação.
+- As tendências são informativas. Somente o clique em uma hashtag dentro de um aviso preenche a busca com `#Nome`; a própria busca indica e permite limpar o filtro.
+- No mobile não há painel de perfis, tendências ou chips auxiliares: permanece apenas o feed, e o clique em uma hashtag do aviso atualiza a busca visível.
 - Criação, edição, ativação, desativação, desassociação e exclusão pelo painel continuam limitadas à sessão; exclusão informa a quantidade de publicações afetadas e exige confirmação.
 
 ### Documentação e limites

@@ -42,13 +42,13 @@ Os exports auxiliares não utilizados de `Button` e `Badge` foram removidos para
 
 Permanece em `src/styles.css` porque ainda possui consumidores verificados:
 
-- estrutura do cabeçalho, menu, feed e painel demonstrativo;
+- estrutura do cabeçalho, menu, feed, barra lateral desktop e painel demonstrativo;
 - perfis, avisos, mídia e reações;
 - Montador de grade, tabela semanal, visualização mobile, trajetória e impressão;
 - grids e densidade de Sistemas e Acervo;
 - temas claro/escuro e media queries responsivas.
 
-Foram removidas apenas regras sem consumidores após a migração: dropdown de tags por perfil, cores `.tag-*` e seletores administrativos `.tag-*`. A próxima remoção deve ocorrer por componente, com busca de consumidores, teste e comparação visual.
+Foram removidas regras sem consumidores após a migração: dropdown de tags por perfil, filtros superiores antigos, cores `.tag-*` e seletores administrativos `.tag-*`. No desktop, a barra lateral contém `Quem publica` e `Top trends`; no mobile, ela é removida por completo. A próxima remoção deve ocorrer por componente, com busca de consumidores, teste e comparação visual.
 
 ## Limites
 

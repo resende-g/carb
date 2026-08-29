@@ -8,7 +8,7 @@ import { Input } from './components/ui/input'
 import { Label } from './components/ui/label'
 import { Separator } from './components/ui/separator'
 import { documents, hashtags as initialHashtags, notices, profiles as initialProfiles, systems, type DocumentItem, type Hashtag, type HashtagColor, type Notice, type Profile, type ReactionCounts } from './data'
-import { filterNotices, removeHashtag } from './feed'
+import { filterNotices, recentPostingProfiles, removeHashtag, trendingHashtags } from './feed'
 import { activeHashtags, hashtagSlug, normalizeHashtagName, uniqueHashtagIds } from './hashtags'
 import { meetingLabel, selectionIssue, TIME_ROWS, type ClassOffering, type SelectionIssue, type Semester, type Shift } from './planner'
 
@@ -478,16 +478,14 @@ function ReactionButtons({ notice, reaction, onReact }: { notice: Notice; reacti
   )
 }
 
-function NoticeCard({ notice, profile, hashtags, reaction, onReact, onProfile, onHashtag }: { notice: Notice; profile: Profile; hashtags: Hashtag[]; reaction?: Reaction; onReact: (reaction: Reaction) => void; onProfile: () => void; onHashtag: (hashtagId: string) => void }) {
+function NoticeCard({ notice, profile, hashtags, reaction, onReact, onProfile, onHashtag }: { notice: Notice; profile: Profile; hashtags: Hashtag[]; reaction?: Reaction; onReact: (reaction: Reaction) => void; onProfile?: () => void; onHashtag: (hashtag: Hashtag) => void }) {
+  const profileContent = <><Avatar profile={profile} /><span><strong>{profile.name}</strong><small>@{profile.handle} · {notice.date}</small></span></>
   return (
     <article id={`aviso-${notice.id}`}>
       <Card className="card notice-card gap-0 py-0">
-        <button className="profile-link" type="button" onClick={onProfile}>
-          <Avatar profile={profile} />
-          <span><strong>{profile.name}</strong><small>@{profile.handle} · {notice.date}</small></span>
-        </button>
+        {onProfile ? <button className="profile-link" type="button" onClick={onProfile}>{profileContent}</button> : <div className="profile-link">{profileContent}</div>}
         <div className="meta"><span>{notice.category}</span><span>{notice.state}</span></div>
-        <div className="notice-hashtags">{hashtags.map((hashtag) => <HashtagChip key={hashtag.id} hashtag={hashtag} onClick={() => onHashtag(hashtag.id)} />)}</div>
+        <div className="notice-hashtags">{hashtags.map((hashtag) => <HashtagChip key={hashtag.id} hashtag={hashtag} onClick={() => onHashtag(hashtag)} />)}</div>
         <h2>{notice.title}</h2>
         <p>{notice.text}</p>
         {notice.media && <img className="notice-media" src={notice.media.src} alt={notice.media.alt} loading="lazy" />}
@@ -687,7 +685,7 @@ export default function App() {
   const [menuOpen, setMenuOpen] = useState(false)
   const [limit, setLimit] = useState(6)
   const [profileFilter, setProfileFilter] = useState('')
-  const [hashtagFilter, setHashtagFilter] = useState('')
+  const [isMobile, setIsMobile] = useState(() => typeof window !== 'undefined' && window.matchMedia('(max-width: 760px)').matches)
   const [profiles, setProfiles] = useState(initialProfiles)
   const [siteHashtags, setSiteHashtags] = useState(initialHashtags)
   const [siteNotices, setSiteNotices] = useState(notices)
@@ -708,6 +706,17 @@ export default function App() {
     const route = () => setIsAdminRoute(adminPath())
     window.addEventListener('popstate', route)
     return () => window.removeEventListener('popstate', route)
+  }, [])
+
+  useEffect(() => {
+    const mobile = window.matchMedia('(max-width: 760px)')
+    const removeHiddenFilter = () => {
+      setIsMobile(mobile.matches)
+      if (mobile.matches) setProfileFilter('')
+    }
+    removeHiddenFilter()
+    mobile.addEventListener('change', removeHiddenFilter)
+    return () => mobile.removeEventListener('change', removeHiddenFilter)
   }, [])
 
   useEffect(() => {
@@ -747,14 +756,16 @@ export default function App() {
   const goHome = () => {
     changeTab('avisos')
     setProfileFilter('')
-    setHashtagFilter('')
   }
 
   const search = normalized(query)
-  const filteredNotices = filterNotices(siteNotices, profiles, siteHashtags, { query, profile: profileFilter, hashtag: hashtagFilter })
+  const filteredNotices = filterNotices(siteNotices, profiles, siteHashtags, { query, profile: profileFilter })
   const filteredSystems = systems.filter((system) => !search || [system.name, system.description, system.category].some((value) => value.toLocaleLowerCase('pt-BR').includes(search)))
   const filteredDocuments = siteDocuments.filter((document) => !search || [document.title, document.description, document.updatedAt].some((value) => value.toLocaleLowerCase('pt-BR').includes(search)))
   const activeProfile = profiles.find((profile) => profile.handle === profileFilter)
+  const recentProfiles = recentPostingProfiles(siteNotices, profiles)
+  const trends = trendingHashtags(siteNotices, siteHashtags)
+  const trendWindow = Math.min(10, siteNotices.length)
   const updateProfileAvatar = (handle: string, avatar: string) => setProfiles((current) => current.map((profile) => profile.handle === handle ? { ...profile, avatar, avatarPosition: 'center' } : profile))
   const selectProfile = (handle: string) => {
     setProfileFilter(handle)
@@ -764,7 +775,6 @@ export default function App() {
     const next = removeHashtag(siteHashtags, siteNotices, hashtagId)
     setSiteHashtags(next.hashtags)
     setSiteNotices(next.notices)
-    if (hashtagFilter === hashtagId) setHashtagFilter('')
   }
 
   if (isAdminRoute) return <AdminPage profiles={profiles} hashtags={siteHashtags} notices={siteNotices} theme={theme} onExit={() => { history.pushState({}, '', '/'); setIsAdminRoute(false) }} onToggleTheme={() => setTheme((current) => current === 'dark' ? 'light' : 'dark')} onChangeAvatar={updateProfileAvatar} onCreateProfile={(profile) => setProfiles((current) => [...current, profile])} onCreateHashtag={(hashtag) => setSiteHashtags((current) => [...current, hashtag])} onUpdateHashtag={(hashtag) => setSiteHashtags((current) => current.map((item) => item.id === hashtag.id ? hashtag : item))} onDeleteHashtag={deleteSiteHashtag} onDetachHashtag={(hashtagId) => setSiteNotices((current) => current.map((notice) => notice.hashtagIds.includes(hashtagId) ? { ...notice, hashtagIds: notice.hashtagIds.filter((id) => id !== hashtagId) } : notice))} onImportOfferings={setOfferings} onUploadDocument={(document) => setSiteDocuments((current) => [document, ...current])} onCreatePost={(notice) => setSiteNotices((current) => [notice, ...current])} />
@@ -790,24 +800,27 @@ export default function App() {
           <section className="content-section" aria-labelledby="notices-title">
             <div className="section-heading notices-heading"><h1 id="notices-title">{activeProfile ? activeProfile.name : 'Avisos'}</h1><p>{activeProfile ? `@${activeProfile.handle} · ${activeProfile.bio}` : 'Publicações da Faculdade de Direito da UFBA em um só lugar.'}</p></div>
             <div className="feed-layout">
-              <section className="feed-filters" aria-label="Filtros de publicações">
-                <div className="profile-chips" aria-label="Filtrar pelo perfil autor">
-                  <button className={!profileFilter ? 'filter-chip active' : 'filter-chip'} type="button" aria-pressed={!profileFilter} onClick={() => selectProfile('')}>Todos os perfis</button>
-                  {profiles.map((profile) => <button key={profile.handle} className={profileFilter === profile.handle ? 'filter-chip active' : 'filter-chip'} type="button" aria-pressed={profileFilter === profile.handle} onClick={() => selectProfile(profile.handle)}>@{profile.handle}</button>)}
-                </div>
-                <div className="hashtag-filters" aria-label="Filtrar por hashtag temática">
-                  <button className={!hashtagFilter ? 'filter-chip active' : 'filter-chip'} type="button" aria-pressed={!hashtagFilter} onClick={() => { setHashtagFilter(''); setLimit(6) }}>Todas as hashtags</button>
-                  {siteHashtags.map((hashtag) => <HashtagChip key={hashtag.id} hashtag={hashtag} active={hashtagFilter === hashtag.id} onClick={() => { setHashtagFilter(hashtag.id); setLimit(6) }} />)}
-                </div>
-                {(profileFilter || hashtagFilter || query) && <div className="active-filters"><span>Filtros ativos:</span>{profileFilter && <button type="button" onClick={() => selectProfile('')}>@{profileFilter} ×</button>}{hashtagFilter && <button type="button" onClick={() => setHashtagFilter('')}>#{siteHashtags.find((hashtag) => hashtag.id === hashtagFilter)?.name} ×</button>}{query && <button type="button" onClick={() => setQuery('')}>Busca: “{query}” ×</button>}</div>}
-              </section>
               <div className="feed">
                 {filteredNotices.length ? filteredNotices.slice(0, limit).map((notice) => {
                   const profile = profiles.find((item) => item.handle === notice.author) || profiles[0]
-                  return <NoticeCard key={notice.id} notice={notice} profile={profile} hashtags={siteHashtags.filter((hashtag) => notice.hashtagIds.includes(hashtag.id))} reaction={reactions[notice.id]} onReact={(choice) => react(notice.id, choice)} onProfile={() => selectProfile(profile.handle)} onHashtag={(hashtagId) => { setHashtagFilter(hashtagId); setLimit(6) }} />
+                  return <NoticeCard key={notice.id} notice={notice} profile={profile} hashtags={siteHashtags.filter((hashtag) => notice.hashtagIds.includes(hashtag.id))} reaction={reactions[notice.id]} onReact={(choice) => react(notice.id, choice)} onProfile={isMobile ? undefined : () => selectProfile(profile.handle)} onHashtag={(hashtag) => { setQuery(`#${hashtag.name}`); setLimit(6); window.scrollTo({ top: 0 }) }} />
                 }) : <p className="empty" role="status">Nenhum aviso corresponde aos filtros ativos.</p>}
                 {limit < filteredNotices.length && <button className="load-more" type="button" onClick={() => setLimit((value) => value + 3)}>Carregar mais</button>}
               </div>
+              <aside className="feed-sidebar" aria-label="Filtros e tendências dos avisos">
+                <section className="profiles-panel" aria-labelledby="profiles-title">
+                  <p className="eyebrow">Perfis institucionais</p>
+                  <h2 id="profiles-title">Quem publica</h2>
+                  <p className="panel-note">Até 5 perfis que publicaram mais recentemente.</p>
+                  {recentProfiles.map((profile) => <div className="profile-row" key={profile.handle}><button className={profileFilter === profile.handle ? 'profile-select active' : 'profile-select'} type="button" aria-pressed={profileFilter === profile.handle} onClick={() => selectProfile(profileFilter === profile.handle ? '' : profile.handle)}><Avatar profile={profile} /><span><strong>{profile.name}</strong><small>@{profile.handle}</small></span></button></div>)}
+                </section>
+                <section className="trends-panel" aria-labelledby="trends-title">
+                  <p className="eyebrow">Tópicos recentes</p>
+                  <h2 id="trends-title">Top trends</h2>
+                  <p className="panel-note">5 hashtags mais usadas em {trendWindow} avisos recentes.</p>
+                  <ol className="trend-list">{trends.map(({ hashtag, count }) => <li key={hashtag.id}><HashtagChip hashtag={hashtag} /><small>{count} {count === 1 ? 'aviso' : 'avisos'}</small></li>)}</ol>
+                </section>
+              </aside>
             </div>
           </section>
         )}

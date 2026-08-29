@@ -25,7 +25,11 @@ O catálogo fica em `src/data.ts`. Funções puras de normalização, resoluçã
 - hashtags inativas continuam resolvidas e exibidas em publicações históricas;
 - exclusão informa quantas publicações serão afetadas, pede confirmação e remove as associações na mesma transição;
 - `#` e o nome aparecem sempre, portanto a cor não é o único identificador;
-- texto, perfil e uma hashtag podem filtrar o mesmo conjunto de publicações simultaneamente.
+- no desktop, `Quem publica` oferece até os 5 autores distintos mais recentes como filtro;
+- `Top trends` mostra, sem ação de filtro, as 5 hashtags presentes no maior número de publicações entre os 10 avisos mais recentes;
+- cada hashtag conta no máximo uma vez por publicação; empates preservam a ordem da ocorrência mais recente;
+- o filtro por hashtag só nasce do clique em uma hashtag dentro de um aviso: a ação preenche a busca com `#Nome`;
+- no mobile não existem painéis de perfis ou tendências; o clique no aviso continua usando a busca visível como indicador do filtro.
 
 ## Cadastro local
 

@@ -14,6 +14,8 @@
 
 - Tags pertencentes a perfis foram migradas para hashtags temáticas independentes da autoria.
 - Busca, cartões de avisos, Sistemas e Acervo passaram a reutilizar componentes da nova base visual.
+- O filtro desktop `Quem publica` passou a listar até os 5 autores distintos mais recentes; `Top trends` exibe as 5 hashtags mais usadas nos 10 avisos mais recentes, sem botão de filtro.
+- Hashtags dos avisos agora preenchem a busca ao serem clicadas; painéis de perfil e tendências permanecem ausentes no mobile.
 - CSS nativo continua coexistindo com Tailwind durante a migração incremental.
 
 ### Limitações

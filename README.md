@@ -32,11 +32,12 @@ npm run build
 - migração incremental de busca, botões, cartões, separador e chips, mantendo CSS nativo onde ele ainda é utilizado;
 - catálogo global de hashtags temáticas com `id`, nome, slug previsível, cor e estado ativo;
 - publicações com múltiplos `hashtagIds`, sem duplicar o objeto completo e sem vincular hashtags ao perfil autor;
-- filtros combinados por texto, perfil autor e hashtag;
+- no desktop, `Quem publica` lista até os 5 autores distintos mais recentes e `Top trends` resume as 5 hashtags mais frequentes nos 10 avisos mais recentes;
+- clicar em uma hashtag de um aviso preenche a busca com `#Nome`; as tendências são apenas informativas e os dois painéis laterais não aparecem no mobile;
 - hashtags inativas indisponíveis para novas associações, mas preservadas no conteúdo histórico;
 - telas e recursos da v1.1 preservados: mídia nos avisos, menu acessível, Sistemas, Acervo e Montador de grade responsivo.
 
-A unidade filtrada continua sendo a publicação. Perfil representa autoria pública agregada; hashtag representa somente classificação temática.
+A unidade filtrada continua sendo a publicação. Perfil representa autoria pública agregada; hashtag representa somente classificação temática. Empates nas tendências são resolvidos pela ocorrência mais recente.
 
 ## Dados e limitações
 

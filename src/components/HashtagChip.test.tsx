@@ -10,9 +10,9 @@ describe('HashtagChip', () => {
     expect(html).toContain('aria-label="Hashtag Comunidade"')
   })
 
-  it('expõe o estado do filtro no botão', () => {
-    const html = renderToStaticMarkup(<HashtagChip hashtag={hashtags[0]} active onClick={() => undefined} />)
-    expect(html).toContain('aria-pressed="true"')
-    expect(html).toContain('aria-label="Filtrar por #Comunidade"')
+  it('expõe uma ação de pesquisa sem estado selecionável', () => {
+    const html = renderToStaticMarkup(<HashtagChip hashtag={hashtags[0]} onClick={() => undefined} />)
+    expect(html).not.toContain('aria-pressed')
+    expect(html).toContain('aria-label="Pesquisar #Comunidade"')
   })
 })
