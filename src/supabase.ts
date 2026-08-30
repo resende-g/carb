@@ -63,6 +63,7 @@ export async function loadPublicData(anonymousId: string) {
     bio: profile.description,
     avatar: profileAvatars[index] || '/og.png',
     avatarPosition: profileAvatars[index] ? 'center' : '30% 76%',
+    avatarSize: profileAvatars[index] ? 'cover' : undefined,
   }))
   const hashtags: Hashtag[] = hashtagRows
   const notices: Notice[] = postRows.map((post, index) => {

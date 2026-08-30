@@ -12,6 +12,7 @@ export type Profile = {
   bio: string
   avatar: string
   avatarPosition: string
+  avatarSize?: string
 }
 
 export type HashtagColor = 'blue' | 'green' | 'gold' | 'violet' | 'red' | 'gray'

@@ -2,14 +2,14 @@ import { FormEvent, useEffect, useMemo, useState } from 'react'
 import type { Session } from '@supabase/supabase-js'
 import { hashtagSlug, normalizeHashtagName } from '../hashtags'
 import { supabase, supabaseConfigured } from '../supabase'
-import { adminRoutes, canDecideOwnable, passwordIssue } from './rules'
+import { adminRoutes, avatarIssue, canDecideOwnable, passwordIssue } from './rules'
 
 type Role = 'EDITOR' | 'ADMIN' | 'SUPERADMIN'
 type Office = 'COMMUNICATION_DIRECTOR' | 'CARB_PRESIDENT' | 'TECHNICAL_CUSTODIAN' | 'STI_ADMIN'
 type Status = 'DRAFT' | 'PENDING_APPROVAL' | 'APPROVED' | 'PUBLISHED' | 'REJECTED' | 'REMOVAL_REQUESTED' | 'REMOVED'
 type Profile = { id: string; full_name: string; active: boolean }
 type Assignment = { id: string; user_id: string; role: Role; office: Office; active: boolean }
-type ContentProfile = { id: string; name: string; slug: string; description: string; active: boolean }
+type ContentProfile = { id: string; name: string; slug: string; avatar_path: string | null; description: string; active: boolean }
 type Permission = { user_id: string; content_profile_id: string; can_publish: boolean; active: boolean }
 type Hashtag = { id: string; name: string; slug: string; color: string; active: boolean }
 type Post = { id: string; content_profile_id: string; title: string; body: string; category: string; status: Status; created_by: string; rejection_reason: string | null; media_path: string | null; media_alt: string | null; media_mime_type: string | null; media_size_bytes: number | null; created_at: string }
@@ -116,7 +116,7 @@ async function loadContext(): Promise<Context> {
   const results = await Promise.all([
     supabase.from('profiles').select('id,full_name,active').order('full_name'),
     supabase.from('role_assignments').select('id,user_id,role,office,active').order('created_at'),
-    supabase.from('content_profiles').select('id,name,slug,description,active').order('name'),
+    supabase.from('content_profiles').select('id,name,slug,avatar_path,description,active').order('name'),
     supabase.from('content_profile_permissions').select('user_id,content_profile_id,can_publish,active'),
     supabase.from('hashtags').select('id,name,slug,color,active').order('name'),
     supabase.from('posts').select('id,content_profile_id,title,body,category,status,created_by,rejection_reason,media_path,media_alt,media_mime_type,media_size_bytes,created_at').order('created_at', { ascending: false }),
@@ -250,6 +250,7 @@ function ContentProfilesPage({ context, refresh }: { context: Context; refresh: 
   const [slug, setSlug] = useState('')
   const [description, setDescription] = useState('')
   const [message, setMessage] = useState('')
+  const [uploading, setUploading] = useState('')
   const create = async (event: FormEvent) => {
     event.preventDefault(); if (!supabase) return
     const { error } = await supabase.from('content_profiles').insert({ name: name.trim(), slug: slug.trim().toLowerCase(), description: description.trim() })
@@ -269,7 +270,24 @@ function ContentProfilesPage({ context, refresh }: { context: Context; refresh: 
     const { error } = await supabase.from('content_profiles').update({ active: !profile.active }).eq('id', profile.id)
     setMessage(error?.message || 'Perfil atualizado.'); if (!error) await refresh()
   }
-  return <section><div className="admin-page-heading"><div><p className="eyebrow">Identidades públicas</p><h1>Perfis de conteúdo</h1></div></div><section className="admin-card"><form className="admin-form" onSubmit={create}><label>Nome<input value={name} onChange={(event) => setName(event.target.value)} required /></label><label>Slug<input pattern="[a-z0-9]+(?:-[a-z0-9]+)*" value={slug} onChange={(event) => setSlug(event.target.value)} required /></label><label>Descrição<textarea maxLength={500} value={description} onChange={(event) => setDescription(event.target.value)} /></label><button className="primary">Criar perfil</button></form><ul className="admin-list">{context.contentProfiles.map((profile) => <li key={profile.id}><span><strong>{profile.name}</strong><small>@{profile.slug} · {profile.active ? 'ativo' : 'inativo'}</small></span><span className="row-actions"><button onClick={() => update(profile)}>Editar</button><button onClick={() => toggle(profile)}>{profile.active ? 'Desativar' : 'Reativar'}</button></span></li>)}</ul>{message && <p role="status">{message}</p>}</section></section>
+  const uploadAvatar = async (profile: ContentProfile, file: File) => {
+    if (!supabase) return
+    const issue = avatarIssue(file)
+    if (issue) return setMessage(issue)
+    const path = `profile-avatars/${profile.id}/${crypto.randomUUID()}-${safeFilename(file.name)}`
+    setUploading(profile.id); setMessage('Enviando foto…')
+    const upload = await supabase.storage.from('editorial-assets').upload(path, file, { contentType: file.type, cacheControl: '3600' })
+    if (upload.error) { setUploading(''); return setMessage(upload.error.message) }
+    const saved = await supabase.from('content_profiles').update({ avatar_path: path }).eq('id', profile.id)
+    if (saved.error) {
+      await supabase.storage.from('editorial-assets').remove([path])
+      setUploading(''); return setMessage(saved.error.message)
+    }
+    const cleanup = profile.avatar_path ? await supabase.storage.from('editorial-assets').remove([profile.avatar_path]) : null
+    setMessage(cleanup?.error ? 'Foto atualizada; a imagem anterior precisa de limpeza manual.' : 'Foto atualizada.')
+    setUploading(''); await refresh()
+  }
+  return <section><div className="admin-page-heading"><div><p className="eyebrow">Identidades públicas</p><h1>Perfis de conteúdo</h1></div></div><section className="admin-card"><form className="admin-form" onSubmit={create}><label>Nome<input value={name} onChange={(event) => setName(event.target.value)} required /></label><label>Slug<input pattern="[a-z0-9]+(?:-[a-z0-9]+)*" value={slug} onChange={(event) => setSlug(event.target.value)} required /></label><label>Descrição<textarea maxLength={500} value={description} onChange={(event) => setDescription(event.target.value)} /></label><button className="primary">Criar perfil</button></form><ul className="admin-list">{context.contentProfiles.map((profile) => <li key={profile.id}><span><strong>{profile.name}</strong><small>@{profile.slug} · {profile.active ? 'ativo' : 'inativo'} · {profile.avatar_path ? 'com foto' : 'sem foto'}</small></span><span className="row-actions"><label className="admin-file-button">{uploading === profile.id ? 'Enviando…' : 'Trocar foto'}<input type="file" accept="image/jpeg,image/png,image/webp,image/gif" disabled={Boolean(uploading)} onChange={(event) => { const file = event.target.files?.[0]; if (file) void uploadAvatar(profile, file); event.currentTarget.value = '' }} /></label><button onClick={() => update(profile)}>Editar</button><button onClick={() => toggle(profile)}>{profile.active ? 'Desativar' : 'Reativar'}</button></span></li>)}</ul>{message && <p role="status">{message}</p>}</section></section>
 }
 
 function DocumentsPage({ context, userId, refresh }: { context: Context; userId: string; refresh: () => Promise<void> }) {

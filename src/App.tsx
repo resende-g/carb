@@ -73,7 +73,7 @@ const semesterLabel = (value: Semester) => typeof value === 'number' ? `${value}
 
 function Avatar({ profile }: { profile: Profile }) {
   return (
-    <span className="avatar" aria-hidden="true" style={{ backgroundImage: `url(${profile.avatar})`, backgroundPosition: profile.avatarPosition }}>
+    <span className="avatar" aria-hidden="true" style={{ backgroundImage: `url(${profile.avatar})`, backgroundPosition: profile.avatarPosition, backgroundSize: profile.avatarSize }}>
       <span>{profile.shortName}</span>
     </span>
   )

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { adminRoutes, canDecideOwnable, passwordIssue } from './rules'
+import { adminRoutes, avatarIssue, canDecideOwnable, passwordIssue } from './rules'
 
 describe('regras visuais do painel', () => {
   it('não oferece decisão sobre conteúdo próprio', () => {
@@ -12,6 +12,12 @@ describe('regras visuais do painel', () => {
     expect(passwordIssue('fraca', 'fraca')).toContain('12 caracteres')
     expect(passwordIssue('Senha-Forte-123', 'diferente')).toContain('não coincidem')
     expect(passwordIssue('Senha-Forte-123', 'Senha-Forte-123')).toBe('')
+  })
+
+  it('aceita somente formatos e tamanho permitidos para avatar', () => {
+    expect(avatarIssue({ type: 'image/webp', size: 10 * 1024 * 1024 })).toBe('')
+    expect(avatarIssue({ type: 'image/svg+xml', size: 100 })).toContain('JPG')
+    expect(avatarIssue({ type: 'image/png', size: 10 * 1024 * 1024 + 1 })).toContain('10 MB')
   })
 
   it('expõe gestão de usuários somente à persona SUPERADMIN', () => {

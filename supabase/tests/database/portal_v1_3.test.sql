@@ -1,6 +1,6 @@
 begin;
 create extension if not exists pgtap with schema extensions;
-select plan(18);
+select plan(22);
 
 insert into auth.users (id, email) values
   ('30000000-0000-4000-8000-000000000010', 'sem-papel@example.invalid'),
@@ -58,6 +58,7 @@ set local "request.jwt.claims" = '{"sub":"30000000-0000-4000-8000-000000000012",
 select lives_ok($$select public.transition_post('32000000-0000-4000-8000-000000000011','APPROVED',null)$$, 'ADMIN aprova post de outra pessoa');
 select throws_ok($$select public.transition_post('32000000-0000-4000-8000-000000000012','APPROVED',null)$$, null, null, 'ADMIN não aprova o próprio post');
 select throws_ok($$select public.revoke_role('31000000-0000-4000-8000-000000000013')$$, null, null, 'ADMIN não revoga SUPERADMIN');
+select throws_ok($$insert into storage.objects (bucket_id,name,owner_id) values ('editorial-assets','profile-avatars/00000000-0000-4000-8000-000000000001/admin.png',(select auth.uid())::text)$$, null, null, 'ADMIN não envia avatar de perfil público');
 reset role;
 
 set local role anon;
@@ -65,7 +66,18 @@ select lives_ok($$select public.set_reaction('20000000-0000-4000-8000-0000000000
 reset role;
 
 set local role authenticated;
+set local "request.jwt.claims" = '{"sub":"30000000-0000-4000-8000-000000000011","role":"authenticated","aal":"aal2"}';
+select lives_ok($$select public.transition_post('20000000-0000-4000-8000-000000000001','REMOVAL_REQUESTED','Solicitação sintética válida.')$$, 'EDITOR solicita remoção de post importado sem autoria fabricada');
+reset role;
+
+set local role authenticated;
+set local "request.jwt.claims" = '{"sub":"30000000-0000-4000-8000-000000000012","role":"authenticated","aal":"aal2"}';
+select lives_ok($$select public.transition_post('20000000-0000-4000-8000-000000000001','REMOVED',null)$$, 'ADMIN conclui remoção de post importado sem autoria fabricada');
+reset role;
+
+set local role authenticated;
 set local "request.jwt.claims" = '{"sub":"30000000-0000-4000-8000-000000000013","role":"authenticated","aal":"aal2"}';
+select lives_ok($$insert into storage.objects (bucket_id,name,owner_id) values ('editorial-assets','profile-avatars/00000000-0000-4000-8000-000000000001/superadmin.png',(select auth.uid())::text)$$, 'SUPERADMIN com MFA envia avatar de perfil público');
 select throws_ok($$select public.revoke_role('31000000-0000-4000-8000-000000000013')$$, null, null, 'último SUPERADMIN ativo não pode ser revogado');
 select lives_ok($$select public.grant_role('30000000-0000-4000-8000-000000000014','SUPERADMIN','STI_ADMIN')$$, 'mais de um SUPERADMIN é permitido');
 select lives_ok($$select public.revoke_role('31000000-0000-4000-8000-000000000013')$$, 'SUPERADMIN anterior pode sair após a sucessão');

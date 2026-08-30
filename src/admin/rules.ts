@@ -6,6 +6,14 @@ export function passwordIssue(password: string, confirmation: string) {
   return ''
 }
 
+const avatarTypes = new Set(['image/jpeg', 'image/png', 'image/webp', 'image/gif'])
+
+export function avatarIssue(file: Pick<File, 'size' | 'type'>) {
+  if (!avatarTypes.has(file.type)) return 'Use uma imagem JPG, PNG, WEBP ou GIF.'
+  if (file.size > 10 * 1024 * 1024) return 'A imagem deve ter no máximo 10 MB.'
+  return ''
+}
+
 export const adminRoutes = (canModerate: boolean, superadmin: boolean) => [
   ['/admin', 'Dashboard'],
   ['/admin/posts', 'Posts'],

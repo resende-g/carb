@@ -227,6 +227,9 @@ main { min-height: calc(100vh - 150px); }
 .admin-list li > span:first-child { display: grid; gap: .2rem; }
 .admin-list small { color: #999; }
 .admin-list button, .row-actions button, .revision-form button, .admin-card > button, .admin-form > button:not(.primary) { min-height: 44px; padding: .55rem .75rem; border: 1px solid #555; border-radius: .55rem; background: transparent; color: #fff; }
+.admin-file-button { display: inline-flex; align-items: center; min-height: 44px; padding: .55rem .75rem; border: 1px solid #555; border-radius: .55rem; color: #fff; cursor: pointer; }
+.admin-file-button:has(input:disabled) { cursor: wait; opacity: .65; }
+.admin-file-button input { position: absolute; width: 1px; height: 1px; overflow: hidden; opacity: 0; }
 .workflow-item { padding: .9rem; border: 1px solid #2f2f2f; border-radius: .75rem; }
 .workflow-item h3 { margin: .35rem 0; }
 .workflow-item > p { color: #aaa; line-height: 1.45; }
@@ -444,6 +447,7 @@ footer strong { color: #fff; }
 :root[data-theme="light"] .admin-inline-form select { border-color: #c8c8cc; background: #fff; color: #111; }
 :root[data-theme="light"] .admin-list button,
 :root[data-theme="light"] .row-actions button,
+:root[data-theme="light"] .admin-file-button,
 :root[data-theme="light"] .revision-form button,
 :root[data-theme="light"] .admin-card > button,
 :root[data-theme="light"] .admin-form > button:not(.primary) { border-color: #bbb; color: #111; }
