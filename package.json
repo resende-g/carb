@@ -6,6 +6,8 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc --noEmit && vite build",
+    "deploy": "npm run build && npx wrangler@4.127.1 deploy",
+    "deploy:check": "npm run build && npx wrangler@4.127.1 deploy --dry-run",
     "bootstrap:superadmin": "node scripts/bootstrap-superadmin.mjs",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",

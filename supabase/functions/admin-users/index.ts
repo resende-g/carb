@@ -53,7 +53,7 @@ Deno.serve(async (request) => {
     const email = typeof input.email === 'string' ? input.email.trim().toLowerCase() : ''
     const fullName = typeof input.full_name === 'string' ? input.full_name.trim() : ''
     if (!emailPattern.test(email) || fullName.length < 2 || fullName.length > 120) return json({ error: 'Nome ou e-mail inválido.' }, 400, headers)
-    const redirectTo = `${Deno.env.get('SITE_URL') || 'http://127.0.0.1:5173'}/admin/login`
+    const redirectTo = `${Deno.env.get('SITE_URL') || 'https://carb-v1-3.portal-carb-prototipo.workers.dev'}/admin/login`
     const { data, error } = await admin.auth.admin.inviteUserByEmail(email, { data: { full_name: fullName }, redirectTo })
     if (error || !data.user) return json({ error: error?.message || 'Não foi possível convidar.' }, 400, headers)
     const { error: profileError } = await admin.from('profiles').insert({ id: data.user.id, full_name: fullName })

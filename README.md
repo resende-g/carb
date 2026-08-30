@@ -2,6 +2,8 @@
 
 Protótipo público full-stack do Portal do Centro Acadêmico Ruy Barbosa (CARB), construído com React, TypeScript, Vite, Tailwind CSS 4, Shadcn/ui e Supabase. Usa somente conteúdo público ou sintético e **não representa sistema institucional homologado ou pronto para produção**.
 
+**Publicado em:** https://carb-v1-3.portal-carb-prototipo.workers.dev
+
 ## Executar
 
 Pré-requisito: Node.js 22 ou superior, npm e um projeto Supabase de desenvolvimento.
@@ -47,7 +49,8 @@ npx supabase test db --local
 ## Dados e limitações
 
 - O Supabase é infraestrutura temporária de desenvolvimento/homologação; a aplicação continua classificada como protótipo público.
-- As migrations e Edge Functions precisam ser implantadas manualmente no projeto de destino antes do uso conectado.
+- As migrations, o seed sintético e as Edge Functions estão implantados no projeto remoto de desenvolvimento.
+- O acesso administrativo depende da configuração de SMTP/redirects e do bootstrap seguro do primeiro `SUPERADMIN`.
 - O antiabuso de reações usa apenas um UUID aleatório local, sem IP ou fingerprint, e não equivale a uma defesa forte contra fraude.
 - Não há integração com SIGAA, autenticação estudantil, infraestrutura nem homologação da STI-UFBA.
 - Não use dados pessoais reais. O planejador não substitui a consulta às fontes acadêmicas oficiais.

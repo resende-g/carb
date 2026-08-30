@@ -94,7 +94,7 @@ export const systems: SystemLink[] = [
   { id: 's3', name: 'Calendário acadêmico', description: 'Página pública para consulta de calendários e comunicados acadêmicos.', category: 'Acadêmico', url: 'https://supac.ufba.br/' },
   { id: 's4', name: 'Moodle UFBA', description: 'Ambiente virtual institucional; o Portal CARB não solicita credenciais.', category: 'Ensino', url: 'https://www.moodle.ufba.br/' },
   { id: 's5', name: 'Pergamum UFBA', description: 'Consulta pública ao catálogo das bibliotecas da UFBA.', category: 'Biblioteca', url: 'https://pergamum.bib.ufba.br/' },
-  { id: 's6', name: 'SIGAA UFBA', description: 'Acesso ao sistema acadêmico institucional da UFBA.', category: 'Acadêmico', url: 'https://sigaa.ufba.br/sigaa' },
+  { id: 's6', name: 'SIGAA UFBA', description: 'Acesso ao sistema acadêmico institucional da UFBA.', category: 'Acadêmico', url: 'https://sigaa.ufba.br/sigaa/public/home.jsf' },
 ]
 
 export const documents: DocumentItem[] = [
