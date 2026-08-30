@@ -1,5 +1,9 @@
 # Migração Supabase -> STI-UFBA
 
+## Evidência da v1.3
+
+A v1.3 materializa a fase transitória em migrations SQL, RLS, Storage e Edge Functions versionadas. O frontend usa somente URL e chave pública; operações privilegiadas estão isoladas. A migração para a STI deve preservar contratos, autoria, auditoria e IDs, substituir Auth/Storage conforme decisão técnica e revalidar todas as policies e testes negativos. Nenhuma integração com a STI foi executada nesta versão.
+
 ## 1. Objetivo
 
 Transferir aplicação, dados, identidade, arquivos, observabilidade e operação para a infraestrutura homologada da STI-UFBA com integridade, confidencialidade, disponibilidade, reversibilidade e eliminação segura do ambiente transitório.
@@ -90,4 +94,3 @@ Contagens sem definição de grão, janela e exclusões não constituem evidênc
 ## 7. Rollback
 
 Acionar rollback se houver perda de integridade, falha generalizada de autenticação/autorização, indisponibilidade acima do limite aprovado ou exposição de dados. O retorno deve restaurar DNS/configuração para a origem ainda íntegra; escritas divergentes não podem ser conciliadas por improviso.
-

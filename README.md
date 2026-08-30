@@ -1,10 +1,10 @@
-# Portal CARB — v1.2
+# Portal CARB — v1.3
 
-Protótipo frontend do Portal do Centro Acadêmico Ruy Barbosa (CARB), executado em `localhost` com React, TypeScript, Vite, Tailwind CSS 4, Shadcn/ui e CSS nativo em migração incremental. Usa somente conteúdo público ou sintético e não representa sistema homologado ou pronto para produção.
+Protótipo público full-stack do Portal do Centro Acadêmico Ruy Barbosa (CARB), construído com React, TypeScript, Vite, Tailwind CSS 4, Shadcn/ui e Supabase. Usa somente conteúdo público ou sintético e **não representa sistema institucional homologado ou pronto para produção**.
 
 ## Executar
 
-Pré-requisito: Node.js 20.19, 22.12 ou superior e npm.
+Pré-requisito: Node.js 22 ou superior, npm e um projeto Supabase de desenvolvimento.
 
 ```bash
 npm install
@@ -14,7 +14,7 @@ npm run dev
 
 Portal: `http://localhost:5173`. Painel demonstrativo: `http://localhost:5173/admin`.
 
-As variáveis `VITE_ADMIN_USERNAME` e `VITE_ADMIN_PASSWORD_HASH` apenas restringem a interface local. Não constituem autenticação ou autorização server-side.
+O navegador recebe somente `VITE_SUPABASE_URL` e `VITE_SUPABASE_ANON_KEY`. A `service_role` é restrita às Edge Functions e ao script administrativo de bootstrap.
 
 ## Verificar
 
@@ -25,25 +25,31 @@ npm test -- --run
 npm run build
 ```
 
-## Escopo da v1.2
+Para testar as migrations em banco local limpo, com Docker disponível:
 
-- Tailwind CSS integrado ao Vite e Shadcn/ui configurado com aliases `@/*`;
-- tokens CARB para temas escuro/claro, foco, borda, superfície, sombra e hashtags;
-- migração incremental de busca, botões, cartões, separador e chips, mantendo CSS nativo onde ele ainda é utilizado;
-- catálogo global de hashtags temáticas com `id`, nome, slug previsível, cor e estado ativo;
-- publicações com múltiplos `hashtagIds`, sem duplicar o objeto completo e sem vincular hashtags ao perfil autor;
-- no desktop, `Quem publica` lista até os 5 autores distintos mais recentes e `Top trends` resume as 5 hashtags mais frequentes nos 10 avisos mais recentes;
-- clicar em uma hashtag de um aviso preenche a busca com `#Nome`; as tendências são apenas informativas e os dois painéis laterais não aparecem no mobile;
-- hashtags inativas indisponíveis para novas associações, mas preservadas no conteúdo histórico;
-- telas e recursos da v1.1 preservados: mídia nos avisos, menu acessível, Sistemas, Acervo e Montador de grade responsivo.
+```bash
+npx supabase start
+npx supabase db reset --local
+npx supabase test db --local
+```
 
-A unidade filtrada continua sendo a publicação. Perfil representa autoria pública agregada; hashtag representa somente classificação temática. Empates nas tendências são resolvidos pela ocorrência mais recente.
+## Escopo da v1.3
+
+- PostgreSQL versionado por migrations, seed sintético e testes pgTAP;
+- Supabase Auth com contas individuais, TOTP obrigatório e sessão AAL2 no painel;
+- RBAC `EDITOR`, `ADMIN` e `SUPERADMIN`, autorização editorial por perfil e RLS deny-by-default;
+- posts, revisões, hashtags, documentos, reações, remoções, dashboard e auditoria persistentes;
+- Storage privado com liberação pública somente de arquivos aprovados/publicados;
+- sucessão institucional sem reutilizar contas e proteção do último `SUPERADMIN`;
+- Edge Functions para login auditável e operações administrativas privilegiadas;
+- feed e recursos públicos da v1.2 preservados, com fallback explícito para fixtures quando o Supabase não está configurado.
 
 ## Dados e limitações
 
-- Catálogo, publicações, documentos e turmas são fixtures locais ou dados públicos estáticos.
-- Reações e trajetória acadêmica usam `localStorage`; alterações do painel duram somente a sessão.
-- Não há backend, banco, Supabase, persistência de mídia, integração com SIGAA, segurança administrativa real ou infraestrutura da STI-UFBA.
+- O Supabase é infraestrutura temporária de desenvolvimento/homologação; a aplicação continua classificada como protótipo público.
+- As migrations e Edge Functions precisam ser implantadas manualmente no projeto de destino antes do uso conectado.
+- O antiabuso de reações usa apenas um UUID aleatório local, sem IP ou fingerprint, e não equivale a uma defesa forte contra fraude.
+- Não há integração com SIGAA, autenticação estudantil, infraestrutura nem homologação da STI-UFBA.
 - Não use dados pessoais reais. O planejador não substitui a consulta às fontes acadêmicas oficiais.
 - A coexistência de Tailwind e CSS nativo é deliberada; a lista do legado preservado está na documentação de migração.
 
@@ -51,6 +57,13 @@ A unidade filtrada continua sendo a publicação. Perfil representa autoria púb
 
 - [Migração visual v1.2](docs/ui-migration-v1.2.md)
 - [Modelo de hashtags](docs/hashtags.md)
+- [Supabase e operação](docs/supabase.md)
+- [Banco e migrations](docs/database.md)
+- [RBAC e permissões](docs/rbac.md)
+- [Workflow editorial](docs/editorial-workflow.md)
+- [Sucessão institucional](docs/succession.md)
+- [Logs de auditoria](docs/audit-logs.md)
+- [Deploy v1.3](docs/deployment-v1.3.md)
 - [Contexto de implementação](PROMPT_PROTOTIPO_LOCAL.md)
 - [Arquitetura](docs/architecture.md)
 - [Acessibilidade](docs/accessibility.md)
@@ -59,6 +72,6 @@ A unidade filtrada continua sendo a publicação. Perfil representa autoria púb
 - [Migração para a STI-UFBA](docs/sti-migration.md)
 - [Histórico de versões](CHANGELOG.md)
 
-## Roadmap sem antecipação
+## Próxima etapa
 
-As versões posteriores poderão avaliar painel editorial em mocks, persistência e identidade institucional, mas backend, Auth, RLS, MFA, RBAC, infraestrutura e homologação dependem de projeto próprio e, quando aplicável, da STI-UFBA.
+A v1.4 deve validar o ambiente implantado, observabilidade, recuperação, antiabuso e decisões institucionais da STI-UFBA sem introduzir dados pessoais antes da aprovação formal.

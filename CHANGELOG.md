@@ -1,5 +1,27 @@
 # Changelog
 
+## 1.3.0 — 2026-08-30
+
+### Adicionado
+
+- Integração Supabase para Auth, PostgreSQL, Storage e Edge Functions.
+- RBAC com MFA/AAL2, autorização editorial por perfil e RLS deny-by-default.
+- Persistência de posts, revisões, hashtags, documentos, reações, remoções e métricas.
+- Auditoria append-only, sucessão institucional e proteção do último SUPERADMIN.
+- Painel administrativo responsivo e testes de regras, RLS e integridade.
+
+### Alterado
+
+- Fixtures públicas passaram a ser fallback explícito quando o Supabase não está configurado.
+- Contas administrativas demonstrativas foram substituídas por identidades individuais do Supabase Auth.
+- Versão do projeto atualizada para 1.3.0.
+
+### Limitações
+
+- A implantação das migrations e Edge Functions depende do ambiente Supabase de destino.
+- Reações anônimas têm prevenção básica, sem IP, fingerprint ou autenticação estudantil.
+- O produto permanece um protótipo público, sem homologação institucional.
+
 ## 1.2.0 — 2026-08-29
 
 ### Adicionado

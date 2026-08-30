@@ -1,6 +1,12 @@
 # Prompt — protótipo local do Portal CARB
 
-## Estado atual — v1.2
+## Estado atual — v1.3
+
+A v1.3 adiciona persistência Supabase, Auth com TOTP/AAL2, RBAC, RLS, Storage, workflow editorial, auditoria e sucessão institucional sobre a interface da v1.2. O estado versionado está em `supabase/migrations`, `supabase/functions`, `supabase/seed.sql` e `src/admin`.
+
+O sistema continua sendo um **protótipo público**: usa somente dados públicos ou sintéticos, não inclui estudantes, carteirinha, SIGAA ou infraestrutura STI-UFBA e exige aplicação manual das migrations e configuração do ambiente antes de operar conectado. Consulte `docs/supabase.md`, `docs/database.md`, `docs/rbac.md` e `docs/deployment-v1.3.md`.
+
+## Registro histórico — v1.2
 
 Esta seção registra o estado implementado na branch `v1.2` e prevalece sobre os registros históricos da v1.1, v1 e do prompt inicial abaixo.
 

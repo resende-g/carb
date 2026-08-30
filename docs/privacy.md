@@ -1,5 +1,9 @@
 # Privacidade e proteção de dados
 
+## Estado implementado na v1.3
+
+A v1.3 mantém dados de demonstração públicos ou sintéticos. Contas administrativas devem ser individuais, mas dados pessoais reais só podem ser usados após definição institucional de controlador, base legal, retenção e operadores. Reações públicas usam um UUID aleatório armazenado no navegador; não coletam IP nem fingerprint pela aplicação e sua limitação antiabuso está documentada. Carteirinha, autenticação estudantil e documentos pessoais permanecem fora do escopo.
+
 ## 1. Premissa
 
 O portal deve funcionar com o menor tratamento possível. Funcionalidade pública não justifica cadastro. O planejador de matrícula deve operar localmente. A carteirinha é o principal tratamento de maior risco e não pode ser implementada antes das definições `TBD-GOV-01` e `TBD-DATA-01`.
@@ -71,4 +75,3 @@ Antes de usar Supabase, hospedagem, CDN, e-mail, WhatsApp ou APIs externas:
 ## 7. Direitos dos titulares
 
 O fluxo deve permitir autenticação proporcional, protocolo, busca nos sistemas envolvidos, decisão, resposta segura e registro. Não se deve pedir mais dados para confirmar identidade do que aqueles necessários ao risco do pedido.
-

@@ -1,5 +1,11 @@
 # Portal CARB - desenho do projeto
 
+## Estado implementado na v1.3
+
+A interface React preserva a navegação pública da v1.2 e usa `src/supabase.ts` como fronteira mínima de leitura e reações. O painel em `src/admin` usa Supabase Auth e RPCs; decisões de autorização permanecem no PostgreSQL/RLS, nunca apenas no React. As Edge Functions `admin-auth` e `admin-users` concentram login auditável e operações que exigem Admin Auth. Banco, policies, Storage e seeds são reproduzíveis pelos arquivos em `supabase/`.
+
+O fallback de fixtures existe somente para demonstração local sem variáveis Supabase. Ele não simula autorização institucional.
+
 **Status:** proposta arquitetural para validação  
 **Escopo:** portal web do CARB, da fase inicial em Supabase até a homologação e operação pela STI-UFBA  
 **Documento mestre:** os detalhes de conformidade, segurança, privacidade, acessibilidade e migração estão nos documentos temáticos vinculados.
@@ -223,4 +229,3 @@ Detalhes em [sti-migration.md](sti-migration.md).
 | `TBD-AUTH-01` | IdP, OIDC, atributos e ciclo de contas | STI-UFBA | autenticação final |
 | `TBD-EXT-01` | autorização para LinkedIn, WhatsApp e AcademyCARB | jurídico/segurança/privacidade | integrações |
 | `TBD-ACC-01` | protocolo e responsáveis pelo aceite de acessibilidade | UFBA/STI | homologação |
-
