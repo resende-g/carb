@@ -323,14 +323,21 @@ export default function App() {
   const [limit, setLimit] = useState(6)
   const [profileFilter, setProfileFilter] = useState('')
   const [isMobile, setIsMobile] = useState(() => typeof window !== 'undefined' && window.matchMedia('(max-width: 760px)').matches)
-  const [profiles, setProfiles] = useState(initialProfiles)
-  const [siteHashtags, setSiteHashtags] = useState(initialHashtags)
-  const [siteNotices, setSiteNotices] = useState(notices)
-  const [siteDocuments, setSiteDocuments] = useState(documents)
+  const allowLocalFixtures = import.meta.env.DEV && !supabaseConfigured
+  const [profiles, setProfiles] = useState<Profile[]>(allowLocalFixtures ? initialProfiles : [])
+  const [siteHashtags, setSiteHashtags] = useState<Hashtag[]>(allowLocalFixtures ? initialHashtags : [])
+  const [siteNotices, setSiteNotices] = useState<Notice[]>(allowLocalFixtures ? notices : [])
+  const [siteDocuments, setSiteDocuments] = useState(allowLocalFixtures ? documents : [])
   const offerings = academicData.offerings
   const [theme, setTheme] = useState<'dark' | 'light'>(() => readLocal<'dark' | 'light'>(THEME_KEY, 'dark') === 'light' ? 'light' : 'dark')
   const [reactions, setReactions] = useState<Record<string, Reaction>>(() => readLocal(REACTIONS_KEY, {}))
-  const [dataMode, setDataMode] = useState(supabaseConfigured ? 'Conectando ao ambiente demonstrativo…' : 'Fixtures locais de demonstração')
+  const [dataMode, setDataMode] = useState(
+    supabaseConfigured
+      ? 'Conectando ao ambiente demonstrativo…'
+      : import.meta.env.DEV
+        ? 'Fixtures locais de demonstração'
+        : 'Backend indisponível'
+  )
   const [reactionMessage, setReactionMessage] = useState('')
   const reactionIdRef = useRef('')
   const menuRef = useRef<HTMLDivElement>(null)
@@ -366,7 +373,12 @@ export default function App() {
       writeLocal(REACTIONS_KEY, data.selectedReactions)
       setDataMode('Dados persistidos no ambiente demonstrativo')
     }).catch(() => {
-      if (active) setDataMode('Fixtures locais: conexão indisponível')
+      if (!active) return
+      setProfiles([])
+      setSiteHashtags([])
+      setSiteNotices([])
+      setSiteDocuments([])
+      setDataMode('Backend temporariamente indisponível')
     })
     return () => { active = false }
   }, [])
