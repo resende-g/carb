@@ -1,16 +1,16 @@
-import { ChangeEvent, FormEvent, useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import academicDataJson from './academic-data.json'
-import { parseOfferingsCsv } from './admin'
+import { AdminApp } from './admin/AdminApp'
 import { HashtagChip } from './components/HashtagChip'
 import { Button } from './components/ui/button'
 import { Card } from './components/ui/card'
 import { Input } from './components/ui/input'
 import { Label } from './components/ui/label'
 import { Separator } from './components/ui/separator'
-import { documents, hashtags as initialHashtags, notices, profiles as initialProfiles, systems, type DocumentItem, type Hashtag, type HashtagColor, type Notice, type Profile, type ReactionCounts } from './data'
-import { filterNotices, recentPostingProfiles, removeHashtag, trendingHashtags } from './feed'
-import { activeHashtags, hashtagSlug, normalizeHashtagName, uniqueHashtagIds } from './hashtags'
+import { documents, hashtags as initialHashtags, notices, profiles as initialProfiles, systems, type Hashtag, type Notice, type Profile, type ReactionCounts } from './data'
+import { filterNotices, recentPostingProfiles, trendingHashtags } from './feed'
 import { meetingLabel, selectionIssue, TIME_ROWS, type ClassOffering, type SelectionIssue, type Semester, type Shift } from './planner'
+import { anonymousReactionId, loadPublicData, persistReaction, supabaseConfigured } from './supabase'
 
 type Tab = 'avisos' | 'sistemas' | 'planejador' | 'acervo'
 type Reaction = keyof ReactionCounts
@@ -34,9 +34,6 @@ const academicData = academicDataJson as AcademicData
 const REACTIONS_KEY = 'carb:reactions'
 const COMPLETED_KEY = 'carb:completed-components'
 const THEME_KEY = 'carb:theme'
-const ADMIN_SESSION_KEY = 'carb:admin-session'
-const ADMIN_USERNAME = import.meta.env.VITE_ADMIN_USERNAME || ''
-const ADMIN_PASSWORD_HASH = import.meta.env.VITE_ADMIN_PASSWORD_HASH || ''
 const REACTION_OPTIONS: { key: Reaction; icon: string; label: string }[] = [
   { key: 'heart', icon: '/icons/coracao-24.png', label: 'Coração' },
   { key: 'point', icon: '/icons/dedo-24.png', label: 'Indicador' },
@@ -51,10 +48,6 @@ const NAVIGATION: { tab: Exclude<Tab, 'avisos'>; label: string; icon: string }[]
 ]
 const WEEKDAYS = ['segunda', 'terça', 'quarta', 'quinta', 'sexta', 'sábado']
 const WEEKDAY_LABELS: Record<string, string> = { segunda: 'Seg.', terça: 'Ter.', quarta: 'Qua.', quinta: 'Qui.', sexta: 'Sex.', sábado: 'Sáb.' }
-const HASHTAG_COLORS: { value: HashtagColor; label: string }[] = [
-  { value: 'blue', label: 'Azul' }, { value: 'green', label: 'Verde' }, { value: 'gold', label: 'Dourado' },
-  { value: 'violet', label: 'Violeta' }, { value: 'red', label: 'Vermelho' }, { value: 'gray', label: 'Cinza' },
-]
 
 function readLocal<T>(key: string, fallback: T): T {
   if (typeof window === 'undefined') return fallback
@@ -75,17 +68,6 @@ function writeLocal<T>(key: string, value: T) {
   }
 }
 
-const readAdminSession = () => {
-  if (typeof window === 'undefined') return false
-  try {
-    return sessionStorage.getItem(ADMIN_SESSION_KEY) === 'authenticated'
-  } catch {
-    return false
-  }
-}
-
-const sha256 = async (value: string) => Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256', new TextEncoder().encode(value)))).map((byte) => byte.toString(16).padStart(2, '0')).join('')
-
 const normalized = (value: string) => value.trim().toLocaleLowerCase('pt-BR')
 const semesterLabel = (value: Semester) => typeof value === 'number' ? `${value}º semestre` : value === 'optativa' ? 'Optativa' : 'Outras ofertas'
 
@@ -94,353 +76,6 @@ function Avatar({ profile }: { profile: Profile }) {
     <span className="avatar" aria-hidden="true" style={{ backgroundImage: `url(${profile.avatar})`, backgroundPosition: profile.avatarPosition }}>
       <span>{profile.shortName}</span>
     </span>
-  )
-}
-
-function ProfileIconEditor({ profile, onChange }: { profile: Profile; onChange: (avatar: string) => void }) {
-  const [message, setMessage] = useState('')
-  const changeIcon = (event: ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0]
-    if (!file) return
-    if (!file.type.startsWith('image/') || file.size > 2 * 1024 * 1024) {
-      setMessage('Use uma imagem de até 2 MB.')
-      event.target.value = ''
-      return
-    }
-    const reader = new FileReader()
-    reader.onload = () => {
-      onChange(String(reader.result))
-      setMessage('Ícone alterado nesta sessão administrativa.')
-    }
-    reader.onerror = () => setMessage('Não foi possível ler a imagem.')
-    reader.readAsDataURL(file)
-  }
-
-  return (
-    <div className="avatar-editor">
-      <label>Alterar ícone<input type="file" accept="image/*" onChange={changeIcon} aria-label={`Alterar ícone de @${profile.handle}`} /></label>
-      {message && <small role="status">{message}</small>}
-    </div>
-  )
-}
-
-function ProfileCreator({ profiles, onCreate }: { profiles: Profile[]; onCreate: (profile: Profile) => void }) {
-  const [name, setName] = useState('')
-  const [handle, setHandle] = useState('')
-  const [message, setMessage] = useState('')
-
-  const submit = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
-    const cleanHandle = handle.toLocaleLowerCase('pt-BR')
-    const cleanName = name.trim()
-    if (!cleanName) {
-      setMessage('Informe o nome da entidade.')
-      return
-    }
-    if (!/^[a-z0-9]{3,30}$/.test(cleanHandle)) {
-      setMessage('Use de 3 a 30 letras minúsculas ou números, sem espaços e sem caracteres especiais.')
-      return
-    }
-    if (profiles.some((profile) => profile.handle === cleanHandle)) {
-      setMessage('Este @ já está em uso.')
-      return
-    }
-    onCreate({ handle: cleanHandle, name: cleanName, shortName: cleanName.slice(0, 2).toLocaleUpperCase('pt-BR'), bio: 'Perfil institucional demonstrativo.', avatar: '/og.png', avatarPosition: '30% 76%' })
-    setName('')
-    setHandle('')
-    setMessage(`@${cleanHandle} criado somente nesta sessão.`)
-  }
-
-  return (
-    <details className="admin-demo">
-      <summary>Criar perfil de entidade</summary>
-      <p>A alteração permanece somente nesta sessão da v1.2.</p>
-      <form onSubmit={submit}>
-        <label htmlFor="entity-name">Nome da entidade</label>
-        <input id="entity-name" value={name} onChange={(event) => setName(event.target.value)} required />
-        <label htmlFor="entity-handle">@ único</label>
-        <div className="handle-input"><span>@</span><input id="entity-handle" value={handle} onChange={(event) => setHandle(event.target.value)} pattern="[a-z0-9]{3,30}" required /></div>
-        <button className="primary" type="submit">Criar perfil</button>
-        {message && <p className="form-message" role="status">{message}</p>}
-      </form>
-    </details>
-  )
-}
-
-function CsvImporter({ onImport }: { onImport: (offerings: ClassOffering[]) => void }) {
-  const [message, setMessage] = useState('')
-
-  const change = async (event: ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0]
-    if (!file) return
-    try {
-      if (!file.name.toLocaleLowerCase('pt-BR').endsWith('.csv') || file.size > 5 * 1024 * 1024) throw new Error('Use um arquivo CSV de até 5 MB.')
-      const offerings = parseOfferingsCsv(await file.text(), academicData.source.period)
-      onImport(offerings)
-      setMessage(`${offerings.length} turma(s) carregada(s) nesta sessão.`)
-    } catch (error) {
-      setMessage(error instanceof Error ? error.message : 'Não foi possível ler o CSV.')
-    } finally {
-      event.target.value = ''
-    }
-  }
-
-  return (
-    <section className="admin-card">
-      <p className="eyebrow">Planejador</p>
-      <h2>Importar turmas por CSV</h2>
-      <p>Substitui temporariamente o catálogo do planejador. O arquivo não deve conter dados de estudantes.</p>
-      <label className="file-button">Selecionar CSV<input type="file" accept=".csv,text/csv" onChange={change} /></label>
-      {message && <p className="form-message" role="status">{message}</p>}
-    </section>
-  )
-}
-
-function DocumentUploader({ onUpload }: { onUpload: (document: DocumentItem) => void }) {
-  const [title, setTitle] = useState('')
-  const [description, setDescription] = useState('')
-  const [file, setFile] = useState<File | null>(null)
-  const [message, setMessage] = useState('')
-
-  const submit = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
-    if (!file || (!file.name.toLocaleLowerCase('pt-BR').endsWith('.pdf') && file.type !== 'application/pdf') || file.size > 10 * 1024 * 1024) {
-      setMessage('Use um PDF de até 10 MB.')
-      return
-    }
-    onUpload({ id: `document-${Math.round(event.timeStamp)}`, title: title.trim(), description: description.trim(), updatedAt: `Adicionado em ${new Intl.DateTimeFormat('pt-BR').format(new Date())}`, file: URL.createObjectURL(file) })
-    setTitle('')
-    setDescription('')
-    setFile(null)
-    event.currentTarget.reset()
-    setMessage('Documento adicionado ao acervo desta sessão.')
-  }
-
-  return (
-    <section className="admin-card">
-      <p className="eyebrow">Acervo</p>
-      <h2>Adicionar documento</h2>
-      <form className="admin-form" onSubmit={submit}>
-        <label>Título<input value={title} onChange={(event) => setTitle(event.target.value)} required /></label>
-        <label>Descrição<textarea value={description} onChange={(event) => setDescription(event.target.value)} required /></label>
-        <label>Arquivo PDF<input type="file" accept=".pdf,application/pdf" onChange={(event) => setFile(event.target.files?.[0] || null)} required /></label>
-        <button className="primary" type="submit">Adicionar ao acervo</button>
-      </form>
-      {message && <p className="form-message" role="status">{message}</p>}
-    </section>
-  )
-}
-
-function HashtagManager({ hashtags, notices, onCreate, onUpdate, onDelete, onDetach }: {
-  hashtags: Hashtag[]
-  notices: Notice[]
-  onCreate: (hashtag: Hashtag) => void
-  onUpdate: (hashtag: Hashtag) => void
-  onDelete: (hashtagId: string) => void
-  onDetach: (hashtagId: string) => void
-}) {
-  const [name, setName] = useState('')
-  const [color, setColor] = useState<HashtagColor>('blue')
-  const [message, setMessage] = useState('')
-
-  const create = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
-    const cleanName = normalizeHashtagName(name)
-    const slug = hashtagSlug(cleanName)
-    if (!cleanName || !slug) return
-    if (hashtags.some((hashtag) => normalized(hashtag.name) === normalized(cleanName) || normalized(hashtag.slug) === normalized(slug))) {
-      setMessage('Já existe uma hashtag com esse nome ou slug.')
-      return
-    }
-    onCreate({ id: `hashtag-${slug}`, name: cleanName, slug, color, active: true })
-    setName('')
-    setMessage(`Hashtag “#${cleanName}” criada nesta sessão.`)
-  }
-
-  const rename = (hashtag: Hashtag, value: string) => {
-    const cleanName = normalizeHashtagName(value)
-    const slug = hashtagSlug(cleanName)
-    if (!cleanName || !slug || hashtags.some((item) => item.id !== hashtag.id && (normalized(item.name) === normalized(cleanName) || normalized(item.slug) === normalized(slug)))) {
-      setMessage('Nome inválido ou já utilizado; a hashtag não foi alterada.')
-      return
-    }
-    onUpdate({ ...hashtag, name: cleanName, slug })
-    setMessage(`Hashtag atualizada para #${cleanName}.`)
-  }
-
-  const deleteHashtag = (hashtag: Hashtag) => {
-    const affected = notices.filter((notice) => notice.hashtagIds.includes(hashtag.id)).length
-    if (!window.confirm(`Excluir “#${hashtag.name}”? ${affected} publicação(ões) perderá(ão) esta associação.`)) return
-    onDelete(hashtag.id)
-    setMessage(`Hashtag “#${hashtag.name}” excluída; ${affected} publicação(ões) afetada(s).`)
-  }
-
-  return (
-    <section className="admin-card hashtag-manager">
-      <p className="eyebrow">Classificação</p>
-      <h2>Hashtags globais</h2>
-      <p>Classificam temas e podem ser usadas por publicações de qualquer perfil.</p>
-      <form className="admin-form compact-form" onSubmit={create}>
-        <label>Nome<input value={name} onChange={(event) => setName(event.target.value)} required /></label>
-        <label>Cor<select value={color} onChange={(event) => setColor(event.target.value as HashtagColor)}>{HASHTAG_COLORS.map((item) => <option key={item.value} value={item.value}>{item.label}</option>)}</select></label>
-        <button className="primary" type="submit">Criar hashtag</button>
-      </form>
-      <div className="hashtag-admin-list">
-        {hashtags.map((hashtag) => <div key={hashtag.id} className="hashtag-admin-row">
-          <input aria-label={`Nome da hashtag ${hashtag.name}`} defaultValue={hashtag.name} onBlur={(event) => rename(hashtag, event.target.value)} />
-          <select aria-label={`Cor da hashtag ${hashtag.name}`} value={hashtag.color} onChange={(event) => onUpdate({ ...hashtag, color: event.target.value as HashtagColor })}>{HASHTAG_COLORS.map((item) => <option key={item.value} value={item.value}>{item.label}</option>)}</select>
-          <label className="hashtag-active"><input type="checkbox" checked={hashtag.active} onChange={(event) => onUpdate({ ...hashtag, active: event.target.checked })} />Ativa</label>
-          <div className="hashtag-admin-actions"><button type="button" disabled={!notices.some((notice) => notice.hashtagIds.includes(hashtag.id))} onClick={() => { const affected = notices.filter((notice) => notice.hashtagIds.includes(hashtag.id)).length; onDetach(hashtag.id); setMessage(`${affected} associação(ões) removida(s); a hashtag foi mantida.`) }}>Desassociar</button><button type="button" onClick={() => deleteHashtag(hashtag)}>Excluir</button></div>
-        </div>)}
-      </div>
-      {message && <p className="form-message" role="status">{message}</p>}
-    </section>
-  )
-}
-
-function PostCreator({ profiles, hashtags, onCreate }: { profiles: Profile[]; hashtags: Hashtag[]; onCreate: (notice: Notice) => void }) {
-  const [author, setAuthor] = useState(profiles[0]?.handle || '')
-  const [title, setTitle] = useState('')
-  const [category, setCategory] = useState('')
-  const [body, setBody] = useState('')
-  const [media, setMedia] = useState('')
-  const [mediaAlt, setMediaAlt] = useState('')
-  const [hashtagIds, setHashtagIds] = useState<string[]>([])
-  const [message, setMessage] = useState('')
-  const selectableHashtags = activeHashtags(hashtags)
-
-  const changeMedia = (event: ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0]
-    setMedia('')
-    if (!file) return
-    if (!['image/jpeg', 'image/png', 'image/webp', 'image/gif'].includes(file.type) || file.size > 8 * 1024 * 1024) {
-      setMessage('Use uma imagem JPG, PNG, WebP ou GIF de até 8 MB.')
-      event.target.value = ''
-      return
-    }
-    const reader = new FileReader()
-    reader.onload = () => { setMedia(String(reader.result)); setMessage('') }
-    reader.onerror = () => setMessage('Não foi possível ler a imagem.')
-    reader.readAsDataURL(file)
-  }
-
-  const submit = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
-    if (!profiles.some((profile) => profile.handle === author)) {
-      setMessage('Selecione um perfil autor válido.')
-      return
-    }
-    if (!hashtagIds.length || hashtagIds.some((id) => !selectableHashtags.some((hashtag) => hashtag.id === id))) {
-      setMessage('Selecione ao menos uma hashtag ativa.')
-      return
-    }
-    if (media && !mediaAlt.trim()) {
-      setMessage('Descreva a imagem para leitores de tela.')
-      return
-    }
-    onCreate({ id: `notice-${Math.round(event.timeStamp)}`, title: title.trim(), text: body.trim(), ...(media ? { media: { src: media, alt: mediaAlt.trim() } } : {}), category: category.trim(), date: new Intl.DateTimeFormat('pt-BR', { day: '2-digit', month: 'short', year: 'numeric' }).format(new Date()), state: 'publicado', author, hashtagIds: uniqueHashtagIds(hashtagIds), base: { heart: 0, point: 0, skull: 0, dance: 0 } })
-    setTitle('')
-    setCategory('')
-    setBody('')
-    setMedia('')
-    setMediaAlt('')
-    setHashtagIds([])
-    event.currentTarget.reset()
-    setMessage('Publicação criada nesta sessão.')
-  }
-
-  return (
-    <section className="admin-card">
-      <p className="eyebrow">Avisos</p>
-      <h2>Criar publicação</h2>
-      <form className="admin-form" onSubmit={submit}>
-        <label>Perfil autor<select value={author} onChange={(event) => setAuthor(event.target.value)}>{profiles.map((profile) => <option key={profile.handle} value={profile.handle}>{profile.name}</option>)}</select></label>
-        <fieldset className="hashtag-checkboxes"><legend>Hashtags</legend>{selectableHashtags.map((hashtag) => <label key={hashtag.id}><input type="checkbox" checked={hashtagIds.includes(hashtag.id)} onChange={() => setHashtagIds((current) => current.includes(hashtag.id) ? current.filter((id) => id !== hashtag.id) : uniqueHashtagIds([...current, hashtag.id]))} /><HashtagChip hashtag={hashtag} /></label>)}{!selectableHashtags.length && <small>Ative ou crie uma hashtag antes de publicar.</small>}</fieldset>
-        <label>Título<input value={title} onChange={(event) => setTitle(event.target.value)} required /></label>
-        <label>Categoria<input value={category} onChange={(event) => setCategory(event.target.value)} required /></label>
-        <label>Texto<textarea value={body} onChange={(event) => setBody(event.target.value)} required /></label>
-        <label>Imagem ou GIF (opcional)<input type="file" accept="image/jpeg,image/png,image/webp,image/gif" onChange={changeMedia} /></label>
-        {media && <label>Descrição da imagem<input value={mediaAlt} onChange={(event) => setMediaAlt(event.target.value)} required /></label>}
-        <button className="primary" type="submit">Publicar</button>
-      </form>
-      {message && <p className="form-message" role="status">{message}</p>}
-    </section>
-  )
-}
-
-function AdminPage({ profiles, hashtags, notices, theme, onExit, onToggleTheme, onChangeAvatar, onCreateProfile, onCreateHashtag, onUpdateHashtag, onDeleteHashtag, onDetachHashtag, onImportOfferings, onUploadDocument, onCreatePost }: {
-  profiles: Profile[]
-  hashtags: Hashtag[]
-  notices: Notice[]
-  theme: 'dark' | 'light'
-  onExit: () => void
-  onToggleTheme: () => void
-  onChangeAvatar: (handle: string, avatar: string) => void
-  onCreateProfile: (profile: Profile) => void
-  onCreateHashtag: (hashtag: Hashtag) => void
-  onUpdateHashtag: (hashtag: Hashtag) => void
-  onDeleteHashtag: (hashtagId: string) => void
-  onDetachHashtag: (hashtagId: string) => void
-  onImportOfferings: (offerings: ClassOffering[]) => void
-  onUploadDocument: (document: DocumentItem) => void
-  onCreatePost: (notice: Notice) => void
-}) {
-  const [authenticated, setAuthenticated] = useState(readAdminSession)
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
-  const [message, setMessage] = useState('')
-
-  const login = async (event: FormEvent) => {
-    event.preventDefault()
-    const accepted = username.trim() === ADMIN_USERNAME && await sha256(password) === ADMIN_PASSWORD_HASH
-    if (!accepted) {
-      setMessage('Usuário ou senha inválidos.')
-      return
-    }
-    try { sessionStorage.setItem(ADMIN_SESSION_KEY, 'authenticated') } catch { /* sessão em memória ainda funciona */ }
-    setPassword('')
-    setMessage('')
-    setAuthenticated(true)
-  }
-
-  const logout = () => {
-    try { sessionStorage.removeItem(ADMIN_SESSION_KEY) } catch { /* sem armazenamento local */ }
-    setAuthenticated(false)
-  }
-
-  if (!authenticated) return (
-    <main className="admin-login">
-      <a href="/" onClick={(event) => { event.preventDefault(); onExit() }}>← Voltar ao portal</a>
-      <form className="admin-login-card" onSubmit={login}>
-        <p className="eyebrow">Área restrita</p>
-        <h1>Administração CARB</h1>
-        <label>Usuário<input autoComplete="username" value={username} onChange={(event) => setUsername(event.target.value)} required /></label>
-        <label>Senha<input type="password" autoComplete="current-password" value={password} onChange={(event) => setPassword(event.target.value)} required /></label>
-        <button className="primary" type="submit">Entrar</button>
-        {message && <p className="form-message" role="alert">{message}</p>}
-      </form>
-    </main>
-  )
-
-  return (
-    <>
-      <header className="admin-topbar"><a href="/" onClick={(event) => { event.preventDefault(); onExit() }}>CARB</a><div><button type="button" onClick={onToggleTheme} aria-label={theme === 'dark' ? 'Usar tema claro' : 'Usar tema escuro'}>{theme === 'dark' ? '☼' : '◐'}</button><button type="button" onClick={logout}>Sair</button></div></header>
-      <main className="admin-shell">
-        <div className="section-heading"><p className="eyebrow">Sessão administrativa v1.2</p><h1>Painel editorial demonstrativo</h1><p>As alterações abaixo duram somente nesta aba e não coletam matrícula nem dados estudantis.</p></div>
-        <div className="admin-grid">
-          <section className="admin-card admin-profiles">
-            <p className="eyebrow">Entidades</p>
-            <h2>Perfis e ícones</h2>
-            {profiles.map((profile) => <div className="profile-row" key={profile.handle}><div className="profile-select"><Avatar profile={profile} /><span><strong>{profile.name}</strong><small>@{profile.handle}</small></span></div><ProfileIconEditor profile={profile} onChange={(avatar) => onChangeAvatar(profile.handle, avatar)} /></div>)}
-            <ProfileCreator profiles={profiles} onCreate={onCreateProfile} />
-          </section>
-          <HashtagManager hashtags={hashtags} notices={notices} onCreate={onCreateHashtag} onUpdate={onUpdateHashtag} onDelete={onDeleteHashtag} onDetach={onDetachHashtag} />
-          <CsvImporter onImport={onImportOfferings} />
-          <DocumentUploader onUpload={onUploadDocument} />
-          <PostCreator profiles={profiles} hashtags={hashtags} onCreate={onCreatePost} />
-        </div>
-      </main>
-    </>
   )
 }
 
@@ -678,9 +313,11 @@ function Planner({ query, offerings }: { query: string; offerings: ClassOffering
 }
 
 export default function App() {
-  const adminPath = () => typeof window !== 'undefined' && window.location.pathname.replace(/\/+$/, '') === '/admin'
-  const [isAdminRoute, setIsAdminRoute] = useState(adminPath)
-  const [tab, setTab] = useState<Tab>('avisos')
+  const initialPath = () => typeof window === 'undefined' ? '/' : window.location.pathname
+  const pathTab = (path: string): Tab => path === '/sistemas' ? 'sistemas' : path === '/acervo' ? 'acervo' : path === '/planejador' ? 'planejador' : 'avisos'
+  const [path, setPath] = useState(initialPath)
+  const isAdminRoute = path.startsWith('/admin')
+  const [tab, setTab] = useState<Tab>(() => pathTab(initialPath()))
   const [query, setQuery] = useState('')
   const [menuOpen, setMenuOpen] = useState(false)
   const [limit, setLimit] = useState(6)
@@ -690,9 +327,12 @@ export default function App() {
   const [siteHashtags, setSiteHashtags] = useState(initialHashtags)
   const [siteNotices, setSiteNotices] = useState(notices)
   const [siteDocuments, setSiteDocuments] = useState(documents)
-  const [offerings, setOfferings] = useState(academicData.offerings)
+  const offerings = academicData.offerings
   const [theme, setTheme] = useState<'dark' | 'light'>(() => readLocal<'dark' | 'light'>(THEME_KEY, 'dark') === 'light' ? 'light' : 'dark')
   const [reactions, setReactions] = useState<Record<string, Reaction>>(() => readLocal(REACTIONS_KEY, {}))
+  const [dataMode, setDataMode] = useState(supabaseConfigured ? 'Conectando ao ambiente demonstrativo…' : 'Fixtures locais de demonstração')
+  const [reactionMessage, setReactionMessage] = useState('')
+  const reactionIdRef = useRef('')
   const menuRef = useRef<HTMLDivElement>(null)
   const menuButtonRef = useRef<HTMLButtonElement>(null)
   const labels = TAB_LABELS
@@ -703,9 +343,32 @@ export default function App() {
   }, [theme])
 
   useEffect(() => {
-    const route = () => setIsAdminRoute(adminPath())
+    const route = () => {
+      const nextPath = window.location.pathname
+      setPath(nextPath)
+      if (!nextPath.startsWith('/admin')) setTab(pathTab(nextPath))
+    }
     window.addEventListener('popstate', route)
     return () => window.removeEventListener('popstate', route)
+  }, [])
+
+  useEffect(() => {
+    if (!supabaseConfigured) return
+    let active = true
+    reactionIdRef.current = anonymousReactionId()
+    void loadPublicData(reactionIdRef.current).then((data) => {
+      if (!active) return
+      setProfiles(data.profiles)
+      setSiteHashtags(data.hashtags)
+      setSiteNotices(data.notices)
+      setSiteDocuments(data.documents)
+      setReactions(data.selectedReactions)
+      writeLocal(REACTIONS_KEY, data.selectedReactions)
+      setDataMode('Dados persistidos no ambiente demonstrativo')
+    }).catch(() => {
+      if (active) setDataMode('Fixtures locais: conexão indisponível')
+    })
+    return () => { active = false }
   }, [])
 
   useEffect(() => {
@@ -737,16 +400,29 @@ export default function App() {
     }
   }, [menuOpen])
 
-  const react = (noticeId: string, selected: Reaction) => {
+  const react = async (noticeId: string, selected: Reaction) => {
+    const previous = reactions
     const next = { ...reactions }
     if (next[noticeId] === selected) delete next[noticeId]
     else next[noticeId] = selected
     setReactions(next)
     writeLocal(REACTIONS_KEY, next)
+    if (!supabaseConfigured || !reactionIdRef.current) return
+    try {
+      await persistReaction(noticeId, reactionIdRef.current, next[noticeId] || null)
+      setReactionMessage('Reação salva.')
+    } catch {
+      setReactions(previous)
+      writeLocal(REACTIONS_KEY, previous)
+      setReactionMessage('Não foi possível salvar a reação.')
+    }
   }
 
   const changeTab = (next: Tab) => {
     setTab(next)
+    const nextPath = next === 'avisos' ? '/' : `/${next}`
+    if (window.location.pathname !== nextPath) history.pushState({}, '', nextPath)
+    setPath(nextPath)
     setQuery('')
     setMenuOpen(false)
     setLimit(6)
@@ -766,18 +442,11 @@ export default function App() {
   const recentProfiles = recentPostingProfiles(siteNotices, profiles)
   const trends = trendingHashtags(siteNotices, siteHashtags)
   const trendWindow = Math.min(10, siteNotices.length)
-  const updateProfileAvatar = (handle: string, avatar: string) => setProfiles((current) => current.map((profile) => profile.handle === handle ? { ...profile, avatar, avatarPosition: 'center' } : profile))
   const selectProfile = (handle: string) => {
     setProfileFilter(handle)
     setLimit(6)
   }
-  const deleteSiteHashtag = (hashtagId: string) => {
-    const next = removeHashtag(siteHashtags, siteNotices, hashtagId)
-    setSiteHashtags(next.hashtags)
-    setSiteNotices(next.notices)
-  }
-
-  if (isAdminRoute) return <AdminPage profiles={profiles} hashtags={siteHashtags} notices={siteNotices} theme={theme} onExit={() => { history.pushState({}, '', '/'); setIsAdminRoute(false) }} onToggleTheme={() => setTheme((current) => current === 'dark' ? 'light' : 'dark')} onChangeAvatar={updateProfileAvatar} onCreateProfile={(profile) => setProfiles((current) => [...current, profile])} onCreateHashtag={(hashtag) => setSiteHashtags((current) => [...current, hashtag])} onUpdateHashtag={(hashtag) => setSiteHashtags((current) => current.map((item) => item.id === hashtag.id ? hashtag : item))} onDeleteHashtag={deleteSiteHashtag} onDetachHashtag={(hashtagId) => setSiteNotices((current) => current.map((notice) => notice.hashtagIds.includes(hashtagId) ? { ...notice, hashtagIds: notice.hashtagIds.filter((id) => id !== hashtagId) } : notice))} onImportOfferings={setOfferings} onUploadDocument={(document) => setSiteDocuments((current) => [document, ...current])} onCreatePost={(notice) => setSiteNotices((current) => [notice, ...current])} />
+  if (isAdminRoute) return <AdminApp />
 
   return (
     <>
@@ -843,7 +512,8 @@ export default function App() {
           </section>
         )}
       </main>
-      <footer><strong>CARB</strong><span>Protótipo local · dados acadêmicos sujeitos à confirmação no SIGAA</span></footer>
+      {reactionMessage && <p className="sr-only" role="status">{reactionMessage}</p>}
+      <footer><strong>CARB</strong><span>Protótipo público · {dataMode} · dados acadêmicos sujeitos à confirmação no SIGAA</span></footer>
     </>
   )
 }
