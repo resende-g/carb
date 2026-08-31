@@ -26,7 +26,8 @@ export const PUBLIC_DATA_REFRESH_MS = 50 * 60 * 1000
 
 export async function signedUrl(path: string | null) {
   if (!supabase || !path) return ''
-  const { data } = await supabase.storage.from('editorial-assets').createSignedUrl(path, SIGNED_URL_TTL_SECONDS)
+  const { data, error } = await supabase.storage.from('editorial-assets').createSignedUrl(path, SIGNED_URL_TTL_SECONDS)
+  if (error) throw error
   return data?.signedUrl || ''
 }
 

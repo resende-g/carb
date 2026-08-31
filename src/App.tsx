@@ -385,15 +385,17 @@ export default function App() {
         setDataMode('Dados persistidos no ambiente demonstrativo')
       }).catch(() => {
         if (!active) return
-        setProfiles([])
-        setSiteHashtags([])
-        setSiteNotices([])
-        setSiteDocuments([])
         setDataMode('Backend temporariamente indisponível')
       })
+    const refreshWhenVisible = () => { if (document.visibilityState === 'visible') refresh() }
     refresh()
     const interval = window.setInterval(refresh, PUBLIC_DATA_REFRESH_MS)
-    return () => { active = false; window.clearInterval(interval) }
+    document.addEventListener('visibilitychange', refreshWhenVisible)
+    return () => {
+      active = false
+      window.clearInterval(interval)
+      document.removeEventListener('visibilitychange', refreshWhenVisible)
+    }
   }, [])
 
   useEffect(() => {
