@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { Fragment, useEffect, useMemo, useRef, useState } from 'react'
 import academicDataJson from './academic-data.json'
 import { AdminApp } from './admin/AdminApp'
 import { HashtagChip } from './components/HashtagChip'
@@ -10,7 +10,7 @@ import { Separator } from './components/ui/separator'
 import { documents, hashtags as initialHashtags, notices, profiles as initialProfiles, systems, type Hashtag, type Notice, type Profile, type ReactionCounts } from './data'
 import { filterNotices, recentPostingProfiles, trendingHashtags } from './feed'
 import { meetingLabel, selectionIssue, TIME_ROWS, type ClassOffering, type SelectionIssue, type Semester, type Shift } from './planner'
-import { anonymousReactionId, loadPublicData, persistReaction, supabaseConfigured } from './supabase'
+import { anonymousReactionId, loadPublicData, persistReaction, PUBLIC_DATA_REFRESH_MS, supabaseConfigured } from './supabase'
 
 type Tab = 'avisos' | 'sistemas' | 'planejador' | 'acervo'
 type Reaction = keyof ReactionCounts
@@ -70,6 +70,17 @@ function writeLocal<T>(key: string, value: T) {
 
 const normalized = (value: string) => value.trim().toLocaleLowerCase('pt-BR')
 const semesterLabel = (value: Semester) => typeof value === 'number' ? `${value}º semestre` : value === 'optativa' ? 'Optativa' : 'Outras ofertas'
+const URL_PATTERN = /(https?:\/\/[^\s<>"']+)/g
+const URL_SUFFIX = /[),.;!?]+$/
+
+export function LinkedText({ children }: { children: string }) {
+  return children.split(URL_PATTERN).map((part, index) => {
+    if (!/^https?:\/\//.test(part)) return part
+    const suffix = part.match(URL_SUFFIX)?.[0] || ''
+    const href = suffix ? part.slice(0, -suffix.length) : part
+    return <Fragment key={index}><a href={href} target="_blank" rel="noopener noreferrer">{href}</a>{suffix}</Fragment>
+  })
+}
 
 function Avatar({ profile }: { profile: Profile }) {
   return (
@@ -122,7 +133,7 @@ function NoticeCard({ notice, profile, hashtags, reaction, onReact, onProfile, o
         <div className="meta"><span>{notice.category}</span><span>{notice.state}</span></div>
         <div className="notice-hashtags">{hashtags.map((hashtag) => <HashtagChip key={hashtag.id} hashtag={hashtag} onClick={() => onHashtag(hashtag)} />)}</div>
         <h2>{notice.title}</h2>
-        <p>{notice.text}</p>
+        <p><LinkedText>{notice.text}</LinkedText></p>
         {notice.media && <img className="notice-media" src={notice.media.src} alt={notice.media.alt} loading="lazy" />}
         <ReactionButtons notice={notice} reaction={reaction} onReact={onReact} />
       </Card>
@@ -363,24 +374,26 @@ export default function App() {
     if (!supabaseConfigured) return
     let active = true
     reactionIdRef.current = anonymousReactionId()
-    void loadPublicData(reactionIdRef.current).then((data) => {
-      if (!active) return
-      setProfiles(data.profiles)
-      setSiteHashtags(data.hashtags)
-      setSiteNotices(data.notices)
-      setSiteDocuments(data.documents)
-      setReactions(data.selectedReactions)
-      writeLocal(REACTIONS_KEY, data.selectedReactions)
-      setDataMode('Dados persistidos no ambiente demonstrativo')
-    }).catch(() => {
-      if (!active) return
-      setProfiles([])
-      setSiteHashtags([])
-      setSiteNotices([])
-      setSiteDocuments([])
-      setDataMode('Backend temporariamente indisponível')
-    })
-    return () => { active = false }
+    const refresh = () => void loadPublicData(reactionIdRef.current).then((data) => {
+        if (!active) return
+        setProfiles(data.profiles)
+        setSiteHashtags(data.hashtags)
+        setSiteNotices(data.notices)
+        setSiteDocuments(data.documents)
+        setReactions(data.selectedReactions)
+        writeLocal(REACTIONS_KEY, data.selectedReactions)
+        setDataMode('Dados persistidos no ambiente demonstrativo')
+      }).catch(() => {
+        if (!active) return
+        setProfiles([])
+        setSiteHashtags([])
+        setSiteNotices([])
+        setSiteDocuments([])
+        setDataMode('Backend temporariamente indisponível')
+      })
+    refresh()
+    const interval = window.setInterval(refresh, PUBLIC_DATA_REFRESH_MS)
+    return () => { active = false; window.clearInterval(interval) }
   }, [])
 
   useEffect(() => {

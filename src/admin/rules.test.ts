@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { adminRoutes, avatarIssue, canDecideOwnable, passwordIssue } from './rules'
+import { adminRoutes, avatarIssue, canDecideOwnable, confirmCustodyTransfer, passwordIssue } from './rules'
 
 describe('regras visuais do painel', () => {
   it('não oferece decisão sobre conteúdo próprio', () => {
@@ -24,5 +24,13 @@ describe('regras visuais do painel', () => {
     expect(adminRoutes(false, false).flat()).not.toContain('Hashtags')
     expect(adminRoutes(true, false).flat()).toContain('Hashtags')
     expect(adminRoutes(true, true).flat()).toContain('Usuários')
+  })
+
+  it('exige duas confirmações independentes para transferir custódia', () => {
+    const accepted = [true, false]
+    let calls = 0
+    expect(confirmCustodyTransfer(() => accepted[calls++])).toBe(false)
+    expect(calls).toBe(2)
+    expect(confirmCustodyTransfer(() => true)).toBe(true)
   })
 })

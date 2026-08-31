@@ -21,9 +21,12 @@ type PostRow = { id: string; content_profile_id: string; title: string; body: st
 type DocumentRow = { id: string; title: string; description: string; storage_path: string; approved_at: string | null; updated_at: string }
 type ReactionRow = { post_id: string; heart: number; point: number; skull: number; dance: number; selected: keyof ReactionCounts | null }
 
-async function signedUrl(path: string | null) {
+export const SIGNED_URL_TTL_SECONDS = 60 * 60
+export const PUBLIC_DATA_REFRESH_MS = 50 * 60 * 1000
+
+export async function signedUrl(path: string | null) {
   if (!supabase || !path) return ''
-  const { data } = await supabase.storage.from('editorial-assets').createSignedUrl(path, 3600)
+  const { data } = await supabase.storage.from('editorial-assets').createSignedUrl(path, SIGNED_URL_TTL_SECONDS)
   return data?.signedUrl || ''
 }
 
