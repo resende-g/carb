@@ -220,6 +220,7 @@ main { min-height: calc(100vh - 150px); }
 .metric-grid span { color: #999; font-size: .75rem; }
 .metric-grid strong { font-size: 1.8rem; }
 .admin-two-columns { display: grid; grid-template-columns: minmax(280px, .85fr) minmax(0, 1.25fr); gap: 1rem; align-items: start; }
+.admin-three-columns { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; align-items: start; margin-bottom: 1rem; }
 .admin-stack { display: grid; gap: .75rem; }
 .admin-inline-form { display: grid; grid-template-columns: minmax(180px, 1fr) 120px auto; align-items: end; gap: .6rem; }
 .admin-list { display: grid; gap: 0; margin: 1rem 0 0; padding: 0; list-style: none; }
@@ -230,6 +231,10 @@ main { min-height: calc(100vh - 150px); }
 .admin-file-button { display: inline-flex; align-items: center; min-height: 44px; padding: .55rem .75rem; border: 1px solid #555; border-radius: .55rem; color: #fff; cursor: pointer; }
 .admin-file-button:has(input:disabled) { cursor: wait; opacity: .65; }
 .admin-file-button input { position: absolute; width: 1px; height: 1px; overflow: hidden; opacity: 0; }
+.admin-media-preview { display: block; width: min(360px, 100%); max-height: 260px; border-radius: .65rem; object-fit: contain; background: #050505; }
+.profile-summary { display: flex !important; grid-template-columns: none !important; align-items: center; gap: .7rem !important; }
+.profile-summary > span { display: grid; gap: .2rem; }
+.admin-avatar-preview { width: 52px; height: 52px; flex: none; border-radius: 50%; object-fit: cover; }
 .workflow-item { padding: .9rem; border: 1px solid #2f2f2f; border-radius: .75rem; }
 .workflow-item h3 { margin: .35rem 0; }
 .workflow-item > p { color: #aaa; line-height: 1.45; }
@@ -326,6 +331,7 @@ footer strong { color: #fff; }
   .planner-workspace { grid-template-columns: 280px minmax(0, 1fr); }
   .semester-grid { grid-template-columns: repeat(3, minmax(160px, 1fr)); }
   .system-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .admin-three-columns { grid-template-columns: 1fr; }
 }
 
 @media (max-width: 760px) {

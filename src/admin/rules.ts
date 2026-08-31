@@ -1,5 +1,9 @@
 export const canDecideOwnable = (canModerate: boolean, actorId: string, creatorId: string) => canModerate && actorId !== creatorId
 
+export const confirmCustodyTransfer = (confirm: (message: string) => boolean) =>
+  confirm('Transferir a função e encerrar a atribuição anterior?')
+  && confirm('Confirma novamente a transferência de custódia? Esta ação não pode ser desfeita pelo painel.')
+
 export function passwordIssue(password: string, confirmation: string) {
   if (password !== confirmation) return 'As senhas não coincidem.'
   if (password.length < 12 || !/[a-z]/.test(password) || !/[A-Z]/.test(password) || !/\d/.test(password) || !/[^A-Za-z0-9]/.test(password)) return 'Use ao menos 12 caracteres, com maiúscula, minúscula, número e símbolo.'
