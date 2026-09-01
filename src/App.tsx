@@ -2,6 +2,7 @@ import { Fragment, useEffect, useMemo, useRef, useState } from 'react'
 import academicDataJson from './academic-data.json'
 import { AdminApp } from './admin/AdminApp'
 import { HashtagChip } from './components/HashtagChip'
+import { AdminIcon } from './components/ui/admin-icon'
 import { Button } from './components/ui/button'
 import { Card } from './components/ui/card'
 import { Input } from './components/ui/input'
@@ -116,7 +117,7 @@ function ReactionButtons({ notice, reaction, onReact }: { notice: Notice; reacti
           </button>
         ))}
         <button className="reaction share" type="button" onClick={share} aria-label="Compartilhar link do aviso" title="Compartilhar">
-          <img src="/icons/cursor-24.png" alt="" aria-hidden="true" />
+          <AdminIcon name="share" />
         </button>
       </div>
       {shareMessage && <p className="share-message" role="status">{shareMessage}</p>}
@@ -482,7 +483,7 @@ export default function App() {
         <button className="brand-button" type="button" onClick={goHome} aria-label="CARB — voltar aos avisos" title="Voltar aos avisos"><img src="/logo-carb.png" alt="" aria-hidden="true" /></button>
         <div className="search-box" id="site-search"><img src="/icons/busca-24.png" alt="" aria-hidden="true" /><Label className="sr-only" htmlFor="search">Buscar em {labels[tab]}</Label><Input id="search" type="search" value={query} onChange={(event) => setQuery(event.target.value)} placeholder={`Buscar em ${labels[tab].toLocaleLowerCase('pt-BR')}`} />{query && <button className="search-clear" type="button" aria-label="Limpar busca" onClick={() => setQuery('')}>×</button>}</div>
         <div className="menu-wrap" ref={menuRef}>
-          <button ref={menuButtonRef} className="menu-button" type="button" aria-label={menuOpen ? 'Fechar menu principal' : 'Abrir menu principal'} aria-expanded={menuOpen} aria-controls="main-menu" onClick={() => setMenuOpen((current) => !current)}><span /><span /><span /></button>
+          <button ref={menuButtonRef} className="menu-button" type="button" aria-label={menuOpen ? 'Fechar menu principal' : 'Abrir menu principal'} aria-expanded={menuOpen} aria-controls="main-menu" onClick={() => setMenuOpen((current) => !current)}><AdminIcon name="burger" /></button>
           <nav className="main-menu" id="main-menu" aria-label="Navegação principal" hidden={!menuOpen}>
             {NAVIGATION.map((item) => <button key={item.tab} className={tab === item.tab ? 'menu-item active' : 'menu-item'} aria-current={tab === item.tab ? 'page' : undefined} onClick={() => changeTab(item.tab)}><img src={item.icon} alt="" aria-hidden="true" /><span>{item.label}</span></button>)}
             <Separator />
