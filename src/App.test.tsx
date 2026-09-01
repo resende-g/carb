@@ -6,6 +6,7 @@ describe('interface pública', () => {
   it('renderiza busca, Quem publica e Top trends com semântica acessível', () => {
     const html = renderToStaticMarkup(<App />)
     expect(html).toContain('aria-label="CARB — voltar aos avisos"')
+    expect(html).toMatch(/id="site-search"><svg[^>]*admin-icon/)
     expect(html).toContain('aria-label="Abrir menu principal"')
     expect(html).toMatch(/aria-label="Abrir menu principal"[^>]*><svg/)
     expect(html).toMatch(/aria-label="Compartilhar link do aviso"[^>]*><svg/)

@@ -481,7 +481,7 @@ export default function App() {
       <a className="skip-link" href="#conteudo">Pular para o conteúdo</a>
       <header className="topbar" id="top">
         <button className="brand-button" type="button" onClick={goHome} aria-label="CARB — voltar aos avisos" title="Voltar aos avisos"><img src="/logo-carb.png" alt="" aria-hidden="true" /></button>
-        <div className="search-box" id="site-search"><img src="/icons/busca-24.png" alt="" aria-hidden="true" /><Label className="sr-only" htmlFor="search">Buscar em {labels[tab]}</Label><Input id="search" type="search" value={query} onChange={(event) => setQuery(event.target.value)} placeholder={`Buscar em ${labels[tab].toLocaleLowerCase('pt-BR')}`} />{query && <button className="search-clear" type="button" aria-label="Limpar busca" onClick={() => setQuery('')}>×</button>}</div>
+        <div className="search-box" id="site-search"><AdminIcon name="search" /><Label className="sr-only" htmlFor="search">Buscar em {labels[tab]}</Label><Input id="search" type="search" value={query} onChange={(event) => setQuery(event.target.value)} placeholder={`Buscar em ${labels[tab].toLocaleLowerCase('pt-BR')}`} />{query && <button className="search-clear" type="button" aria-label="Limpar busca" onClick={() => setQuery('')}>×</button>}</div>
         <div className="menu-wrap" ref={menuRef}>
           <button ref={menuButtonRef} className="menu-button" type="button" aria-label={menuOpen ? 'Fechar menu principal' : 'Abrir menu principal'} aria-expanded={menuOpen} aria-controls="main-menu" onClick={() => setMenuOpen((current) => !current)}><AdminIcon name="burger" /></button>
           <nav className="main-menu" id="main-menu" aria-label="Navegação principal" hidden={!menuOpen}>

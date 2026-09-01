@@ -88,7 +88,7 @@ button:disabled { cursor: not-allowed; opacity: .42; }
 .brand-button:hover, .brand-button:focus-visible { background: rgba(255, 255, 255, .12); }
 .brand-button img { display: block; width: 48px; height: 48px; object-fit: contain; }
 .search-box { position: relative; width: 100%; justify-self: center; }
-.search-box > img { position: absolute; top: 50%; left: 1rem; width: 20px; height: 20px; transform: translateY(-50%); }
+.search-box > img, .search-box > .admin-icon { position: absolute; top: 50%; left: 1rem; width: 20px; height: 20px; transform: translateY(-50%); }
 .search-box input { width: 100%; min-height: 44px; padding: .65rem 2.6rem .65rem 2.75rem; border: 1px solid #4a4a4a; border-radius: 999px; background: transparent; color: #fff; }
 .search-box input::placeholder { color: #969696; }
 .search-clear { position: absolute; top: 50%; right: .55rem; display: grid; place-items: center; width: 32px; height: 32px; padding: 0; border: 0; border-radius: 50%; background: transparent; color: #fff; font-size: 1.25rem; transform: translateY(-50%); }
@@ -342,7 +342,7 @@ footer strong { color: #fff; }
   .topbar { grid-template-columns: auto minmax(0, 1fr) auto; gap: .35rem; min-height: 58px; padding: .3rem .4rem; background: rgba(5, 5, 5, .64); }
   .brand-button { width: 46px; height: 46px; }
   .brand-button img { width: 42px; height: 42px; }
-  .search-box > img { left: .7rem; width: 18px; height: 18px; }
+  .search-box > img, .search-box > .admin-icon { left: .7rem; width: 18px; height: 18px; }
   .search-box input { min-height: 40px; padding: .5rem 2.15rem .5rem 2rem; font-size: .82rem; }
   .search-clear { right: .2rem; width: 30px; height: 30px; }
   .menu-button { width: 46px; height: 46px; }
