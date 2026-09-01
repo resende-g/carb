@@ -15,6 +15,8 @@
 - Sessões administrativas têm duração absoluta de 60 minutos, vinculada ao `session_id` e validada no frontend, nas Edge Functions, nas RPCs e pela RLS.
 - MFA/TOTP AAL2 continua obrigatório em toda nova sessão, sem janela de confiança de 24 horas.
 - A Edge Function continua sendo o único componente com acesso ao `service_role`; o frontend não acessa `auth.users` diretamente.
+- GitHub Actions valida lint, TypeScript, Vitest, build, migrations, pgTAP e advisors em ambiente local sem secrets; actions e Supabase CLI usam versões imutáveis.
+- A política de branches mantidas exige revisão, checks atualizados e bloqueia force push e exclusão.
 
 ## 1.3.0 — 2026-08-30
 

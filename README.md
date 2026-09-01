@@ -30,10 +30,14 @@ npm run build
 Para testar as migrations em banco local limpo, com Docker disponível:
 
 ```bash
-npx supabase start
-npx supabase db reset --local
-npx supabase test db --local
+npx --yes supabase@2.116.0 db start
+npx --yes supabase@2.116.0 db reset --local
+npx --yes supabase@2.116.0 test db --local
+npx --yes supabase@2.116.0 db advisors --local --type all --level info --fail-on error
+npx --yes supabase@2.116.0 stop --no-backup
 ```
+
+O GitHub Actions executa a mesma validação em cada push e pull request das branches mantidas, sem secrets e sem acesso ao Supabase remoto.
 
 ## Escopo da v1.3.2
 
@@ -71,6 +75,7 @@ npx supabase test db --local
 - [Arquitetura](docs/architecture.md)
 - [Acessibilidade](docs/accessibility.md)
 - [Segurança](docs/security.md)
+- [CI e proteção de branches](docs/ci.md)
 - [Privacidade](docs/privacy.md)
 - [Migração para a STI-UFBA](docs/sti-migration.md)
 - [Histórico de versões](CHANGELOG.md)
