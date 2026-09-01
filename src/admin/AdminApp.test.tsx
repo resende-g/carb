@@ -35,6 +35,7 @@ describe('entrada administrativa', () => {
     expect(posts).toContain('Excluir')
     const profiles = renderToStaticMarkup(<ContentProfilesPage context={context as never} refresh={refresh} />)
     expect(profiles).toContain('Foto atual de Perfil sintético')
+    expect(profiles).toMatch(/admin-icon[\s\S]*Trocar foto/)
   })
 
   it('separa ações de usuários das ações sensíveis de segurança', () => {
@@ -48,6 +49,8 @@ describe('entrada administrativa', () => {
     const security = renderToStaticMarkup(<SecurityPage session={session as never} context={context as never} superadmin refresh={refresh} />)
     expect(security).toContain('Revogar MFA')
     expect(security).toContain('Transferir custódia')
+    expect(security).toContain('data-variant="destructive"')
+    expect(security).toContain('admin-icon')
     const regularSecurity = renderToStaticMarkup(<SecurityPage session={session as never} context={context as never} superadmin={false} refresh={refresh} />)
     expect(regularSecurity).not.toContain('Transferir custódia')
   })
