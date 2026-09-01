@@ -274,7 +274,7 @@ function Planner({ query, offerings }: { query: string; offerings: ClassOffering
         <section className="planner-main" aria-labelledby="schedule-title">
           <div className="planner-toolbar">
             <div><strong>{selected.length} turma(s) selecionada(s)</strong><span>{selected.length ? 'Grade sem conflitos' : 'Adicione turmas pela coluna lateral'}</span></div>
-            <button className="primary print-button" type="button" disabled={!selected.length} onClick={() => window.print()}>Finalizar e salvar PDF</button>
+            <button className="primary print-button" type="button" disabled={!selected.length} onClick={() => window.print()}><AdminIcon name="save" /> Finalizar e salvar PDF</button>
           </div>
           <section className="printable-schedule weekly-board">
             <div className="subheading"><div><p className="eyebrow">Sem choques de horário</p><h2 id="schedule-title">Visualização semanal</h2></div></div>
@@ -284,7 +284,7 @@ function Planner({ query, offerings }: { query: string; offerings: ClassOffering
 
           <aside className="selected-panel" aria-labelledby="selected-title">
             <div className="subheading"><h2 id="selected-title">Turmas na grade</h2><span>{selected.length} turma(s)</span></div>
-            {selected.length ? <ul>{selected.map((item) => <li key={item.id}><span><strong>{item.code} · T{item.class}</strong><small>{item.meetings.map(meetingLabel).join(' · ')}</small></span><button type="button" onClick={(event) => toggle(item, event.currentTarget)} aria-label={`Remover ${item.code}`}>×</button></li>)}</ul> : <p>Nenhuma turma selecionada.</p>}
+            {selected.length ? <ul>{selected.map((item) => <li key={item.id}><span><strong>{item.code} · T{item.class}</strong><small>{item.meetings.map(meetingLabel).join(' · ')}</small></span><button type="button" onClick={(event) => toggle(item, event.currentTarget)} aria-label={`Remover ${item.code}`}><AdminIcon name="minus" /></button></li>)}</ul> : <p>Nenhuma turma selecionada.</p>}
           </aside>
         </section>
 
@@ -302,7 +302,7 @@ function Planner({ query, offerings }: { query: string; offerings: ClassOffering
               const isSelected = selectedIds.includes(item.id)
               return (
                 <article className={isSelected ? 'offering-card selected' : 'offering-card'} key={item.id}>
-                  <div className="offering-title"><div><span>{item.code} · turma {item.class}</span><h3>{item.component}</h3></div><button type="button" onClick={(event) => toggle(item, event.currentTarget)}>{isSelected ? 'Remover' : 'Adicionar'}</button></div>
+                  <div className="offering-title"><div><span>{item.code} · turma {item.class}</span><h3>{item.component}</h3></div><button type="button" aria-pressed={isSelected} onClick={(event) => toggle(item, event.currentTarget)}><AdminIcon name={isSelected ? 'minus' : 'plus'} /> {isSelected ? 'Remover' : 'Adicionar'}</button></div>
                   <p>{item.professor}</p>
                   <div className="offering-facts"><span>{item.meetings.map(meetingLabel).join(' · ')}</span><span>{item.location}</span><span>{semesterLabel(item[semesterField])}</span><span>{item.enrolled}/{item.capacity} matrículas</span></div>
                 </article>

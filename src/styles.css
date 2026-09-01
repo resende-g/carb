@@ -286,6 +286,8 @@ main { min-height: calc(100vh - 150px); }
 .offering-title span { color: #aaa; font-size: .74rem; font-weight: 800; text-transform: uppercase; letter-spacing: .07em; }
 .offering-title h3 { margin: .25rem 0 0; font-size: .88rem; }
 .offering-title button, .selected-panel button { flex: none; min-height: 38px; padding: .5rem .8rem; border: 1px solid #fff; border-radius: 999px; background: transparent; color: #fff; font-size: .78rem; font-weight: 800; }
+.offering-title button, .print-button { display: inline-flex; align-items: center; justify-content: center; gap: .35rem; }
+.offering-title .admin-icon, .print-button .admin-icon { width: 1rem; height: 1rem; }
 .offering-card.selected .offering-title button { background: #fff; color: #000; }
 .offering-card > p { margin: .8rem 0 .5rem; color: #d0d0d0; font-size: .88rem; }
 .offering-facts { display: flex; flex-wrap: wrap; gap: .35rem; }
@@ -296,7 +298,8 @@ main { min-height: calc(100vh - 150px); }
 .selected-panel li { display: flex; align-items: center; justify-content: space-between; gap: .8rem; padding: .75rem 0; border-top: 1px solid #252525; }
 .selected-panel li > span { display: grid; gap: .22rem; }
 .selected-panel small { color: #999; line-height: 1.35; }
-.selected-panel button { width: 36px; height: 36px; padding: 0; font-size: 1.25rem; }
+.selected-panel button { display: grid; place-items: center; width: 36px; height: 36px; padding: 0; }
+.selected-panel button .admin-icon { width: 18px; height: 18px; }
 .printable-schedule, .trajectory { margin-top: 2rem; padding: 1.2rem; border: 1px solid #292929; border-radius: 1rem; background: #0b0b0b; }
 .weekly-board { position: relative; margin-top: 0; min-height: 610px; }
 .schedule-empty { position: absolute; z-index: 2; top: 6.5rem; left: 50%; max-width: 320px; margin: 0; padding: .65rem .8rem; border: 1px solid #3d3d3d; border-radius: .6rem; background: rgba(5, 5, 5, .88); color: #aaa; font-size: .78rem; text-align: center; transform: translateX(-50%); }
