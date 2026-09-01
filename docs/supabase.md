@@ -1,4 +1,4 @@
-# Supabase v1.3
+# Supabase v1.3.2
 
 ## Frontend
 
@@ -11,9 +11,13 @@ Nunca exponha `SUPABASE_SERVICE_ROLE_KEY` em variável `VITE_*`. Ela é aceita a
 
 ## Preparação
 
-1. configure redirects do Auth, SMTP e políticas de sessão;
+1. configure `SITE_URL`, redirects do Auth e SMTP; o convite retorna para `/admin`;
 2. execute o bootstrap do primeiro SUPERADMIN em ambiente seguro;
 3. teste `anon`, autenticado sem papel, `EDITOR`, `ADMIN` e `SUPERADMIN`.
+
+O login administrativo registra um prazo absoluto de 60 minutos por `session_id`. O auto-refresh do JWT não prorroga esse prazo. Ao receber um convite, a pessoa define a senha, encerra a sessão provisória do link e entra novamente para criar uma sessão administrativa regular e confirmar o TOTP.
+
+O formulário de convite exige papel e função institucional compatíveis. A Edge Function cria a identidade no Auth e chama `complete_admin_onboarding`, que insere `profile` e `role_assignment` na mesma transação. Se essa etapa falhar, a identidade recém-criada é removida como compensação; identidades preexistentes nunca são recriadas nem reativadas automaticamente.
 
 ```bash
 SUPABASE_URL=... SUPABASE_SERVICE_ROLE_KEY=... SUPERADMIN_EMAIL=... \

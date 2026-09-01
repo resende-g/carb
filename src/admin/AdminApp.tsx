@@ -2,13 +2,16 @@ import { FormEvent, useEffect, useMemo, useState } from 'react'
 import type { Session } from '@supabase/supabase-js'
 import { hashtagSlug, normalizeHashtagName } from '../hashtags'
 import { signedUrl, supabase, supabaseConfigured } from '../supabase'
-import { adminRoutes, avatarIssue, canDecideOwnable, confirmCustodyTransfer, passwordIssue } from './rules'
+import { invokeEdge } from './edgeFunctions'
+import { adminRoutes, avatarIssue, canDecideOwnable, confirmCustodyTransfer, operationalAccountState, passwordIssue, userActivationAction } from './rules'
+import { adminSessionDeadline, forgetAdminSession, rememberAdminSession } from './session'
 
 type Role = 'EDITOR' | 'ADMIN' | 'SUPERADMIN'
 type Office = 'COMMUNICATION_DIRECTOR' | 'CARB_PRESIDENT' | 'TECHNICAL_CUSTODIAN' | 'STI_ADMIN'
 type Status = 'DRAFT' | 'PENDING_APPROVAL' | 'APPROVED' | 'PUBLISHED' | 'REJECTED' | 'REMOVAL_REQUESTED' | 'REMOVED'
 type Profile = { id: string; full_name: string; active: boolean }
 type Assignment = { id: string; user_id: string; role: Role; office: Office; active: boolean }
+type AuthAccount = { id: string; email: string; invited_at: string | null; email_confirmed_at: string | null; last_sign_in_at: string | null; banned: boolean }
 type ContentProfile = { id: string; name: string; slug: string; avatar_path: string | null; avatar_url?: string; description: string; active: boolean }
 type Permission = { user_id: string; content_profile_id: string; can_publish: boolean; active: boolean }
 type Hashtag = { id: string; name: string; slug: string; color: string; active: boolean }
@@ -33,21 +36,33 @@ function route(path: string) {
   window.dispatchEvent(new PopStateEvent('popstate'))
 }
 
-function Login() {
+function Login({ initialMessage = '' }: { initialMessage?: string }) {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const [message, setMessage] = useState('')
+  const [message, setMessage] = useState(initialMessage)
   const [busy, setBusy] = useState(false)
   const submit = async (event: FormEvent) => {
     event.preventDefault()
     if (!supabase) return
+    const client = supabase
     setBusy(true)
     setMessage('')
-    const { data, error } = await supabase.functions.invoke('admin-auth', { body: { email: email.trim(), password } })
-    if (error || !data?.access_token || !data?.refresh_token) setMessage(data?.error || error?.message || 'Não foi possível entrar.')
+    const result = await invokeEdge<{ access_token?: string; refresh_token?: string; admin_expires_at?: string; error?: string }>(
+      () => client.functions.invoke('admin-auth', { body: { email: email.trim(), password } }),
+      'Não foi possível entrar.',
+    )
+    const data = result.data
+    if (result.error || !data?.access_token || !data.refresh_token || !data.admin_expires_at) setMessage(result.error || 'Não foi possível entrar.')
     else {
+      if (!rememberAdminSession(data.access_token, data.admin_expires_at)) {
+        setBusy(false)
+        return setMessage('Não foi possível iniciar a sessão administrativa.')
+      }
       const { error: sessionError } = await supabase.auth.setSession({ access_token: data.access_token, refresh_token: data.refresh_token })
-      if (sessionError) setMessage(sessionError.message)
+      if (sessionError) {
+        forgetAdminSession(data.access_token)
+        setMessage('Não foi possível salvar a sessão administrativa.')
+      }
       else setPassword('')
     }
     setBusy(false)
@@ -55,7 +70,7 @@ function Login() {
   return <main className="admin-login"><a href="/" onClick={(event) => { event.preventDefault(); route('/') }}>← Voltar ao portal</a><form className="admin-login-card" onSubmit={submit}><p className="eyebrow">Área administrativa</p><h1>Entrar no Portal CARB</h1><p>Use sua conta individual. O acesso exige TOTP após a senha.</p><label>E-mail<input type="email" autoComplete="username" value={email} onChange={(event) => setEmail(event.target.value)} required /></label><label>Senha<input type="password" autoComplete="current-password" minLength={12} value={password} onChange={(event) => setPassword(event.target.value)} required /></label><button className="primary" disabled={busy}>{busy ? 'Entrando…' : 'Entrar'}</button>{message && <p className="form-message" role="alert">{message}</p>}</form></main>
 }
 
-function PasswordSetup({ onDone }: { onDone: () => void }) {
+function PasswordSetup({ onDone }: { onDone: () => Promise<void> | void }) {
   const [password, setPassword] = useState('')
   const [confirmation, setConfirmation] = useState('')
   const [message, setMessage] = useState('')
@@ -66,7 +81,7 @@ function PasswordSetup({ onDone }: { onDone: () => void }) {
     if (issue) return setMessage(issue)
     const { error } = await supabase.auth.updateUser({ password })
     if (error) setMessage(error.message)
-    else onDone()
+    else await onDone()
   }
   return <main className="admin-login"><form className="admin-login-card" onSubmit={submit}><p className="eyebrow">Conta individual</p><h1>Defina sua senha</h1><label>Nova senha<input type="password" autoComplete="new-password" minLength={12} value={password} onChange={(event) => setPassword(event.target.value)} required /></label><label>Confirmar senha<input type="password" autoComplete="new-password" minLength={12} value={confirmation} onChange={(event) => setConfirmation(event.target.value)} required /></label><button className="primary">Salvar senha</button>{message && <p role="alert">{message}</p>}</form></main>
 }
@@ -349,23 +364,101 @@ export function UsersPage({ context, refresh }: { context: Context; refresh: () 
   const [message, setMessage] = useState('')
   const [email, setEmail] = useState('')
   const [name, setName] = useState('')
+  const [inviteRole, setInviteRole] = useState<Role>('EDITOR')
+  const [inviteOffice, setInviteOffice] = useState<Office>('COMMUNICATION_DIRECTOR')
+  const [authAccounts, setAuthAccounts] = useState<AuthAccount[]>([])
   const [userId, setUserId] = useState(context.profiles[0]?.id || '')
   const [role, setRole] = useState<Role>('EDITOR')
   const [office, setOffice] = useState<Office>('COMMUNICATION_DIRECTOR')
   const [contentProfileId, setContentProfileId] = useState(context.contentProfiles[0]?.id || '')
-  const invoke = async (body: Record<string, unknown>) => {
+  const selectedUserId = userId || context.profiles[0]?.id || ''
+
+  useEffect(() => {
+    let current = true
+    if (!supabase) return
+    const client = supabase
+    void invokeEdge<{ users?: AuthAccount[]; error?: string }>(
+      () => client.functions.invoke('admin-users', { body: { action: 'list_users' } }),
+      'Não foi possível consultar os estados das contas.',
+    ).then((result) => {
+      if (!current) return
+      if (result.error) setMessage(result.error)
+      else setAuthAccounts(result.data?.users || [])
+    })
+    return () => { current = false }
+  }, [context.profiles])
+
+  const invoke = async (body: Record<string, unknown>, success: string) => {
     if (!supabase) return null
-    const { data, error } = await supabase.functions.invoke('admin-users', { body })
-    setMessage(data?.error || error?.message || 'Ação concluída.')
-    return ((!error && !data?.error) || data?.transfer_complete) ? data : null
+    const client = supabase
+    const result = await invokeEdge<Record<string, unknown>>(
+      () => client.functions.invoke('admin-users', { body }),
+      'Não foi possível concluir a ação administrativa.',
+    )
+    setMessage(result.error || success)
+    return result.error ? null : result.data || {}
   }
-  const invite = async (event: FormEvent) => { event.preventDefault(); if (await invoke({ action: 'invite', email, full_name: name })) { setEmail(''); setName(''); await refresh() } }
-  const grant = async () => { if (!supabase) return; const { error } = await supabase.rpc('grant_role', { p_user_id: userId, p_role: role, p_office: office }); setMessage(error?.message || 'Papel concedido.'); if (!error) await refresh() }
-  const permit = async () => { if (!supabase) return; const { error } = await supabase.rpc('set_content_profile_permission', { p_user_id: userId, p_content_profile_id: contentProfileId, p_can_publish: true, p_active: true }); setMessage(error?.message || 'Autorização editorial concedida.'); if (!error) await refresh() }
+  const invite = async (event: FormEvent) => {
+    event.preventDefault()
+    if (await invoke({ action: 'invite', email, full_name: name, role: inviteRole, office: inviteOffice }, 'Convite enviado e função inicial concedida.')) {
+      setEmail('')
+      setName('')
+      await refresh()
+    }
+  }
+  const grant = async () => { if (!supabase) return; const { error } = await supabase.rpc('grant_role', { p_user_id: selectedUserId, p_role: role, p_office: office }); setMessage(error?.message || 'Papel concedido.'); if (!error) await refresh() }
+  const permit = async () => { if (!supabase) return; const { error } = await supabase.rpc('set_content_profile_permission', { p_user_id: selectedUserId, p_content_profile_id: contentProfileId, p_can_publish: true, p_active: true }); setMessage(error?.message || 'Autorização editorial concedida.'); if (!error) await refresh() }
   const unpermit = async (permission: Permission) => { if (!supabase) return; const { error } = await supabase.rpc('set_content_profile_permission', { p_user_id: permission.user_id, p_content_profile_id: permission.content_profile_id, p_can_publish: false, p_active: false }); setMessage(error?.message || 'Autorização editorial removida.'); if (!error) await refresh() }
   const revoke = async (id: string) => { if (!supabase) return; const { error } = await supabase.rpc('revoke_role', { p_assignment_id: id }); setMessage(error?.message || 'Papel revogado.'); if (!error) await refresh() }
-  const disable = async (profile: Profile) => { if (!supabase || !window.confirm(`Desativar ${profile.full_name}?`)) return; const { error } = await supabase.rpc('set_user_active', { p_user_id: profile.id, p_active: false }); setMessage(error?.message || 'Usuário desativado.'); if (!error) await refresh() }
-  return <section><div className="admin-page-heading"><div><p className="eyebrow">SUPERADM</p><h1>Usuários</h1></div></div><div className="admin-three-columns"><section className="admin-card"><h2>Convidar pessoa</h2><form className="admin-form" onSubmit={invite}><label>Nome completo<input value={name} onChange={(event) => setName(event.target.value)} required /></label><label>E-mail individual<input type="email" value={email} onChange={(event) => setEmail(event.target.value)} required /></label><button className="primary">Enviar convite</button></form></section><section className="admin-card"><h2>Conceder função</h2><div className="admin-form"><label>Pessoa<select value={userId} onChange={(event) => setUserId(event.target.value)}>{context.profiles.map((profile) => <option key={profile.id} value={profile.id}>{profile.full_name}</option>)}</select></label><label>Papel<select value={role} onChange={(event) => { const next = event.target.value as Role; setRole(next); setOffice(roleOffices[next][0]) }}>{roles.map((value) => <option key={value}>{value}</option>)}</select></label><label>Função institucional<select value={office} onChange={(event) => setOffice(event.target.value as Office)}>{roleOffices[role].map((value) => <option key={value} value={value}>{labels[value]}</option>)}</select></label><button className="primary" onClick={grant}>Conceder</button></div></section><section className="admin-card"><h2>Autorizar perfil público</h2><div className="admin-form"><label>Pessoa<select value={userId} onChange={(event) => setUserId(event.target.value)}>{context.profiles.map((profile) => <option key={profile.id} value={profile.id}>{profile.full_name}</option>)}</select></label><label>Perfil<select value={contentProfileId} onChange={(event) => setContentProfileId(event.target.value)}>{context.contentProfiles.map((profile) => <option key={profile.id} value={profile.id}>{profile.name}</option>)}</select></label><button onClick={permit}>Autorizar publicação</button></div></section></div><section className="admin-card"><h2>Contas e papéis</h2><ul className="admin-list">{context.profiles.map((profile) => <li key={profile.id}><span><strong>{profile.full_name}</strong><small>{profile.active ? 'ativa' : 'inativa'}</small>{context.assignments.filter((assignment) => assignment.user_id === profile.id && assignment.active).map((assignment) => <small key={assignment.id}>{assignment.role} · {labels[assignment.office]} <button onClick={() => revoke(assignment.id)}>Revogar</button></small>)}{context.permissions.filter((permission) => permission.user_id === profile.id && permission.active).map((permission) => <small key={permission.content_profile_id}>Pode publicar como {context.contentProfiles.find(({ id }) => id === permission.content_profile_id)?.name} <button onClick={() => unpermit(permission)}>Remover vínculo</button></small>)}</span><span className="row-actions">{profile.active && <button onClick={() => disable(profile)}>Desativar</button>}</span></li>)}</ul></section>{message && <p className="admin-toast" role="status">{message}</p>}</section>
+
+  const changeActive = async (profile: Profile, auth: AuthAccount | null) => {
+    const action = userActivationAction(profile, auth)
+    if (!window.confirm(`${action.label} ${profile.full_name}?`)) return
+    if (await invoke({ action: 'set_active', user_id: profile.id, active: action.activate }, action.activate ? 'Conta reativada.' : 'Conta desativada.')) await refresh()
+  }
+
+  const authById = new Map(authAccounts.map((account) => [account.id, account]))
+  const profileIds = new Set(context.profiles.map((profile) => profile.id))
+  const accounts = [
+    ...context.profiles.map((profile) => ({ profile, auth: authById.get(profile.id) || null })),
+    ...authAccounts.filter((account) => !profileIds.has(account.id)).map((auth) => ({ profile: null, auth })),
+  ]
+
+  return <section>
+    <div className="admin-page-heading"><div><p className="eyebrow">SUPERADM</p><h1>Usuários</h1></div></div>
+    <div className="admin-three-columns">
+      <section className="admin-card"><h2>Convidar pessoa</h2><form className="admin-form" onSubmit={invite}>
+        <label>Nome completo<input value={name} onChange={(event) => setName(event.target.value)} required /></label>
+        <label>E-mail individual<input type="email" value={email} onChange={(event) => setEmail(event.target.value)} required /></label>
+        <label>Papel<select value={inviteRole} onChange={(event) => { const next = event.target.value as Role; setInviteRole(next); setInviteOffice(roleOffices[next][0]) }}>{roles.map((value) => <option key={value}>{value}</option>)}</select></label>
+        <label>Função institucional<select value={inviteOffice} onChange={(event) => setInviteOffice(event.target.value as Office)}>{roleOffices[inviteRole].map((value) => <option key={value} value={value}>{labels[value]}</option>)}</select></label>
+        <button className="primary">Enviar convite e conceder função</button>
+      </form></section>
+      <section className="admin-card"><h2>Conceder função</h2><div className="admin-form">
+        <label>Pessoa<select value={selectedUserId} onChange={(event) => setUserId(event.target.value)}>{context.profiles.map((profile) => <option key={profile.id} value={profile.id}>{profile.full_name}</option>)}</select></label>
+        <label>Papel<select value={role} onChange={(event) => { const next = event.target.value as Role; setRole(next); setOffice(roleOffices[next][0]) }}>{roles.map((value) => <option key={value}>{value}</option>)}</select></label>
+        <label>Função institucional<select value={office} onChange={(event) => setOffice(event.target.value as Office)}>{roleOffices[role].map((value) => <option key={value} value={value}>{labels[value]}</option>)}</select></label>
+        <button className="primary" onClick={grant}>Conceder</button>
+      </div></section>
+      <section className="admin-card"><h2>Autorizar perfil público</h2><div className="admin-form">
+        <label>Pessoa<select value={selectedUserId} onChange={(event) => setUserId(event.target.value)}>{context.profiles.map((profile) => <option key={profile.id} value={profile.id}>{profile.full_name}</option>)}</select></label>
+        <label>Perfil<select value={contentProfileId} onChange={(event) => setContentProfileId(event.target.value)}>{context.contentProfiles.map((profile) => <option key={profile.id} value={profile.id}>{profile.name}</option>)}</select></label>
+        <button onClick={permit}>Autorizar publicação</button>
+      </div></section>
+    </div>
+    <section className="admin-card"><h2>Contas e papéis</h2><ul className="admin-list">{accounts.map(({ profile, auth }) => {
+      const assignments = profile ? context.assignments.filter((assignment) => assignment.user_id === profile.id && assignment.active) : []
+      const state = operationalAccountState(profile, assignments.length > 0, auth)
+      const name = profile?.full_name || auth?.email || 'Conta não identificada'
+      return <li key={profile?.id || auth?.id}><span><strong>{name}</strong>
+        {auth?.email && profile && <small>{auth.email}</small>}
+        <small><strong>Estado: {state}</strong></small>
+        {assignments.map((assignment) => <small key={assignment.id}>{assignment.role} · {labels[assignment.office]} <button onClick={() => revoke(assignment.id)}>Revogar</button></small>)}
+        {profile && context.permissions.filter((permission) => permission.user_id === profile.id && permission.active).map((permission) => <small key={permission.content_profile_id}>Pode publicar como {context.contentProfiles.find(({ id }) => id === permission.content_profile_id)?.name} <button onClick={() => unpermit(permission)}>Remover vínculo</button></small>)}
+      </span><span className="row-actions">{profile && <button onClick={() => changeActive(profile, auth)}>{userActivationAction(profile, auth).label}</button>}</span></li>
+    })}</ul></section>
+    {message && <p className="admin-toast" role="status">{message}</p>}
+  </section>
 }
 
 export function SecurityPage({ session, context, superadmin, refresh }: { session: Session; context: Context; superadmin: boolean; refresh: () => Promise<void> }) {
@@ -378,13 +471,21 @@ export function SecurityPage({ session, context, superadmin, refresh }: { sessio
   const remove = async (id: string) => {
     if (!supabase || !window.confirm('Revogar este fator encerra a proteção atual e exigirá novo cadastro. Continuar?')) return
     const { error } = await supabase.auth.mfa.unenroll({ factorId: id })
-    if (error) setMessage(error.message); else await supabase.auth.signOut({ scope: 'global' })
+    if (error) setMessage(error.message)
+    else {
+      forgetAdminSession(session.access_token)
+      await supabase.auth.signOut({ scope: 'global' })
+    }
   }
   const invoke = async (body: Record<string, unknown>) => {
     if (!supabase) return null
-    const { data, error } = await supabase.functions.invoke('admin-users', { body })
-    setMessage(data?.error || error?.message || 'Ação concluída.')
-    return ((!error && !data?.error) || data?.transfer_complete) ? data : null
+    const client = supabase
+    const result = await invokeEdge<Record<string, unknown>>(
+      () => client.functions.invoke('admin-users', { body }),
+      'Não foi possível concluir a ação de segurança.',
+    )
+    setMessage(result.error || 'Ação concluída.')
+    return result.error && !result.data?.transfer_complete ? null : result.data || {}
   }
   const revokeMfa = async () => { if (await invoke({ action: 'reset_mfa', user_id: userId })) await refresh() }
   const transfer = async () => {
@@ -392,7 +493,7 @@ export function SecurityPage({ session, context, superadmin, refresh }: { sessio
     if (!assignment || !confirmCustodyTransfer((message) => window.confirm(message))) return
     if (await invoke({ action: 'transfer_custody', assignment_id: assignment.id, user_id: successorId, role: assignment.role, office: assignment.office })) await refresh()
   }
-  return <section><div className="admin-page-heading"><div><p className="eyebrow">Conta individual</p><h1>Segurança</h1></div></div><section className="admin-card"><h2>MFA</h2><p>{session.user.email}</p><ul className="admin-list">{factors.map((factor) => <li key={factor.id}><span>{factor.friendly_name || 'Aplicativo autenticador'} · {factor.status}</span><button onClick={() => remove(factor.id)}>Revogar e reconfigurar</button></li>)}</ul><button onClick={() => supabase?.auth.signOut({ scope: 'global' })}>Encerrar todas as minhas sessões</button><p>Se o dispositivo for perdido, outro SUPERADM deve revogar o MFA. Não há segredo de recuperação armazenado pelo portal.</p></section>{superadmin && <div className="admin-two-columns"><section className="admin-card"><h2>Revogar MFA</h2><div className="admin-form"><label>Pessoa<select value={userId} onChange={(event) => setUserId(event.target.value)}>{context.profiles.map((profile) => <option key={profile.id} value={profile.id}>{profile.full_name}</option>)}</select></label><button onClick={revokeMfa}>Revogar MFA</button></div></section><section className="admin-card"><h2>Transferir custódia</h2><div className="admin-form"><label>Atribuição atual<select value={successionAssignmentId} onChange={(event) => setSuccessionAssignmentId(event.target.value)}>{context.assignments.filter(({ active }) => active).map((assignment) => <option key={assignment.id} value={assignment.id}>{context.profiles.find(({ id }) => id === assignment.user_id)?.full_name} · {assignment.role} · {labels[assignment.office]}</option>)}</select></label><label>Sucessor(a)<select value={successorId} onChange={(event) => setSuccessorId(event.target.value)}>{context.profiles.filter(({ active }) => active).map((profile) => <option key={profile.id} value={profile.id}>{profile.full_name}</option>)}</select></label><button onClick={transfer}>Transferir e encerrar anterior</button></div></section></div>}{message && <p className="admin-toast" role="status">{message}</p>}</section>
+  return <section><div className="admin-page-heading"><div><p className="eyebrow">Conta individual</p><h1>Segurança</h1></div></div><section className="admin-card"><h2>MFA</h2><p>{session.user.email}</p><ul className="admin-list">{factors.map((factor) => <li key={factor.id}><span>{factor.friendly_name || 'Aplicativo autenticador'} · {factor.status}</span><button onClick={() => remove(factor.id)}>Revogar e reconfigurar</button></li>)}</ul><button onClick={() => { forgetAdminSession(session.access_token); void supabase?.auth.signOut({ scope: 'global' }) }}>Encerrar todas as minhas sessões</button><p>Se o dispositivo for perdido, outro SUPERADM deve revogar o MFA. Não há segredo de recuperação armazenado pelo portal.</p></section>{superadmin && <div className="admin-two-columns"><section className="admin-card"><h2>Revogar MFA</h2><div className="admin-form"><label>Pessoa<select value={userId} onChange={(event) => setUserId(event.target.value)}>{context.profiles.map((profile) => <option key={profile.id} value={profile.id}>{profile.full_name}</option>)}</select></label><button onClick={revokeMfa}>Revogar MFA</button></div></section><section className="admin-card"><h2>Transferir custódia</h2><div className="admin-form"><label>Atribuição atual<select value={successionAssignmentId} onChange={(event) => setSuccessionAssignmentId(event.target.value)}>{context.assignments.filter(({ active }) => active).map((assignment) => <option key={assignment.id} value={assignment.id}>{context.profiles.find(({ id }) => id === assignment.user_id)?.full_name} · {assignment.role} · {labels[assignment.office]}</option>)}</select></label><label>Sucessor(a)<select value={successorId} onChange={(event) => setSuccessorId(event.target.value)}>{context.profiles.filter(({ active }) => active).map((profile) => <option key={profile.id} value={profile.id}>{profile.full_name}</option>)}</select></label><button onClick={transfer}>Transferir e encerrar anterior</button></div></section></div>}{message && <p className="admin-toast" role="status">{message}</p>}</section>
 }
 
 function AdminShell({ session }: { session: Session }) {
@@ -418,20 +519,37 @@ function AdminShell({ session }: { session: Session }) {
   else if (path === '/admin/profiles' && superadmin) page = <ContentProfilesPage context={context} refresh={refresh} />
   else if (path === '/admin/users' && superadmin) page = <UsersPage context={context} refresh={refresh} />
   else if (path === '/admin/security') page = <SecurityPage session={session} context={context} superadmin={superadmin} refresh={refresh} />
-  return <><header className="admin-topbar"><a href="/" onClick={(event) => { event.preventDefault(); route('/') }}>CARB</a><div><span>{userRoles.join(' · ')}</span><button onClick={() => supabase?.auth.signOut()}>Sair</button></div></header><div className="admin-layout"><aside><nav aria-label="Painel administrativo">{nav.map(([href, label]) => <a key={href} href={href} aria-current={path === href || (href === '/admin/posts' && path.startsWith('/admin/posts/')) ? 'page' : undefined} onClick={(event) => { event.preventDefault(); route(href) }}>{label}</a>)}</nav></aside><main className="admin-content" id="conteudo">{page}{message && <p role="status">{message}</p>}</main></div></>
+  return <><header className="admin-topbar"><a href="/" onClick={(event) => { event.preventDefault(); route('/') }}>CARB</a><div><span>{userRoles.join(' · ')}</span><button onClick={() => { forgetAdminSession(session.access_token); void supabase?.auth.signOut() }}>Sair</button></div></header><div className="admin-layout"><aside><nav aria-label="Painel administrativo">{nav.map(([href, label]) => <a key={href} href={href} aria-current={path === href || (href === '/admin/posts' && path.startsWith('/admin/posts/')) ? 'page' : undefined} onClick={(event) => { event.preventDefault(); route(href) }}>{label}</a>)}</nav></aside><main className="admin-content" id="conteudo">{page}{message && <p role="status">{message}</p>}</main></div></>
 }
 
 export function AdminApp() {
   const [session, setSession] = useState<Session | null>(null)
   const [ready, setReady] = useState(!supabase)
   const [aal2, setAal2] = useState(false)
+  const [loginMessage, setLoginMessage] = useState('')
   const [needsPassword, setNeedsPassword] = useState(() => typeof window !== 'undefined' && /(?:[?#&])type=(?:invite|recovery)/.test(location.href))
   useEffect(() => {
     if (!supabase) return
     void supabase.auth.getSession().then(({ data }) => { setSession(data.session); setReady(true) })
-    const { data } = supabase.auth.onAuthStateChange((event, next) => { setSession(next); if (event === 'PASSWORD_RECOVERY') setNeedsPassword(true); if (!next) setAal2(false) })
+    const { data } = supabase.auth.onAuthStateChange((event, next) => { setSession(next); if (next) setLoginMessage(''); if (event === 'PASSWORD_RECOVERY') setNeedsPassword(true); if (!next) setAal2(false) })
     return () => data.subscription.unsubscribe()
   }, [])
+  useEffect(() => {
+    if (!session || needsPassword || !supabase) return
+    const client = supabase
+    const deadline = adminSessionDeadline(session.access_token)
+    const expire = () => {
+      forgetAdminSession(session.access_token)
+      setLoginMessage('Sua sessão administrativa de 60 minutos expirou. Entre novamente.')
+      void client.auth.signOut()
+    }
+    if (!deadline || deadline <= Date.now()) {
+      expire()
+      return
+    }
+    const timer = window.setTimeout(expire, deadline - Date.now())
+    return () => window.clearTimeout(timer)
+  }, [needsPassword, session])
   useEffect(() => {
     if (!session || !aal2 || !supabase) return
     const key = `carb:login-audit:${session.user.id}:${session.expires_at}`
@@ -440,8 +558,14 @@ export function AdminApp() {
   }, [session, aal2])
   if (!supabaseConfigured) return <main className="admin-login"><a href="/">← Voltar ao portal</a><section className="admin-login-card"><p className="eyebrow">Configuração necessária</p><h1>Supabase não configurado</h1><p>Defina <code>VITE_SUPABASE_URL</code> e <code>VITE_SUPABASE_ANON_KEY</code>. Não use a chave <code>service_role</code> no frontend.</p></section></main>
   if (!ready) return <main className="admin-login"><p role="status">Validando sessão…</p></main>
-  if (!session) return <Login />
-  if (needsPassword) return <PasswordSetup onDone={() => { history.replaceState({}, '', '/admin'); setNeedsPassword(false) }} />
+  if (!session) return <Login initialMessage={loginMessage} />
+  if (needsPassword) return <PasswordSetup onDone={async () => {
+    forgetAdminSession(session.access_token)
+    await supabase?.auth.signOut()
+    history.replaceState({}, '', '/admin')
+    setNeedsPassword(false)
+    setLoginMessage('Senha definida. Entre com sua conta individual e confirme o MFA.')
+  }} />
   if (!aal2) return <MfaGate onVerified={setAal2} />
   return <AdminShell session={session} />
 }

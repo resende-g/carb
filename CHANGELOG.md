@@ -1,5 +1,23 @@
 # Changelog
 
+## 1.3.2 — 2026-08-31
+
+### Corrigido
+
+- Onboarding administrativo agora convida a pessoa e cria `profile` e `role_assignment` inicial em um fluxo coerente, com compensação segura no Auth se o banco rejeitar a configuração.
+- Convites para e-mails existentes não criam nova identidade e retornam orientação específica para conta inativa, sem função ou ainda não configurada.
+- Contas inativas podem ser reativadas pelo painel; desativação e reativação usam `set_user_active`, preservam a proteção de SUPERADMIN e são auditadas.
+- Erros não-2xx de `admin-auth` e `admin-users` recuperam mensagens públicas do JSON sem expor stack, tokens, secrets ou detalhes internos do banco.
+- A listagem deriva os estados `Ativa`, `Inativa`, `Sem função`, `Convite/primeiro acesso pendente` e `Conta não configurada` sem duplicar estado persistido.
+
+### Segurança
+
+- Sessões administrativas têm duração absoluta de 60 minutos, vinculada ao `session_id` e validada no frontend, nas Edge Functions, nas RPCs e pela RLS.
+- MFA/TOTP AAL2 continua obrigatório em toda nova sessão, sem janela de confiança de 24 horas.
+- A Edge Function continua sendo o único componente com acesso ao `service_role`; o frontend não acessa `auth.users` diretamente.
+- GitHub Actions valida lint, TypeScript, Vitest, build, migrations, pgTAP e advisors em ambiente local sem secrets; actions e Supabase CLI usam versões imutáveis.
+- A política de branches mantidas exige revisão, checks atualizados e bloqueia force push e exclusão.
+
 ## 1.3.0 — 2026-08-30
 
 ### Adicionado

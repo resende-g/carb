@@ -2,6 +2,17 @@ import { createClient } from 'npm:@supabase/supabase-js@2.112.4'
 import { corsHeaders, json } from '../_shared/http.ts'
 
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+const uuidPattern = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i
+const adminSessionDurationMs = 60 * 60 * 1000
+
+function jwtPayload(token: string) {
+  try {
+    const value = token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/')
+    return JSON.parse(atob(value.padEnd(Math.ceil(value.length / 4) * 4, '='))) as { session_id?: string }
+  } catch {
+    return {}
+  }
+}
 
 Deno.serve(async (request) => {
   let headers: Record<string, string>
@@ -48,6 +59,22 @@ Deno.serve(async (request) => {
     return json({ error: 'Conta administrativa inativa ou sem função.' }, 403, headers)
   }
 
-  return json({ access_token: data.session.access_token, refresh_token: data.session.refresh_token }, 200, headers)
-})
+  const sessionId = jwtPayload(data.session.access_token).session_id || ''
+  if (!uuidPattern.test(sessionId)) {
+    await authClient.auth.signOut()
+    return json({ error: 'Não foi possível iniciar a sessão administrativa.' }, 503, headers)
+  }
 
+  const expiresAt = new Date(Date.now() + adminSessionDurationMs).toISOString()
+  const { error: sessionError } = await admin.from('admin_sessions').insert({
+    session_id: sessionId,
+    user_id: data.user.id,
+    expires_at: expiresAt,
+  })
+  if (sessionError) {
+    await authClient.auth.signOut()
+    return json({ error: 'Não foi possível iniciar a sessão administrativa.' }, 503, headers)
+  }
+
+  return json({ access_token: data.session.access_token, refresh_token: data.session.refresh_token, admin_expires_at: expiresAt }, 200, headers)
+})

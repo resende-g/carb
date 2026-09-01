@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { adminRoutes, avatarIssue, canDecideOwnable, confirmCustodyTransfer, passwordIssue } from './rules'
+import { adminRoutes, avatarIssue, canDecideOwnable, confirmCustodyTransfer, operationalAccountState, passwordIssue, userActivationAction } from './rules'
 
 describe('regras visuais do painel', () => {
   it('não oferece decisão sobre conteúdo próprio', () => {
@@ -32,5 +32,19 @@ describe('regras visuais do painel', () => {
     expect(confirmCustodyTransfer(() => accepted[calls++])).toBe(false)
     expect(calls).toBe(2)
     expect(confirmCustodyTransfer(() => true)).toBe(true)
+  })
+
+  it('deriva estados operacionais sem persistir um segundo status', () => {
+    expect(operationalAccountState({ active: false }, true)).toBe('Inativa')
+    expect(operationalAccountState({ active: true }, false)).toBe('Sem função')
+    expect(operationalAccountState({ active: true }, true, { invited_at: '2026-08-31', last_sign_in_at: null, banned: false })).toBe('Convite/primeiro acesso pendente')
+    expect(operationalAccountState({ active: true }, true, { invited_at: null, last_sign_in_at: '2026-08-31', banned: false })).toBe('Ativa')
+    expect(operationalAccountState(null, false)).toBe('Conta não configurada')
+  })
+
+  it('alterna entre desativação e reativação conforme o estado real', () => {
+    expect(userActivationAction({ active: true })).toMatchObject({ activate: false, label: 'Desativar' })
+    expect(userActivationAction({ active: false })).toMatchObject({ activate: true, label: 'Reativar' })
+    expect(userActivationAction({ active: true }, { banned: true })).toMatchObject({ activate: true, label: 'Reativar' })
   })
 })
