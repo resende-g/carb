@@ -1,4 +1,4 @@
-# Portal CARB — v1.3
+# Portal CARB — v1.3.2
 
 Protótipo público full-stack do Portal do Centro Acadêmico Ruy Barbosa (CARB), construído com React, TypeScript, Vite, Tailwind CSS 4, Shadcn/ui e Supabase. Usa somente conteúdo público ou sintético e **não representa sistema institucional homologado ou pronto para produção**.
 
@@ -35,15 +35,15 @@ npx supabase db reset --local
 npx supabase test db --local
 ```
 
-## Escopo da v1.3
+## Escopo da v1.3.2
 
 - PostgreSQL versionado por migrations, seed sintético e testes pgTAP;
-- Supabase Auth com contas individuais, TOTP obrigatório e sessão AAL2 no painel;
+- Supabase Auth com contas individuais, TOTP/AAL2 obrigatório em cada sessão e expiração administrativa absoluta em 60 minutos;
 - RBAC `EDITOR`, `ADMIN` e `SUPERADMIN`, autorização editorial por perfil e RLS deny-by-default;
 - posts, revisões, hashtags, documentos, reações, remoções, dashboard e auditoria persistentes;
 - Storage privado com liberação pública somente de arquivos aprovados/publicados;
 - sucessão institucional sem reutilizar contas e proteção do último `SUPERADMIN`;
-- Edge Functions para login auditável e operações administrativas privilegiadas;
+- Edge Functions para login auditável, onboarding com função inicial, estados seguros do Auth e operações administrativas privilegiadas;
 - feed e recursos públicos da v1.2 preservados, com fallback explícito para fixtures quando o Supabase não está configurado.
 
 ## Dados e limitações

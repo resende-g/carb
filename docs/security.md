@@ -4,10 +4,13 @@
 
 - autorização derivada do banco, com `EDITOR`, `ADMIN` e `SUPERADMIN`, AAL2 e RLS deny-by-default;
 - TOTP administrado pelo Supabase Auth, sem segredo MFA no banco da aplicação;
+- duração administrativa absoluta de 60 minutos por `session_id`, sem extensão por refresh do JWT;
 - conta individual, vínculo editorial explícito e impedimento de autoaprovação;
 - auditoria append-only e proteção transacional do último SUPERADMIN ativo;
 - bucket privado com MIME, tamanho e autorização validados;
 - `service_role` restrita à Edge Function e ao bootstrap executado em ambiente administrativo.
+
+O AAL2 é exigido em toda nova sessão. Não há confiança de MFA por 24 horas nem mecanismo paralelo de dispositivo confiável.
 
 Ainda dependem do ambiente implantado: CSP/HSTS, SMTP, CAPTCHA, limites operacionais, backup/restauração, monitoramento e pentest. Portanto, a v1.3 não deve ser tratada como produção homologada.
 

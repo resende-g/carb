@@ -18,6 +18,29 @@ export function avatarIssue(file: Pick<File, 'size' | 'type'>) {
   return ''
 }
 
+export type OperationalAccountState = 'Ativa' | 'Inativa' | 'Sem função' | 'Convite/primeiro acesso pendente' | 'Conta não configurada'
+
+export function operationalAccountState(
+  profile: { active: boolean } | null,
+  hasActiveRole: boolean,
+  auth?: { invited_at: string | null; last_sign_in_at: string | null; banned: boolean } | null,
+): OperationalAccountState {
+  if (!profile) return 'Conta não configurada'
+  if (!profile.active || auth?.banned) return 'Inativa'
+  if (!hasActiveRole) return 'Sem função'
+  if (auth?.invited_at && !auth.last_sign_in_at) return 'Convite/primeiro acesso pendente'
+  return 'Ativa'
+}
+
+export function userActivationAction(profile: { active: boolean }, auth?: { banned: boolean } | null) {
+  const activate = !profile.active || Boolean(auth?.banned)
+  return {
+    activate,
+    label: activate ? 'Reativar' : 'Desativar',
+    confirmation: activate ? 'Reativar esta conta administrativa?' : 'Desativar esta conta administrativa?',
+  }
+}
+
 export const adminRoutes = (canModerate: boolean, superadmin: boolean) => [
   ['/admin', 'Dashboard'],
   ['/admin/posts', 'Posts'],

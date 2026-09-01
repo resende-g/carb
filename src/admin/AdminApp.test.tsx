@@ -4,7 +4,11 @@ import { AdminApp, ContentProfilesPage, PostsPage, SecurityPage, UsersPage } fro
 
 const refresh = async () => undefined
 const context = {
-  profiles: [{ id: 'user-1', full_name: 'Pessoa sintética', active: true }],
+  profiles: [
+    { id: 'user-1', full_name: 'Pessoa sintética', active: true },
+    { id: 'user-2', full_name: 'Pessoa inativa', active: false },
+    { id: 'user-3', full_name: 'Pessoa sem função', active: true },
+  ],
   assignments: [{ id: 'assignment-1', user_id: 'user-1', role: 'SUPERADMIN', office: 'STI_ADMIN', active: true }],
   contentProfiles: [{ id: 'profile-1', name: 'Perfil sintético', slug: 'perfil-sintetico', avatar_path: 'profile-avatars/profile-1/avatar.png', avatar_url: 'https://example.invalid/avatar.png', description: '', active: true }],
   permissions: [{ user_id: 'user-1', content_profile_id: 'profile-1', can_publish: true, active: true }],
@@ -46,5 +50,14 @@ describe('entrada administrativa', () => {
     expect(security).toContain('Transferir custódia')
     const regularSecurity = renderToStaticMarkup(<SecurityPage session={session as never} context={context as never} superadmin={false} refresh={refresh} />)
     expect(regularSecurity).not.toContain('Transferir custódia')
+  })
+
+  it('mostra onboarding com função e a ação correta para contas ativas e inativas', () => {
+    const users = renderToStaticMarkup(<UsersPage context={context as never} refresh={refresh} />)
+    expect(users).toContain('Enviar convite e conceder função')
+    expect(users).toContain('Diretoria de Comunicação')
+    expect(users).toMatch(/Pessoa sintética[\s\S]*Estado: Ativa[\s\S]*Desativar/)
+    expect(users).toMatch(/Pessoa inativa[\s\S]*Estado: Inativa[\s\S]*Reativar/)
+    expect(users).toMatch(/Pessoa sem função[\s\S]*Estado: Sem função[\s\S]*Desativar/)
   })
 })
