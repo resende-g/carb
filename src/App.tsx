@@ -2,11 +2,13 @@ import { Fragment, useEffect, useMemo, useRef, useState } from 'react'
 import academicDataJson from './academic-data.json'
 import { AdminApp } from './admin/AdminApp'
 import { HashtagChip } from './components/HashtagChip'
+import { AdminIcon, type AdminIconName } from './components/ui/admin-icon'
 import { Button } from './components/ui/button'
 import { Card } from './components/ui/card'
 import { Input } from './components/ui/input'
 import { Label } from './components/ui/label'
 import { Separator } from './components/ui/separator'
+import { Toggle } from './components/ui/toggle'
 import { documents, hashtags as initialHashtags, notices, profiles as initialProfiles, systems, type Hashtag, type Notice, type Profile, type ReactionCounts } from './data'
 import { filterNotices, recentPostingProfiles, trendingHashtags } from './feed'
 import { meetingLabel, selectionIssue, TIME_ROWS, type ClassOffering, type SelectionIssue, type Semester, type Shift } from './planner'
@@ -35,16 +37,16 @@ const REACTIONS_KEY = 'carb:reactions'
 const COMPLETED_KEY = 'carb:completed-components'
 const THEME_KEY = 'carb:theme'
 const REACTION_OPTIONS: { key: Reaction; icon: string; label: string }[] = [
-  { key: 'heart', icon: '/icons/coracao-24.png', label: 'Coração' },
-  { key: 'point', icon: '/icons/dedo-24.png', label: 'Indicador' },
-  { key: 'skull', icon: '/icons/caveira-24.png', label: 'Caveira' },
-  { key: 'dance', icon: '/icons/danca-24.png', label: 'Dançarina' },
+  { key: 'heart', icon: '/icons/smiling-face-with-open-mouth_1f6030.png', label: 'Rosto sorridente' },
+  { key: 'point', icon: '/icons/crying-face_1f6220.png', label: 'Rosto chorando' },
+  { key: 'skull', icon: '/icons/no-entry-sign_1f6ab0.png', label: 'Sinal de proibido' },
+  { key: 'dance', icon: '/icons/kiss-mark_1f48b.png', label: 'Marca de beijo' },
 ]
 const TAB_LABELS: Record<Tab, string> = { avisos: 'Avisos', sistemas: 'Sistemas', planejador: 'Planejador', acervo: 'Acervo documental' }
-const NAVIGATION: { tab: Exclude<Tab, 'avisos'>; label: string; icon: string }[] = [
-  { tab: 'planejador', label: 'Montador de grade', icon: '/icons/calendario-24.png' },
-  { tab: 'sistemas', label: 'Sistemas', icon: '/icons/configuracoes-24.png' },
-  { tab: 'acervo', label: 'Acervo', icon: '/icons/acervo-24.png' },
+const NAVIGATION: { tab: Exclude<Tab, 'avisos'>; label: string; icon: AdminIconName }[] = [
+  { tab: 'planejador', label: 'Montador de grade', icon: 'calendar' },
+  { tab: 'sistemas', label: 'Sistemas', icon: 'settings' },
+  { tab: 'acervo', label: 'Acervo', icon: 'document-2' },
 ]
 const WEEKDAYS = ['segunda', 'terça', 'quarta', 'quinta', 'sexta', 'sábado']
 const WEEKDAY_LABELS: Record<string, string> = { segunda: 'Seg.', terça: 'Ter.', quarta: 'Qua.', quinta: 'Qui.', sexta: 'Sex.', sábado: 'Sáb.' }
@@ -116,7 +118,7 @@ function ReactionButtons({ notice, reaction, onReact }: { notice: Notice; reacti
           </button>
         ))}
         <button className="reaction share" type="button" onClick={share} aria-label="Compartilhar link do aviso" title="Compartilhar">
-          <img src="/icons/cursor-24.png" alt="" aria-hidden="true" />
+          <AdminIcon name="share" />
         </button>
       </div>
       {shareMessage && <p className="share-message" role="status">{shareMessage}</p>}
@@ -272,7 +274,7 @@ function Planner({ query, offerings }: { query: string; offerings: ClassOffering
         <section className="planner-main" aria-labelledby="schedule-title">
           <div className="planner-toolbar">
             <div><strong>{selected.length} turma(s) selecionada(s)</strong><span>{selected.length ? 'Grade sem conflitos' : 'Adicione turmas pela coluna lateral'}</span></div>
-            <button className="primary print-button" type="button" disabled={!selected.length} onClick={() => window.print()}>Finalizar e salvar PDF</button>
+            <button className="primary print-button" type="button" disabled={!selected.length} onClick={() => window.print()}><AdminIcon name="save" /> Finalizar e salvar PDF</button>
           </div>
           <section className="printable-schedule weekly-board">
             <div className="subheading"><div><p className="eyebrow">Sem choques de horário</p><h2 id="schedule-title">Visualização semanal</h2></div></div>
@@ -282,7 +284,7 @@ function Planner({ query, offerings }: { query: string; offerings: ClassOffering
 
           <aside className="selected-panel" aria-labelledby="selected-title">
             <div className="subheading"><h2 id="selected-title">Turmas na grade</h2><span>{selected.length} turma(s)</span></div>
-            {selected.length ? <ul>{selected.map((item) => <li key={item.id}><span><strong>{item.code} · T{item.class}</strong><small>{item.meetings.map(meetingLabel).join(' · ')}</small></span><button type="button" onClick={(event) => toggle(item, event.currentTarget)} aria-label={`Remover ${item.code}`}>×</button></li>)}</ul> : <p>Nenhuma turma selecionada.</p>}
+            {selected.length ? <ul>{selected.map((item) => <li key={item.id}><span><strong>{item.code} · T{item.class}</strong><small>{item.meetings.map(meetingLabel).join(' · ')}</small></span><button type="button" onClick={(event) => toggle(item, event.currentTarget)} aria-label={`Remover ${item.code}`}><AdminIcon name="minus" /></button></li>)}</ul> : <p>Nenhuma turma selecionada.</p>}
           </aside>
         </section>
 
@@ -300,7 +302,7 @@ function Planner({ query, offerings }: { query: string; offerings: ClassOffering
               const isSelected = selectedIds.includes(item.id)
               return (
                 <article className={isSelected ? 'offering-card selected' : 'offering-card'} key={item.id}>
-                  <div className="offering-title"><div><span>{item.code} · turma {item.class}</span><h3>{item.component}</h3></div><button type="button" onClick={(event) => toggle(item, event.currentTarget)}>{isSelected ? 'Remover' : 'Adicionar'}</button></div>
+                  <div className="offering-title"><div><span>{item.code} · turma {item.class}</span><h3>{item.component}</h3></div><button type="button" aria-pressed={isSelected} onClick={(event) => toggle(item, event.currentTarget)}><AdminIcon name={isSelected ? 'minus' : 'plus'} /> {isSelected ? 'Remover' : 'Adicionar'}</button></div>
                   <p>{item.professor}</p>
                   <div className="offering-facts"><span>{item.meetings.map(meetingLabel).join(' · ')}</span><span>{item.location}</span><span>{semesterLabel(item[semesterField])}</span><span>{item.enrolled}/{item.capacity} matrículas</span></div>
                 </article>
@@ -480,13 +482,13 @@ export default function App() {
       <a className="skip-link" href="#conteudo">Pular para o conteúdo</a>
       <header className="topbar" id="top">
         <button className="brand-button" type="button" onClick={goHome} aria-label="CARB — voltar aos avisos" title="Voltar aos avisos"><img src="/logo-carb.png" alt="" aria-hidden="true" /></button>
-        <div className="search-box" id="site-search"><img src="/icons/busca-24.png" alt="" aria-hidden="true" /><Label className="sr-only" htmlFor="search">Buscar em {labels[tab]}</Label><Input id="search" type="search" value={query} onChange={(event) => setQuery(event.target.value)} placeholder={`Buscar em ${labels[tab].toLocaleLowerCase('pt-BR')}`} />{query && <button className="search-clear" type="button" aria-label="Limpar busca" onClick={() => setQuery('')}>×</button>}</div>
+        <div className="search-box" id="site-search"><AdminIcon name="search" /><Label className="sr-only" htmlFor="search">Buscar em {labels[tab]}</Label><Input id="search" type="search" value={query} onChange={(event) => setQuery(event.target.value)} placeholder={`Buscar em ${labels[tab].toLocaleLowerCase('pt-BR')}`} />{query && <button className="search-clear" type="button" aria-label="Limpar busca" onClick={() => setQuery('')}>×</button>}</div>
         <div className="menu-wrap" ref={menuRef}>
-          <button ref={menuButtonRef} className="menu-button" type="button" aria-label={menuOpen ? 'Fechar menu principal' : 'Abrir menu principal'} aria-expanded={menuOpen} aria-controls="main-menu" onClick={() => setMenuOpen((current) => !current)}><span /><span /><span /></button>
+          <button ref={menuButtonRef} className="menu-button" type="button" aria-label={menuOpen ? 'Fechar menu principal' : 'Abrir menu principal'} aria-expanded={menuOpen} aria-controls="main-menu" onClick={() => setMenuOpen((current) => !current)}><AdminIcon name="burger" /></button>
           <nav className="main-menu" id="main-menu" aria-label="Navegação principal" hidden={!menuOpen}>
-            {NAVIGATION.map((item) => <button key={item.tab} className={tab === item.tab ? 'menu-item active' : 'menu-item'} aria-current={tab === item.tab ? 'page' : undefined} onClick={() => changeTab(item.tab)}><img src={item.icon} alt="" aria-hidden="true" /><span>{item.label}</span></button>)}
+            {NAVIGATION.map((item) => <button key={item.tab} className={tab === item.tab ? 'menu-item active' : 'menu-item'} aria-current={tab === item.tab ? 'page' : undefined} onClick={() => changeTab(item.tab)}><AdminIcon name={item.icon} /><span>{item.label}</span></button>)}
             <Separator />
-            <button className="menu-item" type="button" aria-label={theme === 'dark' ? 'Usar tema claro' : 'Usar tema escuro'} aria-pressed={theme === 'light'} onClick={() => setTheme((current) => current === 'dark' ? 'light' : 'dark')}><span className="theme-symbol" aria-hidden="true">{theme === 'dark' ? '☼' : '◐'}</span><span>{theme === 'dark' ? 'Modo claro' : 'Modo escuro'}</span></button>
+            <Toggle className="menu-item" checked={theme === 'light'} label="Tema claro" ariaLabel="Tema claro" onCheckedChange={(checked) => setTheme(checked ? 'light' : 'dark')} />
           </nav>
         </div>
       </header>
