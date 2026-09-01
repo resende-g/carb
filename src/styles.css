@@ -234,6 +234,14 @@ main { min-height: calc(100vh - 150px); }
 .admin-icon { width: 1rem; height: 1rem; flex: none; }
 .admin-icon-loading { animation: admin-icon-spin .8s linear infinite; }
 @keyframes admin-icon-spin { to { transform: rotate(360deg); } }
+.toggle-button { display: inline-flex; align-items: center; gap: .55rem; min-height: 44px; color: inherit; font-size: .8rem; font-weight: 800; cursor: pointer; }
+.toggle-button > input { position: absolute; width: 1px; height: 1px; overflow: hidden; opacity: 0; }
+.toggle-track { display: block; width: 42px; height: 24px; padding: 2px; border: 1px solid #555; border-radius: 999px; background: #242424; transition: background .18s, border-color .18s; }
+.toggle-thumb { display: block; width: 18px; height: 18px; border-radius: 50%; background: #aaa; transition: transform .18s, background .18s; }
+.toggle-button > input:checked + .toggle-track { border-color: #fff; background: #fff; }
+.toggle-button > input:checked + .toggle-track .toggle-thumb { transform: translateX(18px); background: #050505; }
+.toggle-button:has(input:focus-visible) { outline: 3px solid color-mix(in srgb, currentColor 45%, transparent); outline-offset: 2px; border-radius: .6rem; }
+.toggle-button:has(input:disabled) { cursor: not-allowed; opacity: .5; }
 .admin-media-preview { display: block; width: min(360px, 100%); max-height: 260px; border-radius: .65rem; object-fit: contain; background: #050505; }
 .profile-summary { display: flex !important; grid-template-columns: none !important; align-items: center; gap: .7rem !important; }
 .profile-summary > span { display: grid; gap: .2rem; }
@@ -461,6 +469,10 @@ footer strong { color: #fff; }
 :root[data-theme="light"] .admin-card > button:not([data-slot="button"]),
 :root[data-theme="light"] .admin-form > button:not(.primary):not([data-slot="button"]) { border-color: #bbb; color: #111; }
 :root[data-theme="light"] .workflow-item { border-color: #ddd; }
+:root[data-theme="light"] .toggle-track { border-color: #aaa; background: #ddd; }
+:root[data-theme="light"] .toggle-thumb { background: #666; }
+:root[data-theme="light"] .toggle-button > input:checked + .toggle-track { border-color: #111; background: #111; }
+:root[data-theme="light"] .toggle-button > input:checked + .toggle-track .toggle-thumb { background: #fff; }
 :root[data-theme="light"] .workflow-item > p { color: #555; }
 :root[data-theme="light"] .status-pill { background: #e8e8eb; }
 :root[data-theme="light"] .admin-toast { border-color: #ccc; background: #fff; }

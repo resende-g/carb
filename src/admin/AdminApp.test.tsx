@@ -36,6 +36,8 @@ describe('entrada administrativa', () => {
     const profiles = renderToStaticMarkup(<ContentProfilesPage context={context as never} refresh={refresh} />)
     expect(profiles).toContain('Foto atual de Perfil sintético')
     expect(profiles).toMatch(/admin-icon[\s\S]*Trocar foto/)
+    expect(profiles).toContain('aria-label="Perfil Perfil sintético ativo"')
+    expect(profiles).toContain('role="switch"')
   })
 
   it('separa ações de usuários das ações sensíveis de segurança', () => {
@@ -55,12 +57,12 @@ describe('entrada administrativa', () => {
     expect(regularSecurity).not.toContain('Transferir custódia')
   })
 
-  it('mostra onboarding com função e a ação correta para contas ativas e inativas', () => {
+  it('mostra onboarding com função e o estado correto para contas ativas e inativas', () => {
     const users = renderToStaticMarkup(<UsersPage context={context as never} refresh={refresh} />)
     expect(users).toContain('Enviar convite e conceder função')
     expect(users).toContain('Diretoria de Comunicação')
-    expect(users).toMatch(/Pessoa sintética[\s\S]*Estado: Ativa[\s\S]*Desativar/)
-    expect(users).toMatch(/Pessoa inativa[\s\S]*Estado: Inativa[\s\S]*Reativar/)
-    expect(users).toMatch(/Pessoa sem função[\s\S]*Estado: Sem função[\s\S]*Desativar/)
+    expect(users).toContain('aria-label="Conta de Pessoa sintética ativa" checked=""')
+    expect(users).toContain('aria-label="Conta de Pessoa inativa ativa"/>')
+    expect(users).toContain('aria-label="Conta de Pessoa sem função ativa" checked=""')
   })
 })

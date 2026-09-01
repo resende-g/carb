@@ -8,6 +8,7 @@ import { Card } from './components/ui/card'
 import { Input } from './components/ui/input'
 import { Label } from './components/ui/label'
 import { Separator } from './components/ui/separator'
+import { Toggle } from './components/ui/toggle'
 import { documents, hashtags as initialHashtags, notices, profiles as initialProfiles, systems, type Hashtag, type Notice, type Profile, type ReactionCounts } from './data'
 import { filterNotices, recentPostingProfiles, trendingHashtags } from './feed'
 import { meetingLabel, selectionIssue, TIME_ROWS, type ClassOffering, type SelectionIssue, type Semester, type Shift } from './planner'
@@ -487,7 +488,7 @@ export default function App() {
           <nav className="main-menu" id="main-menu" aria-label="Navegação principal" hidden={!menuOpen}>
             {NAVIGATION.map((item) => <button key={item.tab} className={tab === item.tab ? 'menu-item active' : 'menu-item'} aria-current={tab === item.tab ? 'page' : undefined} onClick={() => changeTab(item.tab)}><AdminIcon name={item.icon} /><span>{item.label}</span></button>)}
             <Separator />
-            <button className="menu-item" type="button" aria-label={theme === 'dark' ? 'Usar tema claro' : 'Usar tema escuro'} aria-pressed={theme === 'light'} onClick={() => setTheme((current) => current === 'dark' ? 'light' : 'dark')}><span className="theme-symbol" aria-hidden="true">{theme === 'dark' ? '☼' : '◐'}</span><span>{theme === 'dark' ? 'Modo claro' : 'Modo escuro'}</span></button>
+            <Toggle className="menu-item" checked={theme === 'light'} label="Tema claro" ariaLabel="Tema claro" onCheckedChange={(checked) => setTheme(checked ? 'light' : 'dark')} />
           </nav>
         </div>
       </header>
