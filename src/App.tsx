@@ -485,7 +485,7 @@ export default function App() {
         <div className="menu-wrap" ref={menuRef}>
           <button ref={menuButtonRef} className="menu-button" type="button" aria-label={menuOpen ? 'Fechar menu principal' : 'Abrir menu principal'} aria-expanded={menuOpen} aria-controls="main-menu" onClick={() => setMenuOpen((current) => !current)}><AdminIcon name="burger" /></button>
           <nav className="main-menu" id="main-menu" aria-label="Navegação principal" hidden={!menuOpen}>
-            {NAVIGATION.map((item) => <button key={item.tab} className={tab === item.tab ? 'menu-item active' : 'menu-item'} aria-current={tab === item.tab ? 'page' : undefined} onClick={() => changeTab(item.tab)}>{item.tab === 'planejador' ? <AdminIcon name="calendar" /> : <img src={item.icon} alt="" aria-hidden="true" />}<span>{item.label}</span></button>)}
+            {NAVIGATION.map((item) => <button key={item.tab} className={tab === item.tab ? 'menu-item active' : 'menu-item'} aria-current={tab === item.tab ? 'page' : undefined} onClick={() => changeTab(item.tab)}>{item.tab === 'planejador' ? <AdminIcon name="calendar" /> : item.tab === 'sistemas' ? <AdminIcon name="settings" /> : <img src={item.icon} alt="" aria-hidden="true" />}<span>{item.label}</span></button>)}
             <Separator />
             <button className="menu-item" type="button" aria-label={theme === 'dark' ? 'Usar tema claro' : 'Usar tema escuro'} aria-pressed={theme === 'light'} onClick={() => setTheme((current) => current === 'dark' ? 'light' : 'dark')}><span className="theme-symbol" aria-hidden="true">{theme === 'dark' ? '☼' : '◐'}</span><span>{theme === 'dark' ? 'Modo claro' : 'Modo escuro'}</span></button>
           </nav>
