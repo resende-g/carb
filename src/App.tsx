@@ -2,7 +2,7 @@ import { Fragment, useEffect, useMemo, useRef, useState } from 'react'
 import academicDataJson from './academic-data.json'
 import { AdminApp } from './admin/AdminApp'
 import { HashtagChip } from './components/HashtagChip'
-import { AdminIcon } from './components/ui/admin-icon'
+import { AdminIcon, type AdminIconName } from './components/ui/admin-icon'
 import { Button } from './components/ui/button'
 import { Card } from './components/ui/card'
 import { Input } from './components/ui/input'
@@ -42,10 +42,10 @@ const REACTION_OPTIONS: { key: Reaction; icon: string; label: string }[] = [
   { key: 'dance', icon: '/icons/danca-24.png', label: 'Dançarina' },
 ]
 const TAB_LABELS: Record<Tab, string> = { avisos: 'Avisos', sistemas: 'Sistemas', planejador: 'Planejador', acervo: 'Acervo documental' }
-const NAVIGATION: { tab: Exclude<Tab, 'avisos'>; label: string; icon: string }[] = [
-  { tab: 'planejador', label: 'Montador de grade', icon: '/icons/calendario-24.png' },
-  { tab: 'sistemas', label: 'Sistemas', icon: '/icons/configuracoes-24.png' },
-  { tab: 'acervo', label: 'Acervo', icon: '/icons/acervo-24.png' },
+const NAVIGATION: { tab: Exclude<Tab, 'avisos'>; label: string; icon: AdminIconName }[] = [
+  { tab: 'planejador', label: 'Montador de grade', icon: 'calendar' },
+  { tab: 'sistemas', label: 'Sistemas', icon: 'settings' },
+  { tab: 'acervo', label: 'Acervo', icon: 'document-2' },
 ]
 const WEEKDAYS = ['segunda', 'terça', 'quarta', 'quinta', 'sexta', 'sábado']
 const WEEKDAY_LABELS: Record<string, string> = { segunda: 'Seg.', terça: 'Ter.', quarta: 'Qua.', quinta: 'Qui.', sexta: 'Sex.', sábado: 'Sáb.' }
@@ -485,7 +485,7 @@ export default function App() {
         <div className="menu-wrap" ref={menuRef}>
           <button ref={menuButtonRef} className="menu-button" type="button" aria-label={menuOpen ? 'Fechar menu principal' : 'Abrir menu principal'} aria-expanded={menuOpen} aria-controls="main-menu" onClick={() => setMenuOpen((current) => !current)}><AdminIcon name="burger" /></button>
           <nav className="main-menu" id="main-menu" aria-label="Navegação principal" hidden={!menuOpen}>
-            {NAVIGATION.map((item) => <button key={item.tab} className={tab === item.tab ? 'menu-item active' : 'menu-item'} aria-current={tab === item.tab ? 'page' : undefined} onClick={() => changeTab(item.tab)}>{item.tab === 'planejador' ? <AdminIcon name="calendar" /> : item.tab === 'sistemas' ? <AdminIcon name="settings" /> : <img src={item.icon} alt="" aria-hidden="true" />}<span>{item.label}</span></button>)}
+            {NAVIGATION.map((item) => <button key={item.tab} className={tab === item.tab ? 'menu-item active' : 'menu-item'} aria-current={tab === item.tab ? 'page' : undefined} onClick={() => changeTab(item.tab)}><AdminIcon name={item.icon} /><span>{item.label}</span></button>)}
             <Separator />
             <button className="menu-item" type="button" aria-label={theme === 'dark' ? 'Usar tema claro' : 'Usar tema escuro'} aria-pressed={theme === 'light'} onClick={() => setTheme((current) => current === 'dark' ? 'light' : 'dark')}><span className="theme-symbol" aria-hidden="true">{theme === 'dark' ? '☼' : '◐'}</span><span>{theme === 'dark' ? 'Modo claro' : 'Modo escuro'}</span></button>
           </nav>

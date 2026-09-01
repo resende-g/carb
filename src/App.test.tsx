@@ -11,6 +11,7 @@ describe('interface pública', () => {
     expect(html).toMatch(/aria-label="Compartilhar link do aviso"[^>]*><svg/)
     expect(html).toMatch(/<svg[^>]*admin-icon[^>]*>[\s\S]*<\/svg><span>Montador de grade<\/span>/)
     expect(html).toMatch(/<svg[^>]*admin-icon[^>]*>[\s\S]*<\/svg><span>Sistemas<\/span>/)
+    expect(html).toMatch(/<svg[^>]*admin-icon[^>]*>[\s\S]*<\/svg><span>Acervo<\/span>/)
     expect(html).toContain('Quem publica')
     expect(html).toContain('Top trends')
     expect(html).toContain('5 hashtags mais usadas em 8 avisos recentes')
