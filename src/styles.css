@@ -101,7 +101,7 @@ button:disabled { cursor: not-allowed; opacity: .42; }
 .main-menu[hidden] { display: none; }
 .menu-item { display: flex; align-items: center; gap: .75rem; min-height: 44px; padding: .65rem .75rem; border: 0; border-radius: .55rem; background: transparent; color: #fff; font-size: .84rem; text-align: left; }
 .menu-item:hover, .menu-item.active { background: #fff; color: #000; }
-.menu-item img { width: 24px; height: 24px; object-fit: contain; }
+.menu-item img, .menu-item .admin-icon { width: 24px; height: 24px; object-fit: contain; }
 .theme-symbol { display: grid; place-items: center; width: 24px; font-size: 1.2rem; }
 
 main { min-height: calc(100vh - 150px); }

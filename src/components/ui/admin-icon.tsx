@@ -1,9 +1,10 @@
 import type { ReactNode, SVGProps } from 'react'
 
-type AdminIconName = 'burger' | 'check' | 'edit' | 'image' | 'loading' | 'lock' | 'logout' | 'save' | 'settings' | 'share' | 'trash' | 'user-add'
+type AdminIconName = 'burger' | 'calendar' | 'check' | 'edit' | 'image' | 'loading' | 'lock' | 'logout' | 'save' | 'settings' | 'share' | 'trash' | 'user-add'
 
 const paths: Record<AdminIconName, ReactNode> = {
   burger: <><line x1="4" y1="6" x2="20" y2="6" /><line x1="4" y1="12" x2="20" y2="12" /><line x1="4" y1="18" x2="20" y2="18" /></>,
+  calendar: <><rect x="3" y="5" width="18" height="16" rx="2" /><line x1="16" y1="3" x2="16" y2="7" /><line x1="8" y1="3" x2="8" y2="7" /><line x1="3" y1="11" x2="21" y2="11" /></>,
   check: <polyline points="20 6 9 17 4 12" />,
   edit: <><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" /><path d="M18.5 2.5a2.12 2.12 0 0 1 3 3L12 15l-4 1 1-4Z" /></>,
   image: <><rect x="3" y="3" width="18" height="18" rx="2" /><circle cx="8.5" cy="8.5" r="1.5" /><polyline points="21 15 16 10 5 21" /></>,
