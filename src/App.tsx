@@ -71,15 +71,16 @@ function writeLocal<T>(key: string, value: T) {
 
 const normalized = (value: string) => value.trim().toLocaleLowerCase('pt-BR')
 const semesterLabel = (value: Semester) => typeof value === 'number' ? `${value}º semestre` : value === 'optativa' ? 'Optativa' : 'Outras ofertas'
-const URL_PATTERN = /(https?:\/\/[^\s<>"']+)/g
+const URL_PATTERN = /((?:https?:\/\/|www\.)[^\s<>"']+)/gi
 const URL_SUFFIX = /[),.;!?]+$/
 
 export function LinkedText({ children }: { children: string }) {
   return children.split(URL_PATTERN).map((part, index) => {
-    if (!/^https?:\/\//.test(part)) return part
+    if (!/^(?:https?:\/\/|www\.)/i.test(part)) return part
     const suffix = part.match(URL_SUFFIX)?.[0] || ''
-    const href = suffix ? part.slice(0, -suffix.length) : part
-    return <Fragment key={index}><a href={href} target="_blank" rel="noopener noreferrer">{href}</a>{suffix}</Fragment>
+    const label = suffix ? part.slice(0, -suffix.length) : part
+    const href = /^www\./i.test(label) ? `https://${label}` : label
+    return <Fragment key={index}><a href={href} target="_blank" rel="noopener noreferrer">{label}</a>{suffix}</Fragment>
   })
 }
 
