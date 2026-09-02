@@ -9,7 +9,7 @@ describe('interface pública', () => {
     expect(html).toMatch(/id="site-search"><svg[^>]*admin-icon/)
     expect(html).toContain('aria-label="Abrir menu principal"')
     expect(html).toMatch(/aria-label="Abrir menu principal"[^>]*><svg/)
-    expect(html).toMatch(/aria-label="Compartilhar link do aviso"[^>]*><svg/)
+    expect(html).toMatch(/aria-label="Compartilhar link do aviso"[^>]*><img src="\/icons\/paper-plane\.svg"/)
     expect(html).toMatch(/<svg[^>]*admin-icon[^>]*>[\s\S]*<\/svg><span>Montador de grade<\/span>/)
     expect(html).toMatch(/<svg[^>]*admin-icon[^>]*>[\s\S]*<\/svg><span>Sistemas<\/span>/)
     expect(html).toMatch(/<svg[^>]*admin-icon[^>]*>[\s\S]*<\/svg><span>Acervo<\/span>/)
