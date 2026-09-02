@@ -8,7 +8,6 @@ import { Card } from './components/ui/card'
 import { Input } from './components/ui/input'
 import { Label } from './components/ui/label'
 import { Separator } from './components/ui/separator'
-import { Toggle } from './components/ui/toggle'
 import { documents, hashtags as initialHashtags, notices, profiles as initialProfiles, systems, type Hashtag, type Notice, type Profile, type ReactionCounts } from './data'
 import { filterNotices, recentPostingProfiles, trendingHashtags } from './feed'
 import { meetingLabel, selectionIssue, TIME_ROWS, type ClassOffering, type SelectionIssue, type Semester, type Shift } from './planner'
@@ -45,7 +44,7 @@ const REACTION_OPTIONS: { key: Reaction; icon: string; label: string }[] = [
 const TAB_LABELS: Record<Tab, string> = { avisos: 'Avisos', sistemas: 'Sistemas', planejador: 'Planejador', acervo: 'Acervo documental' }
 const NAVIGATION: { tab: Exclude<Tab, 'avisos'>; label: string; icon: AdminIconName }[] = [
   { tab: 'planejador', label: 'Montador de grade', icon: 'calendar' },
-  { tab: 'sistemas', label: 'Sistemas', icon: 'settings' },
+  { tab: 'sistemas', label: 'Sistemas', icon: 'info' },
   { tab: 'acervo', label: 'Acervo', icon: 'document-2' },
 ]
 const WEEKDAYS = ['segunda', 'terça', 'quarta', 'quinta', 'sexta', 'sábado']
@@ -118,7 +117,7 @@ function ReactionButtons({ notice, reaction, onReact }: { notice: Notice; reacti
           </button>
         ))}
         <button className="reaction share" type="button" onClick={share} aria-label="Compartilhar link do aviso" title="Compartilhar">
-          <AdminIcon name="share" />
+          <img src="/icons/paper-plane.svg" alt="" aria-hidden="true" />
         </button>
       </div>
       {shareMessage && <p className="share-message" role="status">{shareMessage}</p>}
@@ -274,7 +273,7 @@ function Planner({ query, offerings }: { query: string; offerings: ClassOffering
         <section className="planner-main" aria-labelledby="schedule-title">
           <div className="planner-toolbar">
             <div><strong>{selected.length} turma(s) selecionada(s)</strong><span>{selected.length ? 'Grade sem conflitos' : 'Adicione turmas pela coluna lateral'}</span></div>
-            <button className="primary print-button" type="button" disabled={!selected.length} onClick={() => window.print()}><AdminIcon name="save" /> Finalizar e salvar PDF</button>
+            <button className="primary print-button" type="button" disabled={!selected.length} onClick={() => window.print()}><AdminIcon name="save" /> Salvar PDF</button>
           </div>
           <section className="printable-schedule weekly-board">
             <div className="subheading"><div><p className="eyebrow">Sem choques de horário</p><h2 id="schedule-title">Visualização semanal</h2></div></div>
@@ -284,7 +283,7 @@ function Planner({ query, offerings }: { query: string; offerings: ClassOffering
 
           <aside className="selected-panel" aria-labelledby="selected-title">
             <div className="subheading"><h2 id="selected-title">Turmas na grade</h2><span>{selected.length} turma(s)</span></div>
-            {selected.length ? <ul>{selected.map((item) => <li key={item.id}><span><strong>{item.code} · T{item.class}</strong><small>{item.meetings.map(meetingLabel).join(' · ')}</small></span><button type="button" onClick={(event) => toggle(item, event.currentTarget)} aria-label={`Remover ${item.code}`}><AdminIcon name="minus" /></button></li>)}</ul> : <p>Nenhuma turma selecionada.</p>}
+            {selected.length ? <ul>{selected.map((item) => <li key={item.id}><span><strong>{item.code} · T{item.class}</strong><small>{item.meetings.map(meetingLabel).join(' · ')}</small></span><button className="course-toggle remove" type="button" onClick={(event) => toggle(item, event.currentTarget)} aria-label={`Remover ${item.code}`} title="Remover">−</button></li>)}</ul> : <p>Nenhuma turma selecionada.</p>}
           </aside>
         </section>
 
@@ -302,7 +301,7 @@ function Planner({ query, offerings }: { query: string; offerings: ClassOffering
               const isSelected = selectedIds.includes(item.id)
               return (
                 <article className={isSelected ? 'offering-card selected' : 'offering-card'} key={item.id}>
-                  <div className="offering-title"><div><span>{item.code} · turma {item.class}</span><h3>{item.component}</h3></div><button type="button" aria-pressed={isSelected} onClick={(event) => toggle(item, event.currentTarget)}><AdminIcon name={isSelected ? 'minus' : 'plus'} /> {isSelected ? 'Remover' : 'Adicionar'}</button></div>
+                  <div className="offering-title"><div><span>{item.code} · turma {item.class}</span><h3>{item.component}</h3></div><button className={`course-toggle ${isSelected ? 'remove' : 'add'}`} type="button" aria-label={`${isSelected ? 'Remover' : 'Adicionar'} ${item.code}`} aria-pressed={isSelected} title={isSelected ? 'Remover' : 'Adicionar'} onClick={(event) => toggle(item, event.currentTarget)}>{isSelected ? '−' : '+'}</button></div>
                   <p>{item.professor}</p>
                   <div className="offering-facts"><span>{item.meetings.map(meetingLabel).join(' · ')}</span><span>{item.location}</span><span>{semesterLabel(item[semesterField])}</span><span>{item.enrolled}/{item.capacity} matrículas</span></div>
                 </article>
@@ -488,7 +487,7 @@ export default function App() {
           <nav className="main-menu" id="main-menu" aria-label="Navegação principal" hidden={!menuOpen}>
             {NAVIGATION.map((item) => <button key={item.tab} className={tab === item.tab ? 'menu-item active' : 'menu-item'} aria-current={tab === item.tab ? 'page' : undefined} onClick={() => changeTab(item.tab)}><AdminIcon name={item.icon} /><span>{item.label}</span></button>)}
             <Separator />
-            <Toggle className="menu-item" checked={theme === 'light'} label="Tema claro" ariaLabel="Tema claro" onCheckedChange={(checked) => setTheme(checked ? 'light' : 'dark')} />
+            <button className="menu-item theme-menu-item" type="button" role="switch" aria-label="Tema claro" aria-checked={theme === 'light'} onClick={() => setTheme((current) => current === 'dark' ? 'light' : 'dark')}><span className="theme-toggle" data-theme={theme} aria-hidden="true"><span>{theme === 'dark' ? '☾' : '☀'}</span></span><span>{theme === 'dark' ? 'Modo claro' : 'Modo escuro'}</span></button>
           </nav>
         </div>
       </header>

@@ -1,6 +1,6 @@
 import type { ReactNode, SVGProps } from 'react'
 
-export type AdminIconName = 'burger' | 'calendar' | 'check' | 'document-2' | 'edit' | 'image' | 'loading' | 'lock' | 'logout' | 'minus' | 'plus' | 'save' | 'search' | 'settings' | 'share' | 'trash' | 'user-add'
+export type AdminIconName = 'burger' | 'calendar' | 'check' | 'document-2' | 'edit' | 'image' | 'info' | 'loading' | 'lock' | 'logout' | 'minus' | 'plus' | 'save' | 'search' | 'settings' | 'share' | 'trash' | 'user-add'
 
 const paths: Record<AdminIconName, ReactNode> = {
   burger: <><line x1="4" y1="6" x2="20" y2="6" /><line x1="4" y1="12" x2="20" y2="12" /><line x1="4" y1="18" x2="20" y2="18" /></>,
@@ -9,6 +9,7 @@ const paths: Record<AdminIconName, ReactNode> = {
   'document-2': <><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z" /><polyline points="14 2 14 8 20 8" /><line x1="8" y1="13" x2="16" y2="13" /><line x1="8" y1="17" x2="16" y2="17" /></>,
   edit: <><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" /><path d="M18.5 2.5a2.12 2.12 0 0 1 3 3L12 15l-4 1 1-4Z" /></>,
   image: <><rect x="3" y="3" width="18" height="18" rx="2" /><circle cx="8.5" cy="8.5" r="1.5" /><polyline points="21 15 16 10 5 21" /></>,
+  info: <><rect x="3.5" y="3.5" width="17" height="17" rx="4" /><line x1="12" y1="10.5" x2="12" y2="16" /><circle cx="12" cy="7.5" r=".4" fill="currentColor" /></>,
   loading: <><line x1="12" y1="2" x2="12" y2="6" /><line x1="12" y1="18" x2="12" y2="22" /><line x1="4.93" y1="4.93" x2="7.76" y2="7.76" /><line x1="16.24" y1="16.24" x2="19.07" y2="19.07" /><line x1="2" y1="12" x2="6" y2="12" /><line x1="18" y1="12" x2="22" y2="12" /><line x1="4.93" y1="19.07" x2="7.76" y2="16.24" /><line x1="16.24" y1="7.76" x2="19.07" y2="4.93" /></>,
   lock: <><rect x="3" y="11" width="18" height="10" rx="2" /><path d="M7 11V7a5 5 0 0 1 10 0v4" /></>,
   logout: <><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" /><polyline points="16 17 21 12 16 7" /><line x1="21" y1="12" x2="9" y2="12" /></>,
