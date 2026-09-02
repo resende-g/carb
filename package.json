@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc --noEmit && vite build",
-    "deploy": "npm run build && npx wrangler@4.127.1 deploy",
+    "deploy": "node -e \"for (const key of ['VITE_SUPABASE_URL','VITE_SUPABASE_ANON_KEY']) if (!process.env[key]) throw new Error(key + ' obrigatória para deploy')\" && npm run build && npx wrangler@4.127.1 deploy",
     "deploy:check": "npm run build && npx wrangler@4.127.1 deploy --dry-run",
     "bootstrap:superadmin": "node scripts/bootstrap-superadmin.mjs",
     "lint": "eslint .",

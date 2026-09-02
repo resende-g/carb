@@ -502,7 +502,7 @@ export default function App() {
                 {filteredNotices.length ? filteredNotices.slice(0, limit).map((notice) => {
                   const profile = profiles.find((item) => item.handle === notice.author) || profiles[0]
                   return <NoticeCard key={notice.id} notice={notice} profile={profile} hashtags={siteHashtags.filter((hashtag) => notice.hashtagIds.includes(hashtag.id))} reaction={reactions[notice.id]} onReact={(choice) => react(notice.id, choice)} onProfile={isMobile ? undefined : () => selectProfile(profile.handle)} onHashtag={(hashtag) => { setQuery(`#${hashtag.name}`); setLimit(6); window.scrollTo({ top: 0 }) }} />
-                }) : <p className="empty" role="status">Nenhum aviso corresponde aos filtros ativos.</p>}
+                }) : <p className="empty" role="status">{dataMode.startsWith('Conectando') ? 'Carregando avisos…' : 'Nenhum aviso corresponde aos filtros ativos.'}</p>}
                 {limit < filteredNotices.length && <button className="load-more" type="button" onClick={() => setLimit((value) => value + 3)}>Carregar mais</button>}
               </div>
               <aside className="feed-sidebar" aria-label="Filtros e tendências dos avisos">
