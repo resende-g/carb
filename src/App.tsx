@@ -71,15 +71,16 @@ function writeLocal<T>(key: string, value: T) {
 
 const normalized = (value: string) => value.trim().toLocaleLowerCase('pt-BR')
 const semesterLabel = (value: Semester) => typeof value === 'number' ? `${value}º semestre` : value === 'optativa' ? 'Optativa' : 'Outras ofertas'
-const URL_PATTERN = /(https?:\/\/[^\s<>"']+)/g
+const URL_PATTERN = /((?:https?:\/\/|www\.)[^\s<>"']+)/gi
 const URL_SUFFIX = /[),.;!?]+$/
 
 export function LinkedText({ children }: { children: string }) {
   return children.split(URL_PATTERN).map((part, index) => {
-    if (!/^https?:\/\//.test(part)) return part
+    if (!/^(?:https?:\/\/|www\.)/i.test(part)) return part
     const suffix = part.match(URL_SUFFIX)?.[0] || ''
-    const href = suffix ? part.slice(0, -suffix.length) : part
-    return <Fragment key={index}><a href={href} target="_blank" rel="noopener noreferrer">{href}</a>{suffix}</Fragment>
+    const label = suffix ? part.slice(0, -suffix.length) : part
+    const href = /^www\./i.test(label) ? `https://${label}` : label
+    return <Fragment key={index}><a href={href} target="_blank" rel="noopener noreferrer">{label}</a>{suffix}</Fragment>
   })
 }
 
@@ -501,7 +502,7 @@ export default function App() {
                 {filteredNotices.length ? filteredNotices.slice(0, limit).map((notice) => {
                   const profile = profiles.find((item) => item.handle === notice.author) || profiles[0]
                   return <NoticeCard key={notice.id} notice={notice} profile={profile} hashtags={siteHashtags.filter((hashtag) => notice.hashtagIds.includes(hashtag.id))} reaction={reactions[notice.id]} onReact={(choice) => react(notice.id, choice)} onProfile={isMobile ? undefined : () => selectProfile(profile.handle)} onHashtag={(hashtag) => { setQuery(`#${hashtag.name}`); setLimit(6); window.scrollTo({ top: 0 }) }} />
-                }) : <p className="empty" role="status">Nenhum aviso corresponde aos filtros ativos.</p>}
+                }) : <p className="empty" role="status">{dataMode.startsWith('Conectando') ? 'Carregando avisos…' : 'Nenhum aviso corresponde aos filtros ativos.'}</p>}
                 {limit < filteredNotices.length && <button className="load-more" type="button" onClick={() => setLimit((value) => value + 3)}>Carregar mais</button>}
               </div>
               <aside className="feed-sidebar" aria-label="Filtros e tendências dos avisos">

@@ -6,6 +6,7 @@ const anonKey = import.meta.env.VITE_SUPABASE_ANON_KEY?.trim()
 
 export const supabaseConfigured = Boolean(url && anonKey)
 export const supabase = supabaseConfigured ? createClient(url, anonKey) : null
+const publicSupabase = supabaseConfigured ? createClient(url, anonKey, { auth: { persistSession: false, autoRefreshToken: false, detectSessionInUrl: false } }) : null
 export const anonymousReactionId = () => {
   const key = 'carb:anonymous-reaction-id'
   const stored = localStorage.getItem(key)
@@ -31,14 +32,28 @@ export async function signedUrl(path: string | null) {
   return data?.signedUrl || ''
 }
 
+export function alignSignedUrls(paths: (string | null)[], signed: { path: string | null; signedUrl: string | null }[]) {
+  const byPath = new Map(signed.map(({ path, signedUrl }) => [path, signedUrl || '']))
+  return paths.map((path) => path ? byPath.get(path) || '' : '')
+}
+
+async function signedUrls(paths: (string | null)[]) {
+  if (!publicSupabase) return paths.map(() => '')
+  const presentPaths = paths.filter((path): path is string => Boolean(path))
+  if (!presentPaths.length) return paths.map(() => '')
+  const { data, error } = await publicSupabase.storage.from('editorial-assets').createSignedUrls(presentPaths, SIGNED_URL_TTL_SECONDS)
+  if (error) throw error
+  return alignSignedUrls(paths, data)
+}
+
 export async function loadPublicData(anonymousId: string) {
-  if (!supabase) throw new Error('Supabase não configurado.')
+  if (!publicSupabase) throw new Error('Supabase não configurado.')
   const [profileResult, hashtagResult, postResult, associationResult, documentResult] = await Promise.all([
-    supabase.from('content_profiles').select('id,name,slug,avatar_path,description').eq('active', true).order('name'),
-    supabase.from('hashtags').select('id,name,slug,color,active').eq('active', true).order('name'),
-    supabase.from('posts').select('id,content_profile_id,title,body,category,media_path,media_alt,published_at').eq('status', 'PUBLISHED').order('published_at', { ascending: false }),
-    supabase.from('post_hashtags').select('post_id,hashtag_id'),
-    supabase.from('documents').select('id,title,description,storage_path,approved_at,updated_at').eq('status', 'APPROVED').order('approved_at', { ascending: false }),
+    publicSupabase.from('content_profiles').select('id,name,slug,avatar_path,description').eq('active', true).order('name'),
+    publicSupabase.from('hashtags').select('id,name,slug,color,active').eq('active', true).order('name'),
+    publicSupabase.from('posts').select('id,content_profile_id,title,body,category,media_path,media_alt,published_at').eq('status', 'PUBLISHED').order('published_at', { ascending: false }),
+    publicSupabase.from('post_hashtags').select('post_id,hashtag_id'),
+    publicSupabase.from('documents').select('id,title,description,storage_path,approved_at,updated_at').eq('status', 'APPROVED').order('approved_at', { ascending: false }),
   ])
   const firstError = [profileResult, hashtagResult, postResult, associationResult, documentResult].find((result) => result.error)?.error
   if (firstError) throw firstError
@@ -47,12 +62,15 @@ export async function loadPublicData(anonymousId: string) {
   const hashtagRows = hashtagResult.data as HashtagRow[]
   const postRows = postResult.data as PostRow[]
   const documentRows = documentResult.data as DocumentRow[]
-  const { data: reactionData, error: reactionError } = await supabase.rpc('get_reaction_totals', { p_post_ids: postRows.map(({ id }) => id), p_anonymous_id: anonymousId })
+  const { data: reactionData, error: reactionError } = await publicSupabase.rpc('get_reaction_totals', { p_post_ids: postRows.map(({ id }) => id), p_anonymous_id: anonymousId })
   if (reactionError) throw reactionError
 
-  const profileAvatars = await Promise.all(profileRows.map(({ avatar_path }) => signedUrl(avatar_path)))
-  const postMedia = await Promise.all(postRows.map(({ media_path }) => signedUrl(media_path)))
-  const documentUrls = await Promise.all(documentRows.map(({ storage_path }) => signedUrl(storage_path)))
+  const profilePaths = profileRows.map(({ avatar_path }) => avatar_path)
+  const postPaths = postRows.map(({ media_path }) => media_path)
+  const assetUrls = await signedUrls([...profilePaths, ...postPaths, ...documentRows.map(({ storage_path }) => storage_path)])
+  const profileAvatars = assetUrls.slice(0, profilePaths.length)
+  const postMedia = assetUrls.slice(profilePaths.length, profilePaths.length + postPaths.length)
+  const documentUrls = assetUrls.slice(profilePaths.length + postPaths.length)
   const profileById = new Map(profileRows.map((profile) => [profile.id, profile.slug]))
   const hashtagIds = new Map<string, string[]>()
   for (const row of associationResult.data as { post_id: string; hashtag_id: string }[]) hashtagIds.set(row.post_id, [...(hashtagIds.get(row.post_id) || []), row.hashtag_id])
@@ -99,7 +117,7 @@ export async function loadPublicData(anonymousId: string) {
 }
 
 export async function persistReaction(postId: string, anonymousId: string, reaction: keyof ReactionCounts | null) {
-  if (!supabase) return
-  const { error } = await supabase.rpc('set_reaction', { p_post_id: postId, p_anonymous_id: anonymousId, p_reaction: reaction })
+  if (!publicSupabase) return
+  const { error } = await publicSupabase.rpc('set_reaction', { p_post_id: postId, p_anonymous_id: anonymousId, p_reaction: reaction })
   if (error) throw error
 }

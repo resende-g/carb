@@ -23,9 +23,11 @@ describe('interface pública', () => {
   })
 
   it('transforma URLs no texto do aviso em links seguros', () => {
-    const html = renderToStaticMarkup(<LinkedText>Veja https://example.com/edital e http://example.com; javascript:alert(1) &lt;b&gt;</LinkedText>)
+    const html = renderToStaticMarkup(<LinkedText>Veja https://example.com/edital, http://example.com; e www.example.org/aviso. javascript:alert(1) &lt;b&gt;</LinkedText>)
     expect(html).toContain('<a href="https://example.com/edital"')
     expect(html).toContain('<a href="http://example.com"')
+    expect(html).toContain('<a href="https://www.example.org/aviso"')
+    expect(html).toContain('>www.example.org/aviso</a>.')
     expect(html).not.toContain('href="javascript:')
     expect(html).toContain('&lt;b&gt;')
   })
