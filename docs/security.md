@@ -1,5 +1,20 @@
 # Segurança do Portal CARB
 
+## Estado implementado na v1.0.0
+
+- autorização derivada do banco, com `EDITOR`, `ADMIN` e `SUPERADMIN`, AAL2 e RLS deny-by-default;
+- TOTP administrado pelo Supabase Auth, sem segredo MFA no banco da aplicação;
+- duração administrativa absoluta de 60 minutos por `session_id`, sem extensão por refresh do JWT;
+- conta individual, vínculo editorial explícito e impedimento de autoaprovação;
+- auditoria append-only e proteção transacional do último SUPERADMIN ativo;
+- bucket privado com MIME, tamanho e autorização validados;
+- `service_role` restrita à Edge Function e ao bootstrap executado em ambiente administrativo.
+- CI com permissões somente de leitura, actions fixadas por SHA e testes contra Supabase local sem secrets.
+
+O AAL2 é exigido em toda nova sessão. Não há confiança de MFA por 24 horas nem mecanismo paralelo de dispositivo confiável.
+
+Ainda dependem do ambiente implantado: CSP/HSTS, SMTP, CAPTCHA, limites operacionais, backup/restauração, monitoramento e pentest. Portanto, a v1.0.0 não deve ser tratada como produção homologada.
+
 ## 1. Objetivo
 
 Estabelecer controles verificáveis para confidencialidade, integridade, disponibilidade e autenticidade, alinhados à PoSIC-UFBA, à Política Nacional de Segurança da Informação e ao PPSI 2.0.
@@ -20,6 +35,7 @@ Estabelecer controles verificáveis para confidencialidade, integridade, disponi
 | `OBR-SEC-10` | processo de incidentes integrado à STI e privacidade | plano, contatos e exercício simulado |
 | `OBR-SEC-11` | ambientes segregados e dados sintéticos fora de produção | configuração e inspeção de amostra |
 | `OBR-SEC-12` | proteção contra abuso e indisponibilidade | limites, WAF/CDN quando aplicável e alertas |
+| `OBR-SEC-15` | integridade do código e proteção de branches | required status checks, revisão e bloqueio de force push/exclusão |
 
 ## 3. Eventos de auditoria
 
@@ -44,6 +60,7 @@ Não registrar senhas, tokens, conteúdo integral de documentos, campos pessoais
 - aplicar CSP, `frame-ancestors`, HSTS, `nosniff` e política de referência compatível;
 - fixar versões por lockfile e remover dependências sem uso;
 - revisar alterações sensíveis por segunda pessoa.
+- exigir `Frontend quality` e `Supabase database` antes do merge nas branches mantidas.
 
 ## 5. Gestão de vulnerabilidades
 
@@ -79,4 +96,3 @@ Testes ofensivos exigem escopo, horário, contatos, limitações, proteção de 
 8. registrar causa raiz e ações corretivas.
 
 O controlador deve manter registro de todo incidente com dados pessoais, comunicado ou não, pelo prazo aplicável; para a Resolução CD/ANPD nº 15/2024, o mínimo geral é cinco anos, ressalvadas regras arquivísticas específicas para entidades públicas.
-

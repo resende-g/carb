@@ -1,0 +1,48 @@
+-- Remove exclusivamente os oito posts sintéticos utilizados durante
+-- o desenvolvimento da v1.2/v1.3.
+--
+-- Esta migration é intencionalmente idempotente: caso os registros
+-- já tenham sido removidos manualmente, os DELETEs simplesmente
+-- afetarão zero linhas.
+
+begin;
+
+delete from public.removal_requests
+where post_id in (
+  '20000000-0000-4000-8000-000000000001'::uuid,
+  '20000000-0000-4000-8000-000000000002'::uuid,
+  '20000000-0000-4000-8000-000000000003'::uuid,
+  '20000000-0000-4000-8000-000000000004'::uuid,
+  '20000000-0000-4000-8000-000000000005'::uuid,
+  '20000000-0000-4000-8000-000000000006'::uuid,
+  '20000000-0000-4000-8000-000000000007'::uuid,
+  '20000000-0000-4000-8000-000000000008'::uuid
+);
+
+delete from public.post_revisions
+where post_id in (
+  '20000000-0000-4000-8000-000000000001'::uuid,
+  '20000000-0000-4000-8000-000000000002'::uuid,
+  '20000000-0000-4000-8000-000000000003'::uuid,
+  '20000000-0000-4000-8000-000000000004'::uuid,
+  '20000000-0000-4000-8000-000000000005'::uuid,
+  '20000000-0000-4000-8000-000000000006'::uuid,
+  '20000000-0000-4000-8000-000000000007'::uuid,
+  '20000000-0000-4000-8000-000000000008'::uuid
+);
+
+-- reactions e post_hashtags possuem ON DELETE CASCADE,
+-- portanto serão removidos automaticamente junto com o post.
+delete from public.posts
+where id in (
+  '20000000-0000-4000-8000-000000000001'::uuid,
+  '20000000-0000-4000-8000-000000000002'::uuid,
+  '20000000-0000-4000-8000-000000000003'::uuid,
+  '20000000-0000-4000-8000-000000000004'::uuid,
+  '20000000-0000-4000-8000-000000000005'::uuid,
+  '20000000-0000-4000-8000-000000000006'::uuid,
+  '20000000-0000-4000-8000-000000000007'::uuid,
+  '20000000-0000-4000-8000-000000000008'::uuid
+);
+
+commit;

@@ -1,5 +1,9 @@
 # Migração Supabase -> STI-UFBA
 
+## Evidência da v1.0.0
+
+A v1.0.0 materializa a fase transitória em migrations SQL, RLS, Storage e Edge Functions versionadas. O frontend usa somente URL e chave pública; operações privilegiadas estão isoladas. A migração para a STI deve preservar contratos, autoria, auditoria e IDs, substituir Auth/Storage conforme decisão técnica e revalidar todas as policies e testes negativos. Nenhuma integração com a STI foi executada nesta versão.
+
 ## 1. Objetivo
 
 Transferir aplicação, dados, identidade, arquivos, observabilidade e operação para a infraestrutura homologada da STI-UFBA com integridade, confidencialidade, disponibilidade, reversibilidade e eliminação segura do ambiente transitório.
@@ -15,20 +19,11 @@ Transferir aplicação, dados, identidade, arquivos, observabilidade e operaçã
 
 ## 3. Contrato de destino a confirmar
 
-| Área | Pergunta para STI | Estado |
-|---|---|---|
-| execução | contêiner, VM, funções ou plataforma gerenciada? | `TBD-STI-01` |
-| banco | versão PostgreSQL, extensões, HA, backup e restauração? | `TBD-STI-02` |
-| identidade | IdP/OIDC, MFA, atributos e grupos? | `TBD-AUTH-01` |
-| arquivos | armazenamento de objetos, antivírus e URLs temporárias? | `TBD-STI-03` |
-| borda | DNS, certificados, CDN, WAF e proteção DDoS? | `TBD-STI-04` |
-| observabilidade | logs, métricas, retenção, SIEM e alertas? | `TBD-STI-05` |
-| segredos | cofre, rotação e acesso emergencial? | `TBD-STI-06` |
-| operação | responsáveis, suporte, incidentes, RTO e RPO? | `TBD-STI-07` |
+As perguntas de destino — execução, banco, identidade, arquivos, borda, observabilidade, segredos e operação — estão registradas em [decisions.md](decisions.md) sob `TBD-STI-01` a `TBD-STI-07` e `TBD-AUTH-01`, com autoridade responsável, evidência esperada e o que cada uma bloqueia. Aquele registro é a fonte única; esta seção não repete a tabela para não criar duas versões da mesma pendência.
 
 ## 4. Inventário de dependências Supabase
 
-Registrar por recurso: uso, criticidade, dados, substituto STI, método de exportação, teste e responsável.
+O inventário concreto de componentes, dados, variáveis e dependências de fornecedor já existe em [inventory.md](inventory.md). Complete-o, por recurso, com criticidade, método de exportação, teste e responsável no momento da migração.
 
 - PostgreSQL, extensões, funções, triggers e RLS;
 - Supabase Auth, identidades e sessões;
@@ -90,4 +85,3 @@ Contagens sem definição de grão, janela e exclusões não constituem evidênc
 ## 7. Rollback
 
 Acionar rollback se houver perda de integridade, falha generalizada de autenticação/autorização, indisponibilidade acima do limite aprovado ou exposição de dados. O retorno deve restaurar DNS/configuração para a origem ainda íntegra; escritas divergentes não podem ser conciliadas por improviso.
-

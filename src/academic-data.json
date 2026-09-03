@@ -1,0 +1,7869 @@
+{
+  "source": {
+    "period": "2026.2",
+    "classesReportIssued": "27/08/2026",
+    "curriculumIssued": "27/08/2026",
+    "notice": "Dados extraídos dos PDFs fornecidos para o protótipo; confirme no SIGAA antes da matrícula."
+  },
+  "curricula": {
+    "day": {
+      "name": "Diurno",
+      "semesters": 10,
+      "requiredHours": 3376,
+      "optionalHours": 240,
+      "complementaryHours": 435,
+      "totalHours": 4051,
+      "components": {
+        "DIR213": 1,
+        "DIRA45": 1,
+        "DIRA75": 1,
+        "ECOB40": 1,
+        "FCH001": 1,
+        "FCH007": 1,
+        "DIRA74": 2,
+        "DIRA79": 2,
+        "DIRA82": 2,
+        "DIRA83": 2,
+        "FCH124": 2,
+        "IPSA01": 2,
+        "DIR007": 3,
+        "DIRA80": 3,
+        "DIRA84": 3,
+        "DIRA86": 3,
+        "DIRA88": 3,
+        "DIRA89": 3,
+        "DIR030": 4,
+        "DIR031": 4,
+        "DIR192": 4,
+        "DIR194": 4,
+        "DIRA85": 4,
+        "DIRA90": 4,
+        "DIR032": 5,
+        "DIR035": 5,
+        "DIR038": 5,
+        "DIR046": 5,
+        "DIR195": 5,
+        "DIRA91": 5,
+        "DIR036": 6,
+        "DIR039": 6,
+        "DIR043": 6,
+        "DIR049": 6,
+        "DIR190": 6,
+        "DIRA92": 6,
+        "DIR015": 7,
+        "DIR040": 7,
+        "DIR044": 7,
+        "DIR050": 7,
+        "DIRA95": 7,
+        "GDIR0006": 7,
+        "DIR016": 8,
+        "DIR041": 8,
+        "DIR045": 8,
+        "DIRA76": 8,
+        "DIRA96": 8,
+        "GDIR0007": 8,
+        "DIR034": 9,
+        "DIR189": 9,
+        "DIRA97": 9,
+        "GDIR0005": 9,
+        "GDIR0008": 9,
+        "DIR061": 10,
+        "GDIR0009": 10,
+        "GDIR0013": 10,
+        "DIR008": "optativa",
+        "DIR023": "optativa",
+        "DIR024": "optativa",
+        "DIR025": "optativa",
+        "DIR033": "optativa",
+        "DIR037": "optativa",
+        "DIR047": "optativa",
+        "DIR048": "optativa",
+        "DIR051": "optativa",
+        "DIR063": "optativa",
+        "DIR067": "optativa",
+        "DIR159": "optativa",
+        "DIR196": "optativa",
+        "DIR197": "optativa",
+        "DIR198": "optativa",
+        "DIR199": "optativa",
+        "DIR200": "optativa",
+        "DIR202": "optativa",
+        "DIR203": "optativa",
+        "DIR204": "optativa",
+        "DIR205": "optativa",
+        "DIR206": "optativa",
+        "DIR207": "optativa",
+        "DIR209": "optativa",
+        "DIR210": "optativa",
+        "DIR211": "optativa",
+        "DIR214": "optativa",
+        "DIRA98": "optativa",
+        "DIRA99": "optativa",
+        "DIRB01": "optativa",
+        "DIRB02": "optativa",
+        "DIRB03": "optativa",
+        "DIRB04": "optativa",
+        "DIRB05": "optativa",
+        "DIRB06": "optativa",
+        "DIRB07": "optativa",
+        "DIRB08": "optativa",
+        "DIRB15": "optativa",
+        "DIRB16": "optativa",
+        "DIRB17": "optativa",
+        "DIRB21": "optativa",
+        "DIRB33": "optativa",
+        "DIRC32": "optativa",
+        "DIRC37": "optativa",
+        "LETE48": "optativa",
+        "MED142": "optativa",
+        "MEDC91": "optativa"
+      }
+    },
+    "night": {
+      "name": "Noturno",
+      "semesters": 12,
+      "requiredHours": 3436,
+      "optionalHours": 300,
+      "complementaryHours": 315,
+      "totalHours": 4051,
+      "components": {
+        "DIR213": 1,
+        "DIRA45": 1,
+        "FCH001": 1,
+        "FCH007": 1,
+        "FCH124": 1,
+        "DIRA74": 2,
+        "DIRA79": 2,
+        "DIRA80": 2,
+        "DIRA81": 2,
+        "ECOB40": 2,
+        "DIR007": 3,
+        "DIRA75": 3,
+        "DIRA82": 3,
+        "DIRA83": 3,
+        "DIRA84": 3,
+        "DIRA85": 4,
+        "DIRA86": 4,
+        "DIRA87": 4,
+        "DIRA88": 4,
+        "DIRA89": 4,
+        "DIR031": 5,
+        "DIR035": 5,
+        "DIR038": 5,
+        "DIR194": 5,
+        "DIRA90": 5,
+        "DIR032": 6,
+        "DIR036": 6,
+        "DIR039": 6,
+        "DIR195": 6,
+        "DIRA91": 6,
+        "DIR040": 7,
+        "DIR043": 7,
+        "DIR049": 7,
+        "DIR190": 7,
+        "DIRA92": 7,
+        "DIR041": 8,
+        "DIR044": 8,
+        "DIR050": 8,
+        "DIR192": 8,
+        "GDIR0006": 8,
+        "DIR015": 9,
+        "DIR046": 9,
+        "DIR063": 9,
+        "DIRA95": 9,
+        "GDIR0007": 9,
+        "DIR016": 10,
+        "DIR034": 10,
+        "DIRA76": 10,
+        "GDIR0008": 10,
+        "GDIR0009": 10,
+        "DIR061": 11,
+        "DIRA96": 11,
+        "GDIR0005": 11,
+        "IPSA14": 11,
+        "DIR189": 12,
+        "DIRA97": 12,
+        "GDIR0013": 12,
+        "DIR008": "optativa",
+        "DIR023": "optativa",
+        "DIR024": "optativa",
+        "DIR025": "optativa",
+        "DIR033": "optativa",
+        "DIR037": "optativa",
+        "DIR045": "optativa",
+        "DIR047": "optativa",
+        "DIR048": "optativa",
+        "DIR051": "optativa",
+        "DIR067": "optativa",
+        "DIR159": "optativa",
+        "DIR196": "optativa",
+        "DIR197": "optativa",
+        "DIR198": "optativa",
+        "DIR199": "optativa",
+        "DIR200": "optativa",
+        "DIR202": "optativa",
+        "DIR203": "optativa",
+        "DIR204": "optativa",
+        "DIR205": "optativa",
+        "DIR206": "optativa",
+        "DIR207": "optativa",
+        "DIR209": "optativa",
+        "DIR210": "optativa",
+        "DIR211": "optativa",
+        "DIR214": "optativa",
+        "DIRA98": "optativa",
+        "DIRA99": "optativa",
+        "DIRB01": "optativa",
+        "DIRB02": "optativa",
+        "DIRB03": "optativa",
+        "DIRB04": "optativa",
+        "DIRB05": "optativa",
+        "DIRB06": "optativa",
+        "DIRB07": "optativa",
+        "DIRB08": "optativa",
+        "DIRB15": "optativa",
+        "DIRB16": "optativa",
+        "DIRB17": "optativa",
+        "DIRB21": "optativa",
+        "DIRB33": "optativa",
+        "DIRC32": "optativa",
+        "DIRC37": "optativa",
+        "LETE48": "optativa",
+        "MED142": "optativa",
+        "MEDC91": "optativa"
+      }
+    }
+  },
+  "componentTitles": {
+    "DIR213": "CIÊNCIA POLITICA",
+    "DIRA45": "TEORIA DO DIREITO I",
+    "FCH001": "INTRODUÇÃO À FILOSOFIA",
+    "FCH007": "INTRODUCAO SOCIOLOGIA II",
+    "FCH124": "ANTROPOLOGIA I",
+    "DIRA74": "HISTÓRIA DO DIREITO",
+    "DIRA79": "60h Aula DISCIPLINA OBRIGATORIO ESTADO",
+    "DIRA80": "SOCIOLOGIA JURÍDICA",
+    "DIRA81": "TEORIA DO DIREITO II",
+    "ECOB40": "INTRODUÇÃO À ECONOMIA I",
+    "DIR007": "DIREITOS FUNDAMENTAIS",
+    "DIRA75": "METODOLOGIA DA PESQUISA EM DIREITO",
+    "DIRA82": "TEORIA GERAL DO DIREITO CIVIL I",
+    "DIRA83": "TEORIA DO DIREITO PENAL I",
+    "DIRA84": "DIREITO CONSTITUCIONAL",
+    "DIRA85": "FILOSOFIA DO DIREITO",
+    "DIRA86": "TEORIA GERAL DO DIREITO CIVIL II",
+    "DIRA87": "TEORIA DO PROCESSO",
+    "DIRA88": "TEORIA DO DIREITO PENAL II",
+    "DIRA89": "60h Aula DISCIPLINA OBRIGATORIO 60h",
+    "DIR031": "DIREITO ADMINISTRATIVO I",
+    "DIR035": "DIREITO TRIBUTARIO I",
+    "DIR038": "DIREITO PROCESSUAL CIVIL I",
+    "DIR194": "DIREITO PENAL III",
+    "DIRA90": "DIREITO DAS OBRIGAÇÕES I",
+    "DIR032": "DIREITO ADMINISTRATIVO II",
+    "DIR036": "DIREITO TRIBUTARIO II",
+    "DIR039": "DIREITO PROCESSUAL CIVIL II-A",
+    "DIR195": "DIREITO PENAL IV",
+    "DIRA91": "DIREITO DAS OBRIGAÇÕES II",
+    "DIR040": "DIREITO PROCESSUAL CIVIL III-A",
+    "DIR043": "DIREITO DO TRABALHO I",
+    "DIR049": "DIREITO PROCESSUAL PENAL I-A",
+    "DIR190": "HERMENÊUTICA JURIDICA",
+    "DIRA92": "CONTRATOS",
+    "DIR041": "DIREITO PROCESSUAL CIVIL IV",
+    "DIR044": "DIREITO PROCESSUAL DO TRABALHO I",
+    "DIR050": "DIREITO PROCESSUAL PENAL II-A",
+    "DIR192": "DIREITOS REAIS I",
+    "GDIR0006": "PRÁTICA JURÍDICA CÍVEL I",
+    "DIR015": "DIREITO DE FAMíLIA",
+    "DIR046": "DIREITO INTERNACIONAL PÚBLICO",
+    "DIR063": "DIREITO AGRÁRIO",
+    "DIRA95": "DIREITO EMPRESARIAL",
+    "GDIR0007": "PRÁTICA JURÍDICA CÍVEL II",
+    "DIR016": "DIREITO DAS SUCESSÕES",
+    "DIR034": "DIREITO AMBIENTAL",
+    "DIRA76": "DIREITO SOCIETÁRIO",
+    "GDIR0008": "PRÁTICA JURÍDICA TRABALHISTA",
+    "GDIR0009": "PRÁTICA JURÍDICA PENAL",
+    "DIR061": "DIREITO DAS RELAÇÕES DE CONSUMO",
+    "DIRA96": "TRABALHO DE CONCLUSÃO DE CURSO I",
+    "GDIR0005": "DIREITO E RELAÇÕES RACIAIS",
+    "IPSA14": "PSICOLOGIA SOCIAL I",
+    "DIR189": "ETICA GERAL E PROFISSIONAL",
+    "DIRA97": "TRABALHO DE CONCLUSÃO DE CURSO II",
+    "GDIR0013": "1h Orientação INTEGRADORA OBRIGATORIO CURRICULAR",
+    "DIR008": "DIREITO ECONÔMICO",
+    "DIR023": "DIREITO PENAL V B",
+    "DIR024": "DIREITO PENAL ECONÔMICO",
+    "DIR025": "TEMAS APROFUNDADOS DIR PENAL",
+    "DIR033": "60h Aula DISCIPLINA OPTATIVO ADMINISTRATIVO",
+    "DIR037": "60h Aula DISCIPLINA OPTATIVO TRIBUTÁRIO",
+    "DIR045": "60h Aula DISCIPLINA OBRIGATORIO 60h",
+    "DIR047": "DIREITO INTERNACIONAL PRIVADO",
+    "DIR048": "DIREITO DA INTEGRACAO - A",
+    "DIR051": "DIREITO PROCESSUAL PENAL ESPECIAL",
+    "DIR067": "DIREITO DA CRIANÇA E DO ADOLESCENTE",
+    "DIR159": "60h Aula DISCIPLINA OPTATIVO 60h",
+    "DIR196": "60h Aula DISCIPLINA OPTATIVO INDUSTRIAL",
+    "DIR197": "NOVAS FIGURAS CONTRATUAIS",
+    "DIR198": "DIREITO BANCARIO",
+    "DIR199": "60h Aula DISCIPLINA OPTATIVO 60h",
+    "DIR200": "DIREITO PROCESSUAL DO TRABALHO II",
+    "DIR202": "60h Aula DISCIPLINA OPTATIVO TRABALHO",
+    "DIR203": "PROCESSO ADMINISTRATIVO",
+    "DIR204": "LOGICA E ARGUMENTAÇÃO JURIDICA",
+    "DIR205": "60h Aula DISCIPLINA OPTATIVO 60h",
+    "DIR206": "TEMAS APROFUNDADOS DE DIREITO CIVIL",
+    "DIR207": "BIOETICA E DIREITO",
+    "DIR209": "DIREITO EDUCACIONAL",
+    "DIR210": "DIREITO ELEITORAL",
+    "DIR211": "60h Aula DISCIPLINA OPTATIVO CONSTITUCIONAL",
+    "DIR214": "60h Aula DISCIPLINA OPTATIVO TRABALHO",
+    "DIRA98": "TEORIA E APLICAÇÃO DA PENA",
+    "DIRA99": "DIREITO CONSTITUCIONAL DO TRABALHO",
+    "DIRB01": "POLÍTICA CRIMINAL E CRIMINOLOGIA",
+    "DIRB02": "DIREITO PENAL ESPECIAL",
+    "DIRB03": "60h Aula DISCIPLINA OPTATIVO PROCEDIMENTOS ESPECIAIS CÍVEIS",
+    "DIRB04": "60h Aula DISCIPLINA OPTATIVO DO TRABALHO",
+    "DIRB05": "DIREITO AMBIENTAL DO TRABALHO",
+    "DIRB06": "DIREITO TRIBUTÁRIO ESPECIAL",
+    "DIRB07": "MEDIAÇÃO E ARBITRAGEM",
+    "DIRB08": "FALÊNCIA E RECUPERAÇÃO DE EMPRESAS",
+    "DIRB15": "DIREITOS REAIS II",
+    "DIRB16": "60h Aula DISCIPLINA OPTATIVO SOCIAL",
+    "DIRB17": "DIREITO TRIBUTÁRIO INTERNACIONAL",
+    "DIRB21": "60h Aula DISCIPLINA OPTATIVO COMUN TRADICIONAIS",
+    "DIRB33": "60h Aula DISCIPLINA OPTATIVO VIA 'MESCs'",
+    "DIRC32": "DIREITOS HUMANOS",
+    "DIRC37": "DIREITO ROMANO",
+    "LETE48": "60h Aula DISCIPLINA OPTATIVO",
+    "MED142": "MEDICINA LEGAL",
+    "MEDC91": "DIREITO MÉDICO, BIOÉTICA E BIODIREITO",
+    "IPSA01": "PSICOLOGIA I",
+    "DIR030": "TEORIA GERAL DO PROCESSO"
+  },
+  "offerings": [
+    {
+      "id": "2026.2-ADMH48-01",
+      "period": "2026.2",
+      "code": "ADMH48",
+      "component": "Accs: Lugares De Memória Do Povo Negro",
+      "class": "01",
+      "professor": "Andre Luis Nascimento Dos Santos",
+      "location": "ADM -",
+      "scheduleCode": "2T456",
+      "meetings": [
+        {
+          "day": "segunda",
+          "start": "15:45",
+          "end": "18:30",
+          "shift": "tarde"
+        }
+      ],
+      "enrolled": 63,
+      "capacity": 63,
+      "daySemester": "outros",
+      "nightSemester": "outros"
+    },
+    {
+      "id": "2026.2-ADMK28-01",
+      "period": "2026.2",
+      "code": "ADMK28",
+      "component": "Accs:Gestão De Oscs Coconstruindo Saberes E Práticas Sociais",
+      "class": "01",
+      "professor": "Elizabeth Matos Ribeiro",
+      "location": "ADM -",
+      "scheduleCode": "4M3456",
+      "meetings": [
+        {
+          "day": "quarta",
+          "start": "08:50",
+          "end": "12:30",
+          "shift": "manhã"
+        }
+      ],
+      "enrolled": 50,
+      "capacity": 50,
+      "daySemester": "outros",
+      "nightSemester": "outros"
+    },
+    {
+      "id": "2026.2-DIR007-01",
+      "period": "2026.2",
+      "code": "DIR007",
+      "component": "DIREITOS FUNDAMENTAIS",
+      "class": "01",
+      "professor": "Carlos Eduardo Behrmann Ratis Martins",
+      "location": "DIR - 102",
+      "scheduleCode": "2T2345",
+      "meetings": [
+        {
+          "day": "segunda",
+          "start": "13:55",
+          "end": "17:35",
+          "shift": "tarde"
+        }
+      ],
+      "enrolled": 60,
+      "capacity": 60,
+      "daySemester": 3,
+      "nightSemester": 3
+    },
+    {
+      "id": "2026.2-DIR007-02",
+      "period": "2026.2",
+      "code": "DIR007",
+      "component": "DIREITOS FUNDAMENTAIS",
+      "class": "02",
+      "professor": "Andre Luiz Batista Neves",
+      "location": "DIR - 101",
+      "scheduleCode": "6M1234",
+      "meetings": [
+        {
+          "day": "sexta",
+          "start": "07:00",
+          "end": "10:40",
+          "shift": "manhã"
+        }
+      ],
+      "enrolled": 50,
+      "capacity": 50,
+      "daySemester": 3,
+      "nightSemester": 3
+    },
+    {
+      "id": "2026.2-DIR007-03",
+      "period": "2026.2",
+      "code": "DIR007",
+      "component": "DIREITOS FUNDAMENTAIS",
+      "class": "03",
+      "professor": "Carlos Eduardo Behrmann Ratis Martins",
+      "location": "DIR - 102",
+      "scheduleCode": "24N12",
+      "meetings": [
+        {
+          "day": "segunda",
+          "start": "18:30",
+          "end": "20:20",
+          "shift": "noite"
+        },
+        {
+          "day": "quarta",
+          "start": "18:30",
+          "end": "20:20",
+          "shift": "noite"
+        }
+      ],
+      "enrolled": 60,
+      "capacity": 60,
+      "daySemester": 3,
+      "nightSemester": 3
+    },
+    {
+      "id": "2026.2-DIR007-04",
+      "period": "2026.2",
+      "code": "DIR007",
+      "component": "DIREITOS FUNDAMENTAIS",
+      "class": "04",
+      "professor": "Fabio Periandro De Almeida Hirsch",
+      "location": "DIR - 112",
+      "scheduleCode": "24N34",
+      "meetings": [
+        {
+          "day": "segunda",
+          "start": "20:20",
+          "end": "22:10",
+          "shift": "noite"
+        },
+        {
+          "day": "quarta",
+          "start": "20:20",
+          "end": "22:10",
+          "shift": "noite"
+        }
+      ],
+      "enrolled": 60,
+      "capacity": 60,
+      "daySemester": 3,
+      "nightSemester": 3
+    },
+    {
+      "id": "2026.2-DIR015-01",
+      "period": "2026.2",
+      "code": "DIR015",
+      "component": "DIREITO DE FAMíLIA",
+      "class": "01",
+      "professor": "Christiano Cassettari",
+      "location": "DIR - 113",
+      "scheduleCode": "24M34",
+      "meetings": [
+        {
+          "day": "segunda",
+          "start": "08:50",
+          "end": "10:40",
+          "shift": "manhã"
+        },
+        {
+          "day": "quarta",
+          "start": "08:50",
+          "end": "10:40",
+          "shift": "manhã"
+        }
+      ],
+      "enrolled": 16,
+      "capacity": 45,
+      "daySemester": 7,
+      "nightSemester": 9
+    },
+    {
+      "id": "2026.2-DIR015-02",
+      "period": "2026.2",
+      "code": "DIR015",
+      "component": "DIREITO DE FAMíLIA",
+      "class": "02",
+      "professor": "Iran Furtado De Souza Filho",
+      "location": "DIR - 103",
+      "scheduleCode": "24M56",
+      "meetings": [
+        {
+          "day": "segunda",
+          "start": "10:40",
+          "end": "12:30",
+          "shift": "manhã"
+        },
+        {
+          "day": "quarta",
+          "start": "10:40",
+          "end": "12:30",
+          "shift": "manhã"
+        }
+      ],
+      "enrolled": 60,
+      "capacity": 60,
+      "daySemester": 7,
+      "nightSemester": 9
+    },
+    {
+      "id": "2026.2-DIR015-03",
+      "period": "2026.2",
+      "code": "DIR015",
+      "component": "DIREITO DE FAMíLIA",
+      "class": "03",
+      "professor": "Antonio Lago Junior",
+      "location": "DIR - 220",
+      "scheduleCode": "35T56",
+      "meetings": [
+        {
+          "day": "terça",
+          "start": "16:40",
+          "end": "18:30",
+          "shift": "tarde"
+        },
+        {
+          "day": "quinta",
+          "start": "16:40",
+          "end": "18:30",
+          "shift": "tarde"
+        }
+      ],
+      "enrolled": 24,
+      "capacity": 45,
+      "daySemester": 7,
+      "nightSemester": 9
+    },
+    {
+      "id": "2026.2-DIR015-04",
+      "period": "2026.2",
+      "code": "DIR015",
+      "component": "DIREITO DE FAMíLIA",
+      "class": "04",
+      "professor": "Antonio Lago Junior",
+      "location": "DIR - 220",
+      "scheduleCode": "35N12",
+      "meetings": [
+        {
+          "day": "terça",
+          "start": "18:30",
+          "end": "20:20",
+          "shift": "noite"
+        },
+        {
+          "day": "quinta",
+          "start": "18:30",
+          "end": "20:20",
+          "shift": "noite"
+        }
+      ],
+      "enrolled": 31,
+      "capacity": 45,
+      "daySemester": 7,
+      "nightSemester": 9
+    },
+    {
+      "id": "2026.2-DIR016-01",
+      "period": "2026.2",
+      "code": "DIR016",
+      "component": "DIREITO DAS SUCESSÕES",
+      "class": "01",
+      "professor": "Joao Carlos Macedo Monteiro",
+      "location": "DIR - 228",
+      "scheduleCode": "24M34",
+      "meetings": [
+        {
+          "day": "segunda",
+          "start": "08:50",
+          "end": "10:40",
+          "shift": "manhã"
+        },
+        {
+          "day": "quarta",
+          "start": "08:50",
+          "end": "10:40",
+          "shift": "manhã"
+        }
+      ],
+      "enrolled": 31,
+      "capacity": 45,
+      "daySemester": 8,
+      "nightSemester": 10
+    },
+    {
+      "id": "2026.2-DIR016-02",
+      "period": "2026.2",
+      "code": "DIR016",
+      "component": "DIREITO DAS SUCESSÕES",
+      "class": "02",
+      "professor": "Leandro Reinaldo Da Cunha",
+      "location": "DIR - 104",
+      "scheduleCode": "3T2345",
+      "meetings": [
+        {
+          "day": "terça",
+          "start": "13:55",
+          "end": "17:35",
+          "shift": "tarde"
+        }
+      ],
+      "enrolled": 60,
+      "capacity": 60,
+      "daySemester": 8,
+      "nightSemester": 10
+    },
+    {
+      "id": "2026.2-DIR016-03",
+      "period": "2026.2",
+      "code": "DIR016",
+      "component": "DIREITO DAS SUCESSÕES",
+      "class": "03",
+      "professor": "Andréa Santana Leone De Souza",
+      "location": "DIR - 218",
+      "scheduleCode": "35N12",
+      "meetings": [
+        {
+          "day": "terça",
+          "start": "18:30",
+          "end": "20:20",
+          "shift": "noite"
+        },
+        {
+          "day": "quinta",
+          "start": "18:30",
+          "end": "20:20",
+          "shift": "noite"
+        }
+      ],
+      "enrolled": 33,
+      "capacity": 45,
+      "daySemester": 8,
+      "nightSemester": 10
+    },
+    {
+      "id": "2026.2-DIR016-04",
+      "period": "2026.2",
+      "code": "DIR016",
+      "component": "DIREITO DAS SUCESSÕES",
+      "class": "04",
+      "professor": "Gustavo Costa Macedo",
+      "location": "DIR - 108",
+      "scheduleCode": "24N34",
+      "meetings": [
+        {
+          "day": "segunda",
+          "start": "20:20",
+          "end": "22:10",
+          "shift": "noite"
+        },
+        {
+          "day": "quarta",
+          "start": "20:20",
+          "end": "22:10",
+          "shift": "noite"
+        }
+      ],
+      "enrolled": 14,
+      "capacity": 45,
+      "daySemester": 8,
+      "nightSemester": 10
+    },
+    {
+      "id": "2026.2-DIR023-01",
+      "period": "2026.2",
+      "code": "DIR023",
+      "component": "DIREITO PENAL V B",
+      "class": "01",
+      "professor": "Sebastian Borges De Albuquerque Mello",
+      "location": "DIR - 224",
+      "scheduleCode": "24M12",
+      "meetings": [
+        {
+          "day": "segunda",
+          "start": "07:00",
+          "end": "08:50",
+          "shift": "manhã"
+        },
+        {
+          "day": "quarta",
+          "start": "07:00",
+          "end": "08:50",
+          "shift": "manhã"
+        }
+      ],
+      "enrolled": 55,
+      "capacity": 55,
+      "daySemester": "optativa",
+      "nightSemester": "optativa"
+    },
+    {
+      "id": "2026.2-DIR024-01",
+      "period": "2026.2",
+      "code": "DIR024",
+      "component": "DIREITO PENAL ECONÔMICO",
+      "class": "01",
+      "professor": "A Definir",
+      "location": "DIR - 213",
+      "scheduleCode": "35N12",
+      "meetings": [
+        {
+          "day": "terça",
+          "start": "18:30",
+          "end": "20:20",
+          "shift": "noite"
+        },
+        {
+          "day": "quinta",
+          "start": "18:30",
+          "end": "20:20",
+          "shift": "noite"
+        }
+      ],
+      "enrolled": 45,
+      "capacity": 45,
+      "daySemester": "optativa",
+      "nightSemester": "optativa"
+    },
+    {
+      "id": "2026.2-DIR030-01",
+      "period": "2026.2",
+      "code": "DIR030",
+      "component": "TEORIA GERAL DO PROCESSO",
+      "class": "01",
+      "professor": "Wilson Alves De Souza",
+      "location": "DIR - 102",
+      "scheduleCode": "6M1234",
+      "meetings": [
+        {
+          "day": "sexta",
+          "start": "07:00",
+          "end": "10:40",
+          "shift": "manhã"
+        }
+      ],
+      "enrolled": 55,
+      "capacity": 55,
+      "daySemester": 4,
+      "nightSemester": "outros"
+    },
+    {
+      "id": "2026.2-DIR030-02",
+      "period": "2026.2",
+      "code": "DIR030",
+      "component": "TEORIA GERAL DO PROCESSO",
+      "class": "02",
+      "professor": "Eduardo Lima Sodre",
+      "location": "DIR - 105",
+      "scheduleCode": "6M3456",
+      "meetings": [
+        {
+          "day": "sexta",
+          "start": "08:50",
+          "end": "12:30",
+          "shift": "manhã"
+        }
+      ],
+      "enrolled": 60,
+      "capacity": 60,
+      "daySemester": 4,
+      "nightSemester": "outros"
+    },
+    {
+      "id": "2026.2-DIR031-01",
+      "period": "2026.2",
+      "code": "DIR031",
+      "component": "DIREITO ADMINISTRATIVO I",
+      "class": "01",
+      "professor": "Celso Luiz Braga De Castro",
+      "location": "DIR - 103",
+      "scheduleCode": "35M56",
+      "meetings": [
+        {
+          "day": "terça",
+          "start": "10:40",
+          "end": "12:30",
+          "shift": "manhã"
+        },
+        {
+          "day": "quinta",
+          "start": "10:40",
+          "end": "12:30",
+          "shift": "manhã"
+        }
+      ],
+      "enrolled": 29,
+      "capacity": 45,
+      "daySemester": 4,
+      "nightSemester": 5
+    },
+    {
+      "id": "2026.2-DIR031-02",
+      "period": "2026.2",
+      "code": "DIR031",
+      "component": "DIREITO ADMINISTRATIVO I",
+      "class": "02",
+      "professor": "Durval Carneiro Neto",
+      "location": "DIR - 107",
+      "scheduleCode": "24N12",
+      "meetings": [
+        {
+          "day": "segunda",
+          "start": "18:30",
+          "end": "20:20",
+          "shift": "noite"
+        },
+        {
+          "day": "quarta",
+          "start": "18:30",
+          "end": "20:20",
+          "shift": "noite"
+        }
+      ],
+      "enrolled": 48,
+      "capacity": 55,
+      "daySemester": 4,
+      "nightSemester": 5
+    },
+    {
+      "id": "2026.2-DIR031-03",
+      "period": "2026.2",
+      "code": "DIR031",
+      "component": "DIREITO ADMINISTRATIVO I",
+      "class": "03",
+      "professor": "Durval Carneiro Neto",
+      "location": "DIR - 107",
+      "scheduleCode": "24N34",
+      "meetings": [
+        {
+          "day": "segunda",
+          "start": "20:20",
+          "end": "22:10",
+          "shift": "noite"
+        },
+        {
+          "day": "quarta",
+          "start": "20:20",
+          "end": "22:10",
+          "shift": "noite"
+        }
+      ],
+      "enrolled": 38,
+      "capacity": 55,
+      "daySemester": 4,
+      "nightSemester": 5
+    },
+    {
+      "id": "2026.2-DIR031-04",
+      "period": "2026.2",
+      "code": "DIR031",
+      "component": "DIREITO ADMINISTRATIVO I",
+      "class": "04",
+      "professor": "Rita Andrea Rehem Almeida Tourinho",
+      "location": "DIR - 101",
+      "scheduleCode": "24M56",
+      "meetings": [
+        {
+          "day": "segunda",
+          "start": "10:40",
+          "end": "12:30",
+          "shift": "manhã"
+        },
+        {
+          "day": "quarta",
+          "start": "10:40",
+          "end": "12:30",
+          "shift": "manhã"
+        }
+      ],
+      "enrolled": 45,
+      "capacity": 50,
+      "daySemester": 4,
+      "nightSemester": 5
+    },
+    {
+      "id": "2026.2-DIR032-01",
+      "period": "2026.2",
+      "code": "DIR032",
+      "component": "DIREITO ADMINISTRATIVO II",
+      "class": "01",
+      "professor": "Rita Andrea Rehem Almeida Tourinho",
+      "location": "DIR - 115",
+      "scheduleCode": "24M34",
+      "meetings": [
+        {
+          "day": "segunda",
+          "start": "08:50",
+          "end": "10:40",
+          "shift": "manhã"
+        },
+        {
+          "day": "quarta",
+          "start": "08:50",
+          "end": "10:40",
+          "shift": "manhã"
+        }
+      ],
+      "enrolled": 28,
+      "capacity": 45,
+      "daySemester": 5,
+      "nightSemester": 6
+    },
+    {
+      "id": "2026.2-DIR032-02",
+      "period": "2026.2",
+      "code": "DIR032",
+      "component": "DIREITO ADMINISTRATIVO II",
+      "class": "02",
+      "professor": "A Definir",
+      "location": "DIR - 103",
+      "scheduleCode": "35N12",
+      "meetings": [
+        {
+          "day": "terça",
+          "start": "18:30",
+          "end": "20:20",
+          "shift": "noite"
+        },
+        {
+          "day": "quinta",
+          "start": "18:30",
+          "end": "20:20",
+          "shift": "noite"
+        }
+      ],
+      "enrolled": 50,
+      "capacity": 50,
+      "daySemester": 5,
+      "nightSemester": 6
+    },
+    {
+      "id": "2026.2-DIR032-03",
+      "period": "2026.2",
+      "code": "DIR032",
+      "component": "DIREITO ADMINISTRATIVO II",
+      "class": "03",
+      "professor": "A Definir",
+      "location": "DIR - 103",
+      "scheduleCode": "35N34",
+      "meetings": [
+        {
+          "day": "terça",
+          "start": "20:20",
+          "end": "22:10",
+          "shift": "noite"
+        },
+        {
+          "day": "quinta",
+          "start": "20:20",
+          "end": "22:10",
+          "shift": "noite"
+        }
+      ],
+      "enrolled": 50,
+      "capacity": 50,
+      "daySemester": 5,
+      "nightSemester": 6
+    },
+    {
+      "id": "2026.2-DIR032-04",
+      "period": "2026.2",
+      "code": "DIR032",
+      "component": "DIREITO ADMINISTRATIVO II",
+      "class": "04",
+      "professor": "A Definir",
+      "location": "DIR - 105",
+      "scheduleCode": "24M56",
+      "meetings": [
+        {
+          "day": "segunda",
+          "start": "10:40",
+          "end": "12:30",
+          "shift": "manhã"
+        },
+        {
+          "day": "quarta",
+          "start": "10:40",
+          "end": "12:30",
+          "shift": "manhã"
+        }
+      ],
+      "enrolled": 60,
+      "capacity": 60,
+      "daySemester": 5,
+      "nightSemester": 6
+    },
+    {
+      "id": "2026.2-DIR033-01",
+      "period": "2026.2",
+      "code": "DIR033",
+      "component": "60h Aula DISCIPLINA OPTATIVO ADMINISTRATIVO",
+      "class": "01",
+      "professor": "Celso Luiz Braga De Castro",
+      "location": "DIR - 103",
+      "scheduleCode": "35M34",
+      "meetings": [
+        {
+          "day": "terça",
+          "start": "08:50",
+          "end": "10:40",
+          "shift": "manhã"
+        },
+        {
+          "day": "quinta",
+          "start": "08:50",
+          "end": "10:40",
+          "shift": "manhã"
+        }
+      ],
+      "enrolled": 60,
+      "capacity": 60,
+      "daySemester": "optativa",
+      "nightSemester": "optativa"
+    },
+    {
+      "id": "2026.2-DIR034-01",
+      "period": "2026.2",
+      "code": "DIR034",
+      "component": "DIREITO AMBIENTAL",
+      "class": "01",
+      "professor": "A Definir",
+      "location": "DIR - 218",
+      "scheduleCode": "7M3456",
+      "meetings": [
+        {
+          "day": "sábado",
+          "start": "08:50",
+          "end": "12:30",
+          "shift": "manhã"
+        }
+      ],
+      "enrolled": 33,
+      "capacity": 45,
+      "daySemester": 9,
+      "nightSemester": 10
+    },
+    {
+      "id": "2026.2-DIR034-02",
+      "period": "2026.2",
+      "code": "DIR034",
+      "component": "DIREITO AMBIENTAL",
+      "class": "02",
+      "professor": "A Definir",
+      "location": "DIR - 224",
+      "scheduleCode": "35M56",
+      "meetings": [
+        {
+          "day": "terça",
+          "start": "10:40",
+          "end": "12:30",
+          "shift": "manhã"
+        },
+        {
+          "day": "quinta",
+          "start": "10:40",
+          "end": "12:30",
+          "shift": "manhã"
+        }
+      ],
+      "enrolled": 51,
+      "capacity": 51,
+      "daySemester": 9,
+      "nightSemester": 10
+    },
+    {
+      "id": "2026.2-DIR034-03",
+      "period": "2026.2",
+      "code": "DIR034",
+      "component": "DIREITO AMBIENTAL",
+      "class": "03",
+      "professor": "A Definir",
+      "location": "DIR - 101",
+      "scheduleCode": "6N1234",
+      "meetings": [
+        {
+          "day": "sexta",
+          "start": "18:30",
+          "end": "22:10",
+          "shift": "noite"
+        }
+      ],
+      "enrolled": 44,
+      "capacity": 50,
+      "daySemester": 9,
+      "nightSemester": 10
+    },
+    {
+      "id": "2026.2-DIR034-04",
+      "period": "2026.2",
+      "code": "DIR034",
+      "component": "DIREITO AMBIENTAL",
+      "class": "04",
+      "professor": "A Definir",
+      "location": "DIR - 212",
+      "scheduleCode": "24M34",
+      "meetings": [
+        {
+          "day": "segunda",
+          "start": "08:50",
+          "end": "10:40",
+          "shift": "manhã"
+        },
+        {
+          "day": "quarta",
+          "start": "08:50",
+          "end": "10:40",
+          "shift": "manhã"
+        }
+      ],
+      "enrolled": 35,
+      "capacity": 45,
+      "daySemester": 9,
+      "nightSemester": 10
+    },
+    {
+      "id": "2026.2-DIR035-01",
+      "period": "2026.2",
+      "code": "DIR035",
+      "component": "DIREITO TRIBUTARIO I",
+      "class": "01",
+      "professor": "Helconio De Souza Almeida",
+      "location": "DIR - 104",
+      "scheduleCode": "35M34",
+      "meetings": [
+        {
+          "day": "terça",
+          "start": "08:50",
+          "end": "10:40",
+          "shift": "manhã"
+        },
+        {
+          "day": "quinta",
+          "start": "08:50",
+          "end": "10:40",
+          "shift": "manhã"
+        }
+      ],
+      "enrolled": 55,
+      "capacity": 55,
+      "daySemester": 5,
+      "nightSemester": 5
+    },
+    {
+      "id": "2026.2-DIR035-02",
+      "period": "2026.2",
+      "code": "DIR035",
+      "component": "DIREITO TRIBUTARIO I",
+      "class": "02",
+      "professor": "Helconio De Souza Almeida",
+      "location": "DIR - 104",
+      "scheduleCode": "35M56",
+      "meetings": [
+        {
+          "day": "terça",
+          "start": "10:40",
+          "end": "12:30",
+          "shift": "manhã"
+        },
+        {
+          "day": "quinta",
+          "start": "10:40",
+          "end": "12:30",
+          "shift": "manhã"
+        }
+      ],
+      "enrolled": 31,
+      "capacity": 55,
+      "daySemester": 5,
+      "nightSemester": 5
+    },
+    {
+      "id": "2026.2-DIR035-03",
+      "period": "2026.2",
+      "code": "DIR035",
+      "component": "DIREITO TRIBUTARIO I",
+      "class": "03",
+      "professor": "Andre Alves Portella",
+      "location": "DIR - 212",
+      "scheduleCode": "3T56 3N12",
+      "meetings": [
+        {
+          "day": "terça",
+          "start": "16:40",
+          "end": "18:30",
+          "shift": "tarde"
+        },
+        {
+          "day": "terça",
+          "start": "18:30",
+          "end": "20:20",
+          "shift": "noite"
+        }
+      ],
+      "enrolled": 17,
+      "capacity": 45,
+      "daySemester": 5,
+      "nightSemester": 5
+    },
+    {
+      "id": "2026.2-DIR035-05",
+      "period": "2026.2",
+      "code": "DIR035",
+      "component": "DIREITO TRIBUTARIO I",
+      "class": "05",
+      "professor": "Ramon Rocha Santos",
+      "location": "DIR - 105",
+      "scheduleCode": "6N1234",
+      "meetings": [
+        {
+          "day": "sexta",
+          "start": "18:30",
+          "end": "22:10",
+          "shift": "noite"
+        }
+      ],
+      "enrolled": 48,
+      "capacity": 60,
+      "daySemester": 5,
+      "nightSemester": 5
+    },
+    {
+      "id": "2026.2-DIR036-01",
+      "period": "2026.2",
+      "code": "DIR036",
+      "component": "DIREITO TRIBUTARIO II",
+      "class": "01",
+      "professor": "Paulo Roberto Lyrio Pimenta",
+      "location": "DIR - 228",
+      "scheduleCode": "7M3456",
+      "meetings": [
+        {
+          "day": "sábado",
+          "start": "08:50",
+          "end": "12:30",
+          "shift": "manhã"
+        }
+      ],
+      "enrolled": 23,
+      "capacity": 45,
+      "daySemester": 6,
+      "nightSemester": 6
+    },
+    {
+      "id": "2026.2-DIR036-02",
+      "period": "2026.2",
+      "code": "DIR036",
+      "component": "DIREITO TRIBUTARIO II",
+      "class": "02",
+      "professor": "Harrison Ferreira Leite",
+      "location": "DIR - 105",
+      "scheduleCode": "3T2345",
+      "meetings": [
+        {
+          "day": "terça",
+          "start": "13:55",
+          "end": "17:35",
+          "shift": "tarde"
+        }
+      ],
+      "enrolled": 60,
+      "capacity": 60,
+      "daySemester": 6,
+      "nightSemester": 6
+    },
+    {
+      "id": "2026.2-DIR036-03",
+      "period": "2026.2",
+      "code": "DIR036",
+      "component": "DIREITO TRIBUTARIO II",
+      "class": "03",
+      "professor": "Daniela Lima De Andrade Borges",
+      "location": "DIR - 101",
+      "scheduleCode": "24N12",
+      "meetings": [
+        {
+          "day": "segunda",
+          "start": "18:30",
+          "end": "20:20",
+          "shift": "noite"
+        },
+        {
+          "day": "quarta",
+          "start": "18:30",
+          "end": "20:20",
+          "shift": "noite"
+        }
+      ],
+      "enrolled": 50,
+      "capacity": 50,
+      "daySemester": 6,
+      "nightSemester": 6
+    },
+    {
+      "id": "2026.2-DIR036-04",
+      "period": "2026.2",
+      "code": "DIR036",
+      "component": "DIREITO TRIBUTARIO II",
+      "class": "04",
+      "professor": "Daniela Lima De Andrade Borges",
+      "location": "DIR - 101",
+      "scheduleCode": "7M3456",
+      "meetings": [
+        {
+          "day": "sábado",
+          "start": "08:50",
+          "end": "12:30",
+          "shift": "manhã"
+        }
+      ],
+      "enrolled": 50,
+      "capacity": 50,
+      "daySemester": 6,
+      "nightSemester": 6
+    },
+    {
+      "id": "2026.2-DIR037-01",
+      "period": "2026.2",
+      "code": "DIR037",
+      "component": "60h Aula DISCIPLINA OPTATIVO TRIBUTÁRIO",
+      "class": "01",
+      "professor": "Paulo Roberto Lyrio Pimenta",
+      "location": "DIR - 212",
+      "scheduleCode": "6M3456",
+      "meetings": [
+        {
+          "day": "sexta",
+          "start": "08:50",
+          "end": "12:30",
+          "shift": "manhã"
+        }
+      ],
+      "enrolled": 23,
+      "capacity": 45,
+      "daySemester": "optativa",
+      "nightSemester": "optativa"
+    },
+    {
+      "id": "2026.2-DIR038-01",
+      "period": "2026.2",
+      "code": "DIR038",
+      "component": "DIREITO PROCESSUAL CIVIL I",
+      "class": "01",
+      "professor": "Luiz Salomao Amaral Viana",
+      "location": "DIR - 102",
+      "scheduleCode": "35M12",
+      "meetings": [
+        {
+          "day": "terça",
+          "start": "07:00",
+          "end": "08:50",
+          "shift": "manhã"
+        },
+        {
+          "day": "quinta",
+          "start": "07:00",
+          "end": "08:50",
+          "shift": "manhã"
+        }
+      ],
+      "enrolled": 60,
+      "capacity": 60,
+      "daySemester": 5,
+      "nightSemester": 5
+    },
+    {
+      "id": "2026.2-DIR038-02",
+      "period": "2026.2",
+      "code": "DIR038",
+      "component": "DIREITO PROCESSUAL CIVIL I",
+      "class": "02",
+      "professor": "Bernardo Silva De Lima",
+      "location": "DIR - 103",
+      "scheduleCode": "24N12",
+      "meetings": [
+        {
+          "day": "segunda",
+          "start": "18:30",
+          "end": "20:20",
+          "shift": "noite"
+        },
+        {
+          "day": "quarta",
+          "start": "18:30",
+          "end": "20:20",
+          "shift": "noite"
+        }
+      ],
+      "enrolled": 50,
+      "capacity": 50,
+      "daySemester": 5,
+      "nightSemester": 5
+    },
+    {
+      "id": "2026.2-DIR038-03",
+      "period": "2026.2",
+      "code": "DIR038",
+      "component": "DIREITO PROCESSUAL CIVIL I",
+      "class": "03",
+      "professor": "Bernardo Silva De Lima",
+      "location": "DIR - 103",
+      "scheduleCode": "24N34",
+      "meetings": [
+        {
+          "day": "segunda",
+          "start": "20:20",
+          "end": "22:10",
+          "shift": "noite"
+        },
+        {
+          "day": "quarta",
+          "start": "20:20",
+          "end": "22:10",
+          "shift": "noite"
+        }
+      ],
+      "enrolled": 50,
+      "capacity": 50,
+      "daySemester": 5,
+      "nightSemester": 5
+    },
+    {
+      "id": "2026.2-DIR038-04",
+      "period": "2026.2",
+      "code": "DIR038",
+      "component": "DIREITO PROCESSUAL CIVIL I",
+      "class": "04",
+      "professor": "A Definir",
+      "location": "DIR - 225",
+      "scheduleCode": "24M12",
+      "meetings": [
+        {
+          "day": "segunda",
+          "start": "07:00",
+          "end": "08:50",
+          "shift": "manhã"
+        },
+        {
+          "day": "quarta",
+          "start": "07:00",
+          "end": "08:50",
+          "shift": "manhã"
+        }
+      ],
+      "enrolled": 45,
+      "capacity": 45,
+      "daySemester": 5,
+      "nightSemester": 5
+    },
+    {
+      "id": "2026.2-DIR038-05",
+      "period": "2026.2",
+      "code": "DIR038",
+      "component": "DIREITO PROCESSUAL CIVIL I",
+      "class": "05",
+      "professor": "A Definir",
+      "location": "DIR - 225",
+      "scheduleCode": "24M34",
+      "meetings": [
+        {
+          "day": "segunda",
+          "start": "08:50",
+          "end": "10:40",
+          "shift": "manhã"
+        },
+        {
+          "day": "quarta",
+          "start": "08:50",
+          "end": "10:40",
+          "shift": "manhã"
+        }
+      ],
+      "enrolled": 38,
+      "capacity": 45,
+      "daySemester": 5,
+      "nightSemester": 5
+    },
+    {
+      "id": "2026.2-DIR039-01",
+      "period": "2026.2",
+      "code": "DIR039",
+      "component": "DIREITO PROCESSUAL CIVIL II-A",
+      "class": "01",
+      "professor": "Luiz Salomao Amaral Viana",
+      "location": "DIR - 102",
+      "scheduleCode": "35M34",
+      "meetings": [
+        {
+          "day": "terça",
+          "start": "08:50",
+          "end": "10:40",
+          "shift": "manhã"
+        },
+        {
+          "day": "quinta",
+          "start": "08:50",
+          "end": "10:40",
+          "shift": "manhã"
+        }
+      ],
+      "enrolled": 38,
+      "capacity": 60,
+      "daySemester": 6,
+      "nightSemester": 6
+    },
+    {
+      "id": "2026.2-DIR039-02",
+      "period": "2026.2",
+      "code": "DIR039",
+      "component": "DIREITO PROCESSUAL CIVIL II-A",
+      "class": "02",
+      "professor": "Fredie Souza Didier Junior",
+      "location": "DIR - 104",
+      "scheduleCode": "24M34",
+      "meetings": [
+        {
+          "day": "segunda",
+          "start": "08:50",
+          "end": "10:40",
+          "shift": "manhã"
+        },
+        {
+          "day": "quarta",
+          "start": "08:50",
+          "end": "10:40",
+          "shift": "manhã"
+        }
+      ],
+      "enrolled": 50,
+      "capacity": 50,
+      "daySemester": 6,
+      "nightSemester": 6
+    },
+    {
+      "id": "2026.2-DIR039-03",
+      "period": "2026.2",
+      "code": "DIR039",
+      "component": "DIREITO PROCESSUAL CIVIL II-A",
+      "class": "03",
+      "professor": "Eduardo Lima Sodre",
+      "location": "DIR - 226",
+      "scheduleCode": "24M56",
+      "meetings": [
+        {
+          "day": "segunda",
+          "start": "10:40",
+          "end": "12:30",
+          "shift": "manhã"
+        },
+        {
+          "day": "quarta",
+          "start": "10:40",
+          "end": "12:30",
+          "shift": "manhã"
+        }
+      ],
+      "enrolled": 9,
+      "capacity": 45,
+      "daySemester": 6,
+      "nightSemester": 6
+    },
+    {
+      "id": "2026.2-DIR039-04",
+      "period": "2026.2",
+      "code": "DIR039",
+      "component": "DIREITO PROCESSUAL CIVIL II-A",
+      "class": "04",
+      "professor": "Tarsis Silva De Cerqueira",
+      "location": "DIR - 224",
+      "scheduleCode": "35T56",
+      "meetings": [
+        {
+          "day": "terça",
+          "start": "16:40",
+          "end": "18:30",
+          "shift": "tarde"
+        },
+        {
+          "day": "quinta",
+          "start": "16:40",
+          "end": "18:30",
+          "shift": "tarde"
+        }
+      ],
+      "enrolled": 55,
+      "capacity": 55,
+      "daySemester": 6,
+      "nightSemester": 6
+    },
+    {
+      "id": "2026.2-DIR039-05",
+      "period": "2026.2",
+      "code": "DIR039",
+      "component": "DIREITO PROCESSUAL CIVIL II-A",
+      "class": "05",
+      "professor": "Bruno Cesar De Carvalho Coelho",
+      "location": "DIR - 219",
+      "scheduleCode": "35N12",
+      "meetings": [
+        {
+          "day": "terça",
+          "start": "18:30",
+          "end": "20:20",
+          "shift": "noite"
+        },
+        {
+          "day": "quinta",
+          "start": "18:30",
+          "end": "20:20",
+          "shift": "noite"
+        }
+      ],
+      "enrolled": 45,
+      "capacity": 45,
+      "daySemester": 6,
+      "nightSemester": 6
+    },
+    {
+      "id": "2026.2-DIR040-01",
+      "period": "2026.2",
+      "code": "DIR040",
+      "component": "DIREITO PROCESSUAL CIVIL III-A",
+      "class": "01",
+      "professor": "Eduardo Lima Sodre",
+      "location": "DIR - 226",
+      "scheduleCode": "24M34",
+      "meetings": [
+        {
+          "day": "segunda",
+          "start": "08:50",
+          "end": "10:40",
+          "shift": "manhã"
+        },
+        {
+          "day": "quarta",
+          "start": "08:50",
+          "end": "10:40",
+          "shift": "manhã"
+        }
+      ],
+      "enrolled": 28,
+      "capacity": 45,
+      "daySemester": 7,
+      "nightSemester": 7
+    },
+    {
+      "id": "2026.2-DIR040-02",
+      "period": "2026.2",
+      "code": "DIR040",
+      "component": "DIREITO PROCESSUAL CIVIL III-A",
+      "class": "02",
+      "professor": "Francisco Bertino Bezerra De Carvalho",
+      "location": "DIR - 115",
+      "scheduleCode": "35M12",
+      "meetings": [
+        {
+          "day": "terça",
+          "start": "07:00",
+          "end": "08:50",
+          "shift": "manhã"
+        },
+        {
+          "day": "quinta",
+          "start": "07:00",
+          "end": "08:50",
+          "shift": "manhã"
+        }
+      ],
+      "enrolled": 15,
+      "capacity": 45,
+      "daySemester": 7,
+      "nightSemester": 7
+    },
+    {
+      "id": "2026.2-DIR040-03",
+      "period": "2026.2",
+      "code": "DIR040",
+      "component": "DIREITO PROCESSUAL CIVIL III-A",
+      "class": "03",
+      "professor": "Tarsis Silva De Cerqueira",
+      "location": "DIR - 224",
+      "scheduleCode": "35N12",
+      "meetings": [
+        {
+          "day": "terça",
+          "start": "18:30",
+          "end": "20:20",
+          "shift": "noite"
+        },
+        {
+          "day": "quinta",
+          "start": "18:30",
+          "end": "20:20",
+          "shift": "noite"
+        }
+      ],
+      "enrolled": 51,
+      "capacity": 55,
+      "daySemester": 7,
+      "nightSemester": 7
+    },
+    {
+      "id": "2026.2-DIR040-04",
+      "period": "2026.2",
+      "code": "DIR040",
+      "component": "DIREITO PROCESSUAL CIVIL III-A",
+      "class": "04",
+      "professor": "Tarsis Silva De Cerqueira",
+      "location": "DIR - 224",
+      "scheduleCode": "35N34",
+      "meetings": [
+        {
+          "day": "terça",
+          "start": "20:20",
+          "end": "22:10",
+          "shift": "noite"
+        },
+        {
+          "day": "quinta",
+          "start": "20:20",
+          "end": "22:10",
+          "shift": "noite"
+        }
+      ],
+      "enrolled": 35,
+      "capacity": 45,
+      "daySemester": 7,
+      "nightSemester": 7
+    },
+    {
+      "id": "2026.2-DIR041-01",
+      "period": "2026.2",
+      "code": "DIR041",
+      "component": "DIREITO PROCESSUAL CIVIL IV",
+      "class": "01",
+      "professor": "Cynthia De Araujo Lima Lopes",
+      "location": "DIR - 115",
+      "scheduleCode": "7M3456",
+      "meetings": [
+        {
+          "day": "sábado",
+          "start": "08:50",
+          "end": "12:30",
+          "shift": "manhã"
+        }
+      ],
+      "enrolled": 25,
+      "capacity": 45,
+      "daySemester": 8,
+      "nightSemester": 8
+    },
+    {
+      "id": "2026.2-DIR041-02",
+      "period": "2026.2",
+      "code": "DIR041",
+      "component": "DIREITO PROCESSUAL CIVIL IV",
+      "class": "02",
+      "professor": "Fredie Souza Didier Junior",
+      "location": "DIR - 104",
+      "scheduleCode": "24M12",
+      "meetings": [
+        {
+          "day": "segunda",
+          "start": "07:00",
+          "end": "08:50",
+          "shift": "manhã"
+        },
+        {
+          "day": "quarta",
+          "start": "07:00",
+          "end": "08:50",
+          "shift": "manhã"
+        }
+      ],
+      "enrolled": 50,
+      "capacity": 50,
+      "daySemester": 8,
+      "nightSemester": 8
+    },
+    {
+      "id": "2026.2-DIR041-03",
+      "period": "2026.2",
+      "code": "DIR041",
+      "component": "DIREITO PROCESSUAL CIVIL IV",
+      "class": "03",
+      "professor": "Paula Sarno Braga Lago",
+      "location": "DIR - 112",
+      "scheduleCode": "35M34",
+      "meetings": [
+        {
+          "day": "terça",
+          "start": "08:50",
+          "end": "10:40",
+          "shift": "manhã"
+        },
+        {
+          "day": "quinta",
+          "start": "08:50",
+          "end": "10:40",
+          "shift": "manhã"
+        }
+      ],
+      "enrolled": 55,
+      "capacity": 55,
+      "daySemester": 8,
+      "nightSemester": 8
+    },
+    {
+      "id": "2026.2-DIR041-04",
+      "period": "2026.2",
+      "code": "DIR041",
+      "component": "DIREITO PROCESSUAL CIVIL IV",
+      "class": "04",
+      "professor": "Bruno Cesar De Carvalho Coelho",
+      "location": "DIR - 112",
+      "scheduleCode": "35N34",
+      "meetings": [
+        {
+          "day": "terça",
+          "start": "20:20",
+          "end": "22:10",
+          "shift": "noite"
+        },
+        {
+          "day": "quinta",
+          "start": "20:20",
+          "end": "22:10",
+          "shift": "noite"
+        }
+      ],
+      "enrolled": 60,
+      "capacity": 60,
+      "daySemester": 8,
+      "nightSemester": 8
+    },
+    {
+      "id": "2026.2-DIR043-01",
+      "period": "2026.2",
+      "code": "DIR043",
+      "component": "DIREITO DO TRABALHO I",
+      "class": "01",
+      "professor": "Luciano Dorea Martinez Carreiro",
+      "location": "DIR - 105",
+      "scheduleCode": "24M12",
+      "meetings": [
+        {
+          "day": "segunda",
+          "start": "07:00",
+          "end": "08:50",
+          "shift": "manhã"
+        },
+        {
+          "day": "quarta",
+          "start": "07:00",
+          "end": "08:50",
+          "shift": "manhã"
+        }
+      ],
+      "enrolled": 60,
+      "capacity": 60,
+      "daySemester": 6,
+      "nightSemester": 7
+    },
+    {
+      "id": "2026.2-DIR043-02",
+      "period": "2026.2",
+      "code": "DIR043",
+      "component": "DIREITO DO TRABALHO I",
+      "class": "02",
+      "professor": "A Definir",
+      "location": "DIR - 113",
+      "scheduleCode": "35M34",
+      "meetings": [
+        {
+          "day": "terça",
+          "start": "08:50",
+          "end": "10:40",
+          "shift": "manhã"
+        },
+        {
+          "day": "quinta",
+          "start": "08:50",
+          "end": "10:40",
+          "shift": "manhã"
+        }
+      ],
+      "enrolled": 14,
+      "capacity": 45,
+      "daySemester": 6,
+      "nightSemester": 7
+    },
+    {
+      "id": "2026.2-DIR043-03",
+      "period": "2026.2",
+      "code": "DIR043",
+      "component": "DIREITO DO TRABALHO I",
+      "class": "03",
+      "professor": "Felipe Santos Estrela De Carvalho",
+      "location": "DIR - 115",
+      "scheduleCode": "35N12",
+      "meetings": [
+        {
+          "day": "terça",
+          "start": "18:30",
+          "end": "20:20",
+          "shift": "noite"
+        },
+        {
+          "day": "quinta",
+          "start": "18:30",
+          "end": "20:20",
+          "shift": "noite"
+        }
+      ],
+      "enrolled": 38,
+      "capacity": 45,
+      "daySemester": 6,
+      "nightSemester": 7
+    },
+    {
+      "id": "2026.2-DIR043-04",
+      "period": "2026.2",
+      "code": "DIR043",
+      "component": "DIREITO DO TRABALHO I",
+      "class": "04",
+      "professor": "Felipe Santos Estrela De Carvalho",
+      "location": "DIR - 115",
+      "scheduleCode": "35N34",
+      "meetings": [
+        {
+          "day": "terça",
+          "start": "20:20",
+          "end": "22:10",
+          "shift": "noite"
+        },
+        {
+          "day": "quinta",
+          "start": "20:20",
+          "end": "22:10",
+          "shift": "noite"
+        }
+      ],
+      "enrolled": 39,
+      "capacity": 45,
+      "daySemester": 6,
+      "nightSemester": 7
+    },
+    {
+      "id": "2026.2-DIR044-01",
+      "period": "2026.2",
+      "code": "DIR044",
+      "component": "DIREITO PROCESSUAL DO TRABALHO I",
+      "class": "01",
+      "professor": "A Definir",
+      "location": "DIR - 105",
+      "scheduleCode": "35M12",
+      "meetings": [
+        {
+          "day": "terça",
+          "start": "07:00",
+          "end": "08:50",
+          "shift": "manhã"
+        },
+        {
+          "day": "quinta",
+          "start": "07:00",
+          "end": "08:50",
+          "shift": "manhã"
+        }
+      ],
+      "enrolled": 50,
+      "capacity": 50,
+      "daySemester": 7,
+      "nightSemester": 8
+    },
+    {
+      "id": "2026.2-DIR044-02",
+      "period": "2026.2",
+      "code": "DIR044",
+      "component": "DIREITO PROCESSUAL DO TRABALHO I",
+      "class": "02",
+      "professor": "Andrea Presas Rocha",
+      "location": "DIR - 104",
+      "scheduleCode": "24T34",
+      "meetings": [
+        {
+          "day": "segunda",
+          "start": "14:50",
+          "end": "16:40",
+          "shift": "tarde"
+        },
+        {
+          "day": "quarta",
+          "start": "14:50",
+          "end": "16:40",
+          "shift": "tarde"
+        }
+      ],
+      "enrolled": 18,
+      "capacity": 45,
+      "daySemester": 7,
+      "nightSemester": 8
+    },
+    {
+      "id": "2026.2-DIR044-03",
+      "period": "2026.2",
+      "code": "DIR044",
+      "component": "DIREITO PROCESSUAL DO TRABALHO I",
+      "class": "03",
+      "professor": "Andrea Presas Rocha",
+      "location": "DIR - 104",
+      "scheduleCode": "24T56",
+      "meetings": [
+        {
+          "day": "segunda",
+          "start": "16:40",
+          "end": "18:30",
+          "shift": "tarde"
+        },
+        {
+          "day": "quarta",
+          "start": "16:40",
+          "end": "18:30",
+          "shift": "tarde"
+        }
+      ],
+      "enrolled": 57,
+      "capacity": 60,
+      "daySemester": 7,
+      "nightSemester": 8
+    },
+    {
+      "id": "2026.2-DIR044-04",
+      "period": "2026.2",
+      "code": "DIR044",
+      "component": "DIREITO PROCESSUAL DO TRABALHO I",
+      "class": "04",
+      "professor": "A Definir",
+      "location": "DIR - 108",
+      "scheduleCode": "6N1234",
+      "meetings": [
+        {
+          "day": "sexta",
+          "start": "18:30",
+          "end": "22:10",
+          "shift": "noite"
+        }
+      ],
+      "enrolled": 30,
+      "capacity": 45,
+      "daySemester": 7,
+      "nightSemester": 8
+    },
+    {
+      "id": "2026.2-DIR045-01",
+      "period": "2026.2",
+      "code": "DIR045",
+      "component": "60h Aula DISCIPLINA OBRIGATORIO 60h",
+      "class": "01",
+      "professor": "Murilo Carvalho Sampaio Oliveira",
+      "location": "DIR - 212",
+      "scheduleCode": "24M12",
+      "meetings": [
+        {
+          "day": "segunda",
+          "start": "07:00",
+          "end": "08:50",
+          "shift": "manhã"
+        },
+        {
+          "day": "quarta",
+          "start": "07:00",
+          "end": "08:50",
+          "shift": "manhã"
+        }
+      ],
+      "enrolled": 45,
+      "capacity": 45,
+      "daySemester": 8,
+      "nightSemester": "optativa"
+    },
+    {
+      "id": "2026.2-DIR045-02",
+      "period": "2026.2",
+      "code": "DIR045",
+      "component": "60h Aula DISCIPLINA OBRIGATORIO 60h",
+      "class": "02",
+      "professor": "Luciano Dorea Martinez Carreiro",
+      "location": "DIR - 105",
+      "scheduleCode": "24M34",
+      "meetings": [
+        {
+          "day": "segunda",
+          "start": "08:50",
+          "end": "10:40",
+          "shift": "manhã"
+        },
+        {
+          "day": "quarta",
+          "start": "08:50",
+          "end": "10:40",
+          "shift": "manhã"
+        }
+      ],
+      "enrolled": 60,
+      "capacity": 60,
+      "daySemester": 8,
+      "nightSemester": "optativa"
+    },
+    {
+      "id": "2026.2-DIR046-01",
+      "period": "2026.2",
+      "code": "DIR046",
+      "component": "DIREITO INTERNACIONAL PÚBLICO",
+      "class": "01",
+      "professor": "Saulo Jose Casali Bahia",
+      "location": "DIR - 104",
+      "scheduleCode": "5T2345",
+      "meetings": [
+        {
+          "day": "quinta",
+          "start": "13:55",
+          "end": "17:35",
+          "shift": "tarde"
+        }
+      ],
+      "enrolled": 47,
+      "capacity": 60,
+      "daySemester": 5,
+      "nightSemester": 9
+    },
+    {
+      "id": "2026.2-DIR046-02",
+      "period": "2026.2",
+      "code": "DIR046",
+      "component": "DIREITO INTERNACIONAL PÚBLICO",
+      "class": "02",
+      "professor": "Saulo Jose Casali Bahia",
+      "location": "DIR - 103",
+      "scheduleCode": "6M3456",
+      "meetings": [
+        {
+          "day": "sexta",
+          "start": "08:50",
+          "end": "12:30",
+          "shift": "manhã"
+        }
+      ],
+      "enrolled": 51,
+      "capacity": 60,
+      "daySemester": 5,
+      "nightSemester": 9
+    },
+    {
+      "id": "2026.2-DIR046-03",
+      "period": "2026.2",
+      "code": "DIR046",
+      "component": "DIREITO INTERNACIONAL PÚBLICO",
+      "class": "03",
+      "professor": "Mario Jorge Philocreon De Castro Lima",
+      "location": "DIR - 104",
+      "scheduleCode": "6N1234",
+      "meetings": [
+        {
+          "day": "sexta",
+          "start": "18:30",
+          "end": "22:10",
+          "shift": "noite"
+        }
+      ],
+      "enrolled": 50,
+      "capacity": 50,
+      "daySemester": 5,
+      "nightSemester": 9
+    },
+    {
+      "id": "2026.2-DIR046-04",
+      "period": "2026.2",
+      "code": "DIR046",
+      "component": "DIREITO INTERNACIONAL PÚBLICO",
+      "class": "04",
+      "professor": "Mario Jorge Philocreon De Castro Lima",
+      "location": "DIR - 114",
+      "scheduleCode": "7M3456",
+      "meetings": [
+        {
+          "day": "sábado",
+          "start": "08:50",
+          "end": "12:30",
+          "shift": "manhã"
+        }
+      ],
+      "enrolled": 34,
+      "capacity": 45,
+      "daySemester": 5,
+      "nightSemester": 9
+    },
+    {
+      "id": "2026.2-DIR049-01",
+      "period": "2026.2",
+      "code": "DIR049",
+      "component": "DIREITO PROCESSUAL PENAL I-A",
+      "class": "01",
+      "professor": "Cesar De Faria Junior",
+      "location": "DIR - 225",
+      "scheduleCode": "35M56",
+      "meetings": [
+        {
+          "day": "terça",
+          "start": "10:40",
+          "end": "12:30",
+          "shift": "manhã"
+        },
+        {
+          "day": "quinta",
+          "start": "10:40",
+          "end": "12:30",
+          "shift": "manhã"
+        }
+      ],
+      "enrolled": 16,
+      "capacity": 45,
+      "daySemester": 6,
+      "nightSemester": 7
+    },
+    {
+      "id": "2026.2-DIR049-02",
+      "period": "2026.2",
+      "code": "DIR049",
+      "component": "DIREITO PROCESSUAL PENAL I-A",
+      "class": "02",
+      "professor": "Thaize De Carvalho Correia",
+      "location": "DIR - 107",
+      "scheduleCode": "35M12",
+      "meetings": [
+        {
+          "day": "terça",
+          "start": "07:00",
+          "end": "08:50",
+          "shift": "manhã"
+        },
+        {
+          "day": "quinta",
+          "start": "07:00",
+          "end": "08:50",
+          "shift": "manhã"
+        }
+      ],
+      "enrolled": 50,
+      "capacity": 50,
+      "daySemester": 6,
+      "nightSemester": 7
+    },
+    {
+      "id": "2026.2-DIR049-03",
+      "period": "2026.2",
+      "code": "DIR049",
+      "component": "DIREITO PROCESSUAL PENAL I-A",
+      "class": "03",
+      "professor": "Paulo De Souza Queiroz",
+      "location": "DIR - 220",
+      "scheduleCode": "24N12",
+      "meetings": [
+        {
+          "day": "segunda",
+          "start": "18:30",
+          "end": "20:20",
+          "shift": "noite"
+        },
+        {
+          "day": "quarta",
+          "start": "18:30",
+          "end": "20:20",
+          "shift": "noite"
+        }
+      ],
+      "enrolled": 45,
+      "capacity": 45,
+      "daySemester": 6,
+      "nightSemester": 7
+    },
+    {
+      "id": "2026.2-DIR049-04",
+      "period": "2026.2",
+      "code": "DIR049",
+      "component": "DIREITO PROCESSUAL PENAL I-A",
+      "class": "04",
+      "professor": "Paulo De Souza Queiroz",
+      "location": "DIR - 220",
+      "scheduleCode": "24N34",
+      "meetings": [
+        {
+          "day": "segunda",
+          "start": "20:20",
+          "end": "22:10",
+          "shift": "noite"
+        },
+        {
+          "day": "quarta",
+          "start": "20:20",
+          "end": "22:10",
+          "shift": "noite"
+        }
+      ],
+      "enrolled": 42,
+      "capacity": 45,
+      "daySemester": 6,
+      "nightSemester": 7
+    },
+    {
+      "id": "2026.2-DIR050-01",
+      "period": "2026.2",
+      "code": "DIR050",
+      "component": "DIREITO PROCESSUAL PENAL II-A",
+      "class": "01",
+      "professor": "Fabiano Cavalcante Pimentel",
+      "location": "DIR - 228",
+      "scheduleCode": "35N12",
+      "meetings": [
+        {
+          "day": "terça",
+          "start": "18:30",
+          "end": "20:20",
+          "shift": "noite"
+        },
+        {
+          "day": "quinta",
+          "start": "18:30",
+          "end": "20:20",
+          "shift": "noite"
+        }
+      ],
+      "enrolled": 41,
+      "capacity": 45,
+      "daySemester": 7,
+      "nightSemester": 8
+    },
+    {
+      "id": "2026.2-DIR050-02",
+      "period": "2026.2",
+      "code": "DIR050",
+      "component": "DIREITO PROCESSUAL PENAL II-A",
+      "class": "02",
+      "professor": "Fabiano Cavalcante Pimentel",
+      "location": "DIR - 228",
+      "scheduleCode": "35N34",
+      "meetings": [
+        {
+          "day": "terça",
+          "start": "20:20",
+          "end": "22:10",
+          "shift": "noite"
+        },
+        {
+          "day": "quinta",
+          "start": "20:20",
+          "end": "22:10",
+          "shift": "noite"
+        }
+      ],
+      "enrolled": 43,
+      "capacity": 45,
+      "daySemester": 7,
+      "nightSemester": 8
+    },
+    {
+      "id": "2026.2-DIR050-03",
+      "period": "2026.2",
+      "code": "DIR050",
+      "component": "DIREITO PROCESSUAL PENAL II-A",
+      "class": "03",
+      "professor": "Thaize De Carvalho Correia",
+      "location": "DIR - 107",
+      "scheduleCode": "35M34",
+      "meetings": [
+        {
+          "day": "terça",
+          "start": "08:50",
+          "end": "10:40",
+          "shift": "manhã"
+        },
+        {
+          "day": "quinta",
+          "start": "08:50",
+          "end": "10:40",
+          "shift": "manhã"
+        }
+      ],
+      "enrolled": 50,
+      "capacity": 50,
+      "daySemester": 7,
+      "nightSemester": 8
+    },
+    {
+      "id": "2026.2-DIR050-04",
+      "period": "2026.2",
+      "code": "DIR050",
+      "component": "DIREITO PROCESSUAL PENAL II-A",
+      "class": "04",
+      "professor": "Misael Neto Bispo Da Franca",
+      "location": "DIR - 113",
+      "scheduleCode": "35M56",
+      "meetings": [
+        {
+          "day": "terça",
+          "start": "10:40",
+          "end": "12:30",
+          "shift": "manhã"
+        },
+        {
+          "day": "quinta",
+          "start": "10:40",
+          "end": "12:30",
+          "shift": "manhã"
+        }
+      ],
+      "enrolled": 31,
+      "capacity": 45,
+      "daySemester": 7,
+      "nightSemester": 8
+    },
+    {
+      "id": "2026.2-DIR051-01",
+      "period": "2026.2",
+      "code": "DIR051",
+      "component": "DIREITO PROCESSUAL PENAL ESPECIAL",
+      "class": "01",
+      "professor": "Elmir Duclerc Ramalho Junior",
+      "location": "DIR - 113",
+      "scheduleCode": "6M3456",
+      "meetings": [
+        {
+          "day": "sexta",
+          "start": "08:50",
+          "end": "12:30",
+          "shift": "manhã"
+        }
+      ],
+      "enrolled": 14,
+      "capacity": 45,
+      "daySemester": "optativa",
+      "nightSemester": "optativa"
+    },
+    {
+      "id": "2026.2-DIR051-02",
+      "period": "2026.2",
+      "code": "DIR051",
+      "component": "DIREITO PROCESSUAL PENAL ESPECIAL",
+      "class": "02",
+      "professor": "Misael Neto Bispo Da Franca",
+      "location": "DIR - 212",
+      "scheduleCode": "35N34",
+      "meetings": [
+        {
+          "day": "terça",
+          "start": "20:20",
+          "end": "22:10",
+          "shift": "noite"
+        },
+        {
+          "day": "quinta",
+          "start": "20:20",
+          "end": "22:10",
+          "shift": "noite"
+        }
+      ],
+      "enrolled": 25,
+      "capacity": 45,
+      "daySemester": "optativa",
+      "nightSemester": "optativa"
+    },
+    {
+      "id": "2026.2-DIR061-01",
+      "period": "2026.2",
+      "code": "DIR061",
+      "component": "DIREITO DAS RELAÇÕES DE CONSUMO",
+      "class": "01",
+      "professor": "A Definir",
+      "location": "DIR - 220",
+      "scheduleCode": "6M3456",
+      "meetings": [
+        {
+          "day": "sexta",
+          "start": "08:50",
+          "end": "12:30",
+          "shift": "manhã"
+        }
+      ],
+      "enrolled": 25,
+      "capacity": 45,
+      "daySemester": 10,
+      "nightSemester": 11
+    },
+    {
+      "id": "2026.2-DIR061-02",
+      "period": "2026.2",
+      "code": "DIR061",
+      "component": "DIREITO DAS RELAÇÕES DE CONSUMO",
+      "class": "02",
+      "professor": "A Definir",
+      "location": "DIR - 216",
+      "scheduleCode": "7M3456",
+      "meetings": [
+        {
+          "day": "sábado",
+          "start": "08:50",
+          "end": "12:30",
+          "shift": "manhã"
+        }
+      ],
+      "enrolled": 6,
+      "capacity": 45,
+      "daySemester": 10,
+      "nightSemester": 11
+    },
+    {
+      "id": "2026.2-DIR061-03",
+      "period": "2026.2",
+      "code": "DIR061",
+      "component": "DIREITO DAS RELAÇÕES DE CONSUMO",
+      "class": "03",
+      "professor": "Joseane Suzart Lopes Da Silva",
+      "location": "DIR - 107",
+      "scheduleCode": "6N1234",
+      "meetings": [
+        {
+          "day": "sexta",
+          "start": "18:30",
+          "end": "22:10",
+          "shift": "noite"
+        }
+      ],
+      "enrolled": 33,
+      "capacity": 45,
+      "daySemester": 10,
+      "nightSemester": 11
+    },
+    {
+      "id": "2026.2-DIR061-04",
+      "period": "2026.2",
+      "code": "DIR061",
+      "component": "DIREITO DAS RELAÇÕES DE CONSUMO",
+      "class": "04",
+      "professor": "Joseane Suzart Lopes Da Silva",
+      "location": "DIR - 108",
+      "scheduleCode": "7M3456",
+      "meetings": [
+        {
+          "day": "sábado",
+          "start": "08:50",
+          "end": "12:30",
+          "shift": "manhã"
+        }
+      ],
+      "enrolled": 10,
+      "capacity": 45,
+      "daySemester": 10,
+      "nightSemester": 11
+    },
+    {
+      "id": "2026.2-DIR063-01",
+      "period": "2026.2",
+      "code": "DIR063",
+      "component": "DIREITO AGRÁRIO",
+      "class": "01",
+      "professor": "Tatiana Emilia Dias Gomes",
+      "location": "DIR - 220",
+      "scheduleCode": "35M34",
+      "meetings": [
+        {
+          "day": "terça",
+          "start": "08:50",
+          "end": "10:40",
+          "shift": "manhã"
+        },
+        {
+          "day": "quinta",
+          "start": "08:50",
+          "end": "10:40",
+          "shift": "manhã"
+        }
+      ],
+      "enrolled": 21,
+      "capacity": 45,
+      "daySemester": "optativa",
+      "nightSemester": 9
+    },
+    {
+      "id": "2026.2-DIR063-02",
+      "period": "2026.2",
+      "code": "DIR063",
+      "component": "DIREITO AGRÁRIO",
+      "class": "02",
+      "professor": "Tatiana Emilia Dias Gomes",
+      "location": "DIR - 108",
+      "scheduleCode": "35N12",
+      "meetings": [
+        {
+          "day": "terça",
+          "start": "18:30",
+          "end": "20:20",
+          "shift": "noite"
+        },
+        {
+          "day": "quinta",
+          "start": "18:30",
+          "end": "20:20",
+          "shift": "noite"
+        }
+      ],
+      "enrolled": 45,
+      "capacity": 45,
+      "daySemester": "optativa",
+      "nightSemester": 9
+    },
+    {
+      "id": "2026.2-DIR063-03",
+      "period": "2026.2",
+      "code": "DIR063",
+      "component": "DIREITO AGRÁRIO",
+      "class": "03",
+      "professor": "Tatiana Emilia Dias Gomes",
+      "location": "DIR - 108",
+      "scheduleCode": "35N34",
+      "meetings": [
+        {
+          "day": "terça",
+          "start": "20:20",
+          "end": "22:10",
+          "shift": "noite"
+        },
+        {
+          "day": "quinta",
+          "start": "20:20",
+          "end": "22:10",
+          "shift": "noite"
+        }
+      ],
+      "enrolled": 34,
+      "capacity": 45,
+      "daySemester": "optativa",
+      "nightSemester": 9
+    },
+    {
+      "id": "2026.2-DIR189-01",
+      "period": "2026.2",
+      "code": "DIR189",
+      "component": "ETICA GERAL E PROFISSIONAL",
+      "class": "01",
+      "professor": "Flora Augusta Varela Aranha",
+      "location": "DIR - 112",
+      "scheduleCode": "67M12",
+      "meetings": [
+        {
+          "day": "sexta",
+          "start": "07:00",
+          "end": "08:50",
+          "shift": "manhã"
+        },
+        {
+          "day": "sábado",
+          "start": "07:00",
+          "end": "08:50",
+          "shift": "manhã"
+        }
+      ],
+      "enrolled": 54,
+      "capacity": 60,
+      "daySemester": 9,
+      "nightSemester": 12
+    },
+    {
+      "id": "2026.2-DIR189-02",
+      "period": "2026.2",
+      "code": "DIR189",
+      "component": "ETICA GERAL E PROFISSIONAL",
+      "class": "02",
+      "professor": "Flora Augusta Varela Aranha",
+      "location": "DIR - 112",
+      "scheduleCode": "6M3456",
+      "meetings": [
+        {
+          "day": "sexta",
+          "start": "08:50",
+          "end": "12:30",
+          "shift": "manhã"
+        }
+      ],
+      "enrolled": 60,
+      "capacity": 60,
+      "daySemester": 9,
+      "nightSemester": 12
+    },
+    {
+      "id": "2026.2-DIR189-03",
+      "period": "2026.2",
+      "code": "DIR189",
+      "component": "ETICA GERAL E PROFISSIONAL",
+      "class": "03",
+      "professor": "Flora Augusta Varela Aranha",
+      "location": "DIR - 112",
+      "scheduleCode": "7M3456",
+      "meetings": [
+        {
+          "day": "sábado",
+          "start": "08:50",
+          "end": "12:30",
+          "shift": "manhã"
+        }
+      ],
+      "enrolled": 53,
+      "capacity": 60,
+      "daySemester": 9,
+      "nightSemester": 12
+    },
+    {
+      "id": "2026.2-DIR189-04",
+      "period": "2026.2",
+      "code": "DIR189",
+      "component": "ETICA GERAL E PROFISSIONAL",
+      "class": "04",
+      "professor": "Marcos Silva Marinho",
+      "location": "DIR - 114",
+      "scheduleCode": "35N12",
+      "meetings": [
+        {
+          "day": "terça",
+          "start": "18:30",
+          "end": "20:20",
+          "shift": "noite"
+        },
+        {
+          "day": "quinta",
+          "start": "18:30",
+          "end": "20:20",
+          "shift": "noite"
+        }
+      ],
+      "enrolled": 29,
+      "capacity": 45,
+      "daySemester": 9,
+      "nightSemester": 12
+    },
+    {
+      "id": "2026.2-DIR189-05",
+      "period": "2026.2",
+      "code": "DIR189",
+      "component": "ETICA GERAL E PROFISSIONAL",
+      "class": "05",
+      "professor": "Marcos Silva Marinho",
+      "location": "DIR - 114",
+      "scheduleCode": "35N34",
+      "meetings": [
+        {
+          "day": "terça",
+          "start": "20:20",
+          "end": "22:10",
+          "shift": "noite"
+        },
+        {
+          "day": "quinta",
+          "start": "20:20",
+          "end": "22:10",
+          "shift": "noite"
+        }
+      ],
+      "enrolled": 29,
+      "capacity": 45,
+      "daySemester": 9,
+      "nightSemester": 12
+    },
+    {
+      "id": "2026.2-DIR189-06",
+      "period": "2026.2",
+      "code": "DIR189",
+      "component": "ETICA GERAL E PROFISSIONAL",
+      "class": "06",
+      "professor": "Marcos Silva Marinho",
+      "location": "DIR - 216",
+      "scheduleCode": "24N12",
+      "meetings": [
+        {
+          "day": "segunda",
+          "start": "18:30",
+          "end": "20:20",
+          "shift": "noite"
+        },
+        {
+          "day": "quarta",
+          "start": "18:30",
+          "end": "20:20",
+          "shift": "noite"
+        }
+      ],
+      "enrolled": 26,
+      "capacity": 45,
+      "daySemester": 9,
+      "nightSemester": 12
+    },
+    {
+      "id": "2026.2-DIR190-01",
+      "period": "2026.2",
+      "code": "DIR190",
+      "component": "HERMENÊUTICA JURIDICA",
+      "class": "01",
+      "professor": "Ricardo Mauricio Freire Soares",
+      "location": "DIR - 112",
+      "scheduleCode": "4T1234",
+      "meetings": [
+        {
+          "day": "quarta",
+          "start": "13:00",
+          "end": "16:40",
+          "shift": "tarde"
+        }
+      ],
+      "enrolled": 60,
+      "capacity": 60,
+      "daySemester": 6,
+      "nightSemester": 7
+    },
+    {
+      "id": "2026.2-DIR190-02",
+      "period": "2026.2",
+      "code": "DIR190",
+      "component": "HERMENÊUTICA JURIDICA",
+      "class": "02",
+      "professor": "Iuri Mattos De Carvalho",
+      "location": "DIR - 107",
+      "scheduleCode": "6M3456",
+      "meetings": [
+        {
+          "day": "sexta",
+          "start": "08:50",
+          "end": "12:30",
+          "shift": "manhã"
+        }
+      ],
+      "enrolled": 45,
+      "capacity": 45,
+      "daySemester": 6,
+      "nightSemester": 7
+    },
+    {
+      "id": "2026.2-DIR190-03",
+      "period": "2026.2",
+      "code": "DIR190",
+      "component": "HERMENÊUTICA JURIDICA",
+      "class": "03",
+      "professor": "Antonio Sa Da Silva",
+      "location": "DIR - 219",
+      "scheduleCode": "24N12",
+      "meetings": [
+        {
+          "day": "segunda",
+          "start": "18:30",
+          "end": "20:20",
+          "shift": "noite"
+        },
+        {
+          "day": "quarta",
+          "start": "18:30",
+          "end": "20:20",
+          "shift": "noite"
+        }
+      ],
+      "enrolled": 45,
+      "capacity": 45,
+      "daySemester": 6,
+      "nightSemester": 7
+    },
+    {
+      "id": "2026.2-DIR190-04",
+      "period": "2026.2",
+      "code": "DIR190",
+      "component": "HERMENÊUTICA JURIDICA",
+      "class": "04",
+      "professor": "Iuri Mattos De Carvalho",
+      "location": "DIR - 212",
+      "scheduleCode": "6N1234",
+      "meetings": [
+        {
+          "day": "sexta",
+          "start": "18:30",
+          "end": "22:10",
+          "shift": "noite"
+        }
+      ],
+      "enrolled": 38,
+      "capacity": 45,
+      "daySemester": 6,
+      "nightSemester": 7
+    },
+    {
+      "id": "2026.2-DIR192-01",
+      "period": "2026.2",
+      "code": "DIR192",
+      "component": "DIREITOS REAIS I",
+      "class": "01",
+      "professor": "Iran Furtado De Souza Filho",
+      "location": "DIR - 103",
+      "scheduleCode": "24M12",
+      "meetings": [
+        {
+          "day": "segunda",
+          "start": "07:00",
+          "end": "08:50",
+          "shift": "manhã"
+        },
+        {
+          "day": "quarta",
+          "start": "07:00",
+          "end": "08:50",
+          "shift": "manhã"
+        }
+      ],
+      "enrolled": 60,
+      "capacity": 60,
+      "daySemester": 4,
+      "nightSemester": 8
+    },
+    {
+      "id": "2026.2-DIR192-02",
+      "period": "2026.2",
+      "code": "DIR192",
+      "component": "DIREITOS REAIS I",
+      "class": "02",
+      "professor": "Gustavo Costa Macedo",
+      "location": "DIR - 108",
+      "scheduleCode": "24M56",
+      "meetings": [
+        {
+          "day": "segunda",
+          "start": "10:40",
+          "end": "12:30",
+          "shift": "manhã"
+        },
+        {
+          "day": "quarta",
+          "start": "10:40",
+          "end": "12:30",
+          "shift": "manhã"
+        }
+      ],
+      "enrolled": 25,
+      "capacity": 45,
+      "daySemester": 4,
+      "nightSemester": 8
+    },
+    {
+      "id": "2026.2-DIR192-03",
+      "period": "2026.2",
+      "code": "DIR192",
+      "component": "DIREITOS REAIS I",
+      "class": "03",
+      "professor": "Pablo Stolze Gagliano",
+      "location": "DIR - 224",
+      "scheduleCode": "24N12",
+      "meetings": [
+        {
+          "day": "segunda",
+          "start": "18:30",
+          "end": "20:20",
+          "shift": "noite"
+        },
+        {
+          "day": "quarta",
+          "start": "18:30",
+          "end": "20:20",
+          "shift": "noite"
+        }
+      ],
+      "enrolled": 55,
+      "capacity": 55,
+      "daySemester": 4,
+      "nightSemester": 8
+    },
+    {
+      "id": "2026.2-DIR192-04",
+      "period": "2026.2",
+      "code": "DIR192",
+      "component": "DIREITOS REAIS I",
+      "class": "04",
+      "professor": "Pablo Stolze Gagliano",
+      "location": "DIR - 224",
+      "scheduleCode": "24N34",
+      "meetings": [
+        {
+          "day": "segunda",
+          "start": "20:20",
+          "end": "22:10",
+          "shift": "noite"
+        },
+        {
+          "day": "quarta",
+          "start": "20:20",
+          "end": "22:10",
+          "shift": "noite"
+        }
+      ],
+      "enrolled": 55,
+      "capacity": 55,
+      "daySemester": 4,
+      "nightSemester": 8
+    },
+    {
+      "id": "2026.2-DIR194-01",
+      "period": "2026.2",
+      "code": "DIR194",
+      "component": "DIREITO PENAL III",
+      "class": "01",
+      "professor": "Gamil Foppel El Hireche",
+      "location": "DIR - 112",
+      "scheduleCode": "24M34",
+      "meetings": [
+        {
+          "day": "segunda",
+          "start": "08:50",
+          "end": "10:40",
+          "shift": "manhã"
+        },
+        {
+          "day": "quarta",
+          "start": "08:50",
+          "end": "10:40",
+          "shift": "manhã"
+        }
+      ],
+      "enrolled": 50,
+      "capacity": 50,
+      "daySemester": 4,
+      "nightSemester": 5
+    },
+    {
+      "id": "2026.2-DIR194-02",
+      "period": "2026.2",
+      "code": "DIR194",
+      "component": "DIREITO PENAL III",
+      "class": "02",
+      "professor": "Juliana Pinheiro Damasceno E Santos",
+      "location": "DIR - 114",
+      "scheduleCode": "35M34",
+      "meetings": [
+        {
+          "day": "terça",
+          "start": "08:50",
+          "end": "10:40",
+          "shift": "manhã"
+        },
+        {
+          "day": "quinta",
+          "start": "08:50",
+          "end": "10:40",
+          "shift": "manhã"
+        }
+      ],
+      "enrolled": 30,
+      "capacity": 45,
+      "daySemester": 4,
+      "nightSemester": 5
+    },
+    {
+      "id": "2026.2-DIR194-03",
+      "period": "2026.2",
+      "code": "DIR194",
+      "component": "DIREITO PENAL III",
+      "class": "03",
+      "professor": "Alina Mourato Eleoterio",
+      "location": "DIR - 107",
+      "scheduleCode": "35N12",
+      "meetings": [
+        {
+          "day": "terça",
+          "start": "18:30",
+          "end": "20:20",
+          "shift": "noite"
+        },
+        {
+          "day": "quinta",
+          "start": "18:30",
+          "end": "20:20",
+          "shift": "noite"
+        }
+      ],
+      "enrolled": 60,
+      "capacity": 60,
+      "daySemester": 4,
+      "nightSemester": 5
+    },
+    {
+      "id": "2026.2-DIR194-04",
+      "period": "2026.2",
+      "code": "DIR194",
+      "component": "DIREITO PENAL III",
+      "class": "04",
+      "professor": "Alina Mourato Eleoterio",
+      "location": "DIR - 107",
+      "scheduleCode": "35N34",
+      "meetings": [
+        {
+          "day": "terça",
+          "start": "20:20",
+          "end": "22:10",
+          "shift": "noite"
+        },
+        {
+          "day": "quinta",
+          "start": "20:20",
+          "end": "22:10",
+          "shift": "noite"
+        }
+      ],
+      "enrolled": 60,
+      "capacity": 60,
+      "daySemester": 4,
+      "nightSemester": 5
+    },
+    {
+      "id": "2026.2-DIR195-01",
+      "period": "2026.2",
+      "code": "DIR195",
+      "component": "DIREITO PENAL IV",
+      "class": "01",
+      "professor": "Alessandra Rapacci Mascarenhas Prado",
+      "location": "DIR - 228",
+      "scheduleCode": "35M34",
+      "meetings": [
+        {
+          "day": "terça",
+          "start": "08:50",
+          "end": "10:40",
+          "shift": "manhã"
+        },
+        {
+          "day": "quinta",
+          "start": "08:50",
+          "end": "10:40",
+          "shift": "manhã"
+        }
+      ],
+      "enrolled": 39,
+      "capacity": 45,
+      "daySemester": 5,
+      "nightSemester": 6
+    },
+    {
+      "id": "2026.2-DIR195-03",
+      "period": "2026.2",
+      "code": "DIR195",
+      "component": "DIREITO PENAL IV",
+      "class": "03",
+      "professor": "Felipe Marcone Santos Silva",
+      "location": "DIR - 103",
+      "scheduleCode": "6N1234",
+      "meetings": [
+        {
+          "day": "sexta",
+          "start": "18:30",
+          "end": "22:10",
+          "shift": "noite"
+        }
+      ],
+      "enrolled": 60,
+      "capacity": 60,
+      "daySemester": 5,
+      "nightSemester": 6
+    },
+    {
+      "id": "2026.2-DIR195-04",
+      "period": "2026.2",
+      "code": "DIR195",
+      "component": "DIREITO PENAL IV",
+      "class": "04",
+      "professor": "A Definir",
+      "location": "DIR - 225",
+      "scheduleCode": "7M3456",
+      "meetings": [
+        {
+          "day": "sábado",
+          "start": "08:50",
+          "end": "12:30",
+          "shift": "manhã"
+        }
+      ],
+      "enrolled": 22,
+      "capacity": 45,
+      "daySemester": 5,
+      "nightSemester": 6
+    },
+    {
+      "id": "2026.2-DIR195-05",
+      "period": "2026.2",
+      "code": "DIR195",
+      "component": "DIREITO PENAL IV",
+      "class": "05",
+      "professor": "Thais Bandeira Oliveira",
+      "location": "DIR - 107",
+      "scheduleCode": "35M56",
+      "meetings": [
+        {
+          "day": "terça",
+          "start": "10:40",
+          "end": "12:30",
+          "shift": "manhã"
+        },
+        {
+          "day": "quinta",
+          "start": "10:40",
+          "end": "12:30",
+          "shift": "manhã"
+        }
+      ],
+      "enrolled": 60,
+      "capacity": 60,
+      "daySemester": 5,
+      "nightSemester": 6
+    },
+    {
+      "id": "2026.2-DIR196-01",
+      "period": "2026.2",
+      "code": "DIR196",
+      "component": "60h Aula DISCIPLINA OPTATIVO INDUSTRIAL",
+      "class": "01",
+      "professor": "Rodrigo Moraes Ferreira",
+      "location": "DIR - 220",
+      "scheduleCode": "24M12",
+      "meetings": [
+        {
+          "day": "segunda",
+          "start": "07:00",
+          "end": "08:50",
+          "shift": "manhã"
+        },
+        {
+          "day": "quarta",
+          "start": "07:00",
+          "end": "08:50",
+          "shift": "manhã"
+        }
+      ],
+      "enrolled": 20,
+      "capacity": 20,
+      "daySemester": "optativa",
+      "nightSemester": "optativa"
+    },
+    {
+      "id": "2026.2-DIR197-01",
+      "period": "2026.2",
+      "code": "DIR197",
+      "component": "NOVAS FIGURAS CONTRATUAIS",
+      "class": "01",
+      "professor": "Marco Aurelio De Castro Junior",
+      "location": "DIR - 212",
+      "scheduleCode": "35M56",
+      "meetings": [
+        {
+          "day": "terça",
+          "start": "10:40",
+          "end": "12:30",
+          "shift": "manhã"
+        },
+        {
+          "day": "quinta",
+          "start": "10:40",
+          "end": "12:30",
+          "shift": "manhã"
+        }
+      ],
+      "enrolled": 21,
+      "capacity": 45,
+      "daySemester": "optativa",
+      "nightSemester": "optativa"
+    },
+    {
+      "id": "2026.2-DIR203-01",
+      "period": "2026.2",
+      "code": "DIR203",
+      "component": "PROCESSO ADMINISTRATIVO",
+      "class": "01",
+      "professor": "A Definir",
+      "location": "ADM",
+      "scheduleCode": "24T56",
+      "meetings": [
+        {
+          "day": "segunda",
+          "start": "16:40",
+          "end": "18:30",
+          "shift": "tarde"
+        },
+        {
+          "day": "quarta",
+          "start": "16:40",
+          "end": "18:30",
+          "shift": "tarde"
+        }
+      ],
+      "enrolled": 35,
+      "capacity": 45,
+      "daySemester": "optativa",
+      "nightSemester": "optativa"
+    },
+    {
+      "id": "2026.2-DIR204-01",
+      "period": "2026.2",
+      "code": "DIR204",
+      "component": "LOGICA E ARGUMENTAÇÃO JURIDICA",
+      "class": "01",
+      "professor": "Daniel Oitaven Pearce Pamponet Miguel",
+      "location": "DIR - 115",
+      "scheduleCode": "24N34",
+      "meetings": [
+        {
+          "day": "segunda",
+          "start": "20:20",
+          "end": "22:10",
+          "shift": "noite"
+        },
+        {
+          "day": "quarta",
+          "start": "20:20",
+          "end": "22:10",
+          "shift": "noite"
+        }
+      ],
+      "enrolled": 25,
+      "capacity": 45,
+      "daySemester": "optativa",
+      "nightSemester": "optativa"
+    },
+    {
+      "id": "2026.2-DIR213-01",
+      "period": "2026.2",
+      "code": "DIR213",
+      "component": "CIÊNCIA POLITICA",
+      "class": "01",
+      "professor": "Rafael Casais Neto",
+      "location": "DIR - 101",
+      "scheduleCode": "24M34",
+      "meetings": [
+        {
+          "day": "segunda",
+          "start": "08:50",
+          "end": "10:40",
+          "shift": "manhã"
+        },
+        {
+          "day": "quarta",
+          "start": "08:50",
+          "end": "10:40",
+          "shift": "manhã"
+        }
+      ],
+      "enrolled": 48,
+      "capacity": 50,
+      "daySemester": 1,
+      "nightSemester": 1
+    },
+    {
+      "id": "2026.2-DIR213-02",
+      "period": "2026.2",
+      "code": "DIR213",
+      "component": "CIÊNCIA POLITICA",
+      "class": "02",
+      "professor": "Maria Elisa Villas Boas Pinheiro De Lemos",
+      "location": "DIR - 101",
+      "scheduleCode": "35M34",
+      "meetings": [
+        {
+          "day": "terça",
+          "start": "08:50",
+          "end": "10:40",
+          "shift": "manhã"
+        },
+        {
+          "day": "quinta",
+          "start": "08:50",
+          "end": "10:40",
+          "shift": "manhã"
+        }
+      ],
+      "enrolled": 50,
+      "capacity": 50,
+      "daySemester": 1,
+      "nightSemester": 1
+    },
+    {
+      "id": "2026.2-DIR213-03",
+      "period": "2026.2",
+      "code": "DIR213",
+      "component": "CIÊNCIA POLITICA",
+      "class": "03",
+      "professor": "Maria Elisa Villas Boas Pinheiro De Lemos",
+      "location": "DIR - 101",
+      "scheduleCode": "35M56",
+      "meetings": [
+        {
+          "day": "terça",
+          "start": "10:40",
+          "end": "12:30",
+          "shift": "manhã"
+        },
+        {
+          "day": "quinta",
+          "start": "10:40",
+          "end": "12:30",
+          "shift": "manhã"
+        }
+      ],
+      "enrolled": 42,
+      "capacity": 50,
+      "daySemester": 1,
+      "nightSemester": 1
+    },
+    {
+      "id": "2026.2-DIR213-04",
+      "period": "2026.2",
+      "code": "DIR213",
+      "component": "CIÊNCIA POLITICA",
+      "class": "04",
+      "professor": "Elenice Ribeiro Nunes Dos Santos",
+      "location": "DIR - 106",
+      "scheduleCode": "24N12",
+      "meetings": [
+        {
+          "day": "segunda",
+          "start": "18:30",
+          "end": "20:20",
+          "shift": "noite"
+        },
+        {
+          "day": "quarta",
+          "start": "18:30",
+          "end": "20:20",
+          "shift": "noite"
+        }
+      ],
+      "enrolled": 54,
+      "capacity": 55,
+      "daySemester": 1,
+      "nightSemester": 1
+    },
+    {
+      "id": "2026.2-DIR213-05",
+      "period": "2026.2",
+      "code": "DIR213",
+      "component": "CIÊNCIA POLITICA",
+      "class": "05",
+      "professor": "Elenice Ribeiro Nunes Dos Santos",
+      "location": "DIR - 106",
+      "scheduleCode": "24N34",
+      "meetings": [
+        {
+          "day": "segunda",
+          "start": "20:20",
+          "end": "22:10",
+          "shift": "noite"
+        },
+        {
+          "day": "quarta",
+          "start": "20:20",
+          "end": "22:10",
+          "shift": "noite"
+        }
+      ],
+      "enrolled": 54,
+      "capacity": 55,
+      "daySemester": 1,
+      "nightSemester": 1
+    },
+    {
+      "id": "2026.2-DIRA45-01",
+      "period": "2026.2",
+      "code": "DIRA45",
+      "component": "TEORIA DO DIREITO I",
+      "class": "01",
+      "professor": "Claudia Albagli Nogueira Serpa",
+      "location": "DIR - 102",
+      "scheduleCode": "24M34",
+      "meetings": [
+        {
+          "day": "segunda",
+          "start": "08:50",
+          "end": "10:40",
+          "shift": "manhã"
+        },
+        {
+          "day": "quarta",
+          "start": "08:50",
+          "end": "10:40",
+          "shift": "manhã"
+        }
+      ],
+      "enrolled": 49,
+      "capacity": 50,
+      "daySemester": 1,
+      "nightSemester": 1
+    },
+    {
+      "id": "2026.2-DIRA45-02",
+      "period": "2026.2",
+      "code": "DIRA45",
+      "component": "TEORIA DO DIREITO I",
+      "class": "02",
+      "professor": "Ricardo Mauricio Freire Soares",
+      "location": "DIR - 112",
+      "scheduleCode": "2T1234",
+      "meetings": [
+        {
+          "day": "segunda",
+          "start": "13:00",
+          "end": "16:40",
+          "shift": "tarde"
+        }
+      ],
+      "enrolled": 43,
+      "capacity": 50,
+      "daySemester": 1,
+      "nightSemester": 1
+    },
+    {
+      "id": "2026.2-DIRA45-03",
+      "period": "2026.2",
+      "code": "DIRA45",
+      "component": "TEORIA DO DIREITO I",
+      "class": "03",
+      "professor": "Geovane De Mori Peixoto",
+      "location": "DIR - 112",
+      "scheduleCode": "3T2345",
+      "meetings": [
+        {
+          "day": "terça",
+          "start": "13:55",
+          "end": "17:35",
+          "shift": "tarde"
+        }
+      ],
+      "enrolled": 52,
+      "capacity": 55,
+      "daySemester": 1,
+      "nightSemester": 1
+    },
+    {
+      "id": "2026.2-DIRA45-04",
+      "period": "2026.2",
+      "code": "DIRA45",
+      "component": "TEORIA DO DIREITO I",
+      "class": "04",
+      "professor": "Daniel Oitaven Pearce Pamponet Miguel",
+      "location": "DIR - 104",
+      "scheduleCode": "24N12",
+      "meetings": [
+        {
+          "day": "segunda",
+          "start": "18:30",
+          "end": "20:20",
+          "shift": "noite"
+        },
+        {
+          "day": "quarta",
+          "start": "18:30",
+          "end": "20:20",
+          "shift": "noite"
+        }
+      ],
+      "enrolled": 54,
+      "capacity": 55,
+      "daySemester": 1,
+      "nightSemester": 1
+    },
+    {
+      "id": "2026.2-DIRA45-09",
+      "period": "2026.2",
+      "code": "DIRA45",
+      "component": "TEORIA DO DIREITO I",
+      "class": "09",
+      "professor": "Marcos Silva Marinho",
+      "location": "DIR - 102",
+      "scheduleCode": "24N34",
+      "meetings": [
+        {
+          "day": "segunda",
+          "start": "20:20",
+          "end": "22:10",
+          "shift": "noite"
+        },
+        {
+          "day": "quarta",
+          "start": "20:20",
+          "end": "22:10",
+          "shift": "noite"
+        }
+      ],
+      "enrolled": 54,
+      "capacity": 55,
+      "daySemester": 1,
+      "nightSemester": 1
+    },
+    {
+      "id": "2026.2-DIRA74-01",
+      "period": "2026.2",
+      "code": "DIRA74",
+      "component": "HISTÓRIA DO DIREITO",
+      "class": "01",
+      "professor": "Claudia Albagli Nogueira Serpa",
+      "location": "DIR - 102",
+      "scheduleCode": "4T2345",
+      "meetings": [
+        {
+          "day": "quarta",
+          "start": "13:55",
+          "end": "17:35",
+          "shift": "tarde"
+        }
+      ],
+      "enrolled": 60,
+      "capacity": 60,
+      "daySemester": 2,
+      "nightSemester": 2
+    },
+    {
+      "id": "2026.2-DIRA74-02",
+      "period": "2026.2",
+      "code": "DIRA74",
+      "component": "HISTÓRIA DO DIREITO",
+      "class": "02",
+      "professor": "Patricia Valim",
+      "location": "DIR - 104",
+      "scheduleCode": "6M3456",
+      "meetings": [
+        {
+          "day": "sexta",
+          "start": "08:50",
+          "end": "12:30",
+          "shift": "manhã"
+        }
+      ],
+      "enrolled": 60,
+      "capacity": 60,
+      "daySemester": 2,
+      "nightSemester": 2
+    },
+    {
+      "id": "2026.2-DIRA74-03",
+      "period": "2026.2",
+      "code": "DIRA74",
+      "component": "HISTÓRIA DO DIREITO",
+      "class": "03",
+      "professor": "Rafael Casais Neto",
+      "location": "DIR - 112",
+      "scheduleCode": "6N1234",
+      "meetings": [
+        {
+          "day": "sexta",
+          "start": "18:30",
+          "end": "22:10",
+          "shift": "noite"
+        }
+      ],
+      "enrolled": 60,
+      "capacity": 60,
+      "daySemester": 2,
+      "nightSemester": 2
+    },
+    {
+      "id": "2026.2-DIRA74-04",
+      "period": "2026.2",
+      "code": "DIRA74",
+      "component": "HISTÓRIA DO DIREITO",
+      "class": "04",
+      "professor": "Patricia Valim",
+      "location": "DIR - 220",
+      "scheduleCode": "7M3456",
+      "meetings": [
+        {
+          "day": "sábado",
+          "start": "08:50",
+          "end": "12:30",
+          "shift": "manhã"
+        }
+      ],
+      "enrolled": 35,
+      "capacity": 45,
+      "daySemester": 2,
+      "nightSemester": 2
+    },
+    {
+      "id": "2026.2-DIRA75-01",
+      "period": "2026.2",
+      "code": "DIRA75",
+      "component": "METODOLOGIA DA PESQUISA EM DIREITO",
+      "class": "01",
+      "professor": "Carlos Eduardo Soares De Freitas",
+      "location": "DIR - 106",
+      "scheduleCode": "24M34",
+      "meetings": [
+        {
+          "day": "segunda",
+          "start": "08:50",
+          "end": "10:40",
+          "shift": "manhã"
+        },
+        {
+          "day": "quarta",
+          "start": "08:50",
+          "end": "10:40",
+          "shift": "manhã"
+        }
+      ],
+      "enrolled": 50,
+      "capacity": 55,
+      "daySemester": 1,
+      "nightSemester": 3
+    },
+    {
+      "id": "2026.2-DIRA75-02",
+      "period": "2026.2",
+      "code": "DIRA75",
+      "component": "METODOLOGIA DA PESQUISA EM DIREITO",
+      "class": "02",
+      "professor": "Carlos Eduardo Soares De Freitas",
+      "location": "DIR - 106",
+      "scheduleCode": "24M56",
+      "meetings": [
+        {
+          "day": "segunda",
+          "start": "10:40",
+          "end": "12:30",
+          "shift": "manhã"
+        },
+        {
+          "day": "quarta",
+          "start": "10:40",
+          "end": "12:30",
+          "shift": "manhã"
+        }
+      ],
+      "enrolled": 48,
+      "capacity": 50,
+      "daySemester": 1,
+      "nightSemester": 3
+    },
+    {
+      "id": "2026.2-DIRA75-04",
+      "period": "2026.2",
+      "code": "DIRA75",
+      "component": "METODOLOGIA DA PESQUISA EM DIREITO",
+      "class": "04",
+      "professor": "Rafael Casais Neto",
+      "location": "DIR - 104",
+      "scheduleCode": "7M3456",
+      "meetings": [
+        {
+          "day": "sábado",
+          "start": "08:50",
+          "end": "12:30",
+          "shift": "manhã"
+        }
+      ],
+      "enrolled": 55,
+      "capacity": 55,
+      "daySemester": 1,
+      "nightSemester": 3
+    },
+    {
+      "id": "2026.2-DIRA75-06",
+      "period": "2026.2",
+      "code": "DIRA75",
+      "component": "METODOLOGIA DA PESQUISA EM DIREITO",
+      "class": "06",
+      "professor": "Anhamona Silva De Brito",
+      "location": "DIR - 107",
+      "scheduleCode": "5T1234",
+      "meetings": [
+        {
+          "day": "quinta",
+          "start": "13:00",
+          "end": "16:40",
+          "shift": "tarde"
+        }
+      ],
+      "enrolled": 53,
+      "capacity": 60,
+      "daySemester": 1,
+      "nightSemester": 3
+    },
+    {
+      "id": "2026.2-DIRA75-07",
+      "period": "2026.2",
+      "code": "DIRA75",
+      "component": "METODOLOGIA DA PESQUISA EM DIREITO",
+      "class": "07",
+      "professor": "Anhamona Silva De Brito",
+      "location": "DIR - 107",
+      "scheduleCode": "35T56",
+      "meetings": [
+        {
+          "day": "terça",
+          "start": "16:40",
+          "end": "18:30",
+          "shift": "tarde"
+        },
+        {
+          "day": "quinta",
+          "start": "16:40",
+          "end": "18:30",
+          "shift": "tarde"
+        }
+      ],
+      "enrolled": 60,
+      "capacity": 60,
+      "daySemester": 1,
+      "nightSemester": 3
+    },
+    {
+      "id": "2026.2-DIRA76-01",
+      "period": "2026.2",
+      "code": "DIRA76",
+      "component": "DIREITO SOCIETÁRIO",
+      "class": "01",
+      "professor": "Marco Aurelio De Castro Junior",
+      "location": "DIR - 212",
+      "scheduleCode": "35M12",
+      "meetings": [
+        {
+          "day": "terça",
+          "start": "07:00",
+          "end": "08:50",
+          "shift": "manhã"
+        },
+        {
+          "day": "quinta",
+          "start": "07:00",
+          "end": "08:50",
+          "shift": "manhã"
+        }
+      ],
+      "enrolled": 21,
+      "capacity": 45,
+      "daySemester": 8,
+      "nightSemester": 10
+    },
+    {
+      "id": "2026.2-DIRA76-02",
+      "period": "2026.2",
+      "code": "DIRA76",
+      "component": "DIREITO SOCIETÁRIO",
+      "class": "02",
+      "professor": "Marco Aurelio De Castro Junior",
+      "location": "DIR - 212",
+      "scheduleCode": "35M34",
+      "meetings": [
+        {
+          "day": "terça",
+          "start": "08:50",
+          "end": "10:40",
+          "shift": "manhã"
+        },
+        {
+          "day": "quinta",
+          "start": "08:50",
+          "end": "10:40",
+          "shift": "manhã"
+        }
+      ],
+      "enrolled": 41,
+      "capacity": 45,
+      "daySemester": 8,
+      "nightSemester": 10
+    },
+    {
+      "id": "2026.2-DIRA76-03",
+      "period": "2026.2",
+      "code": "DIRA76",
+      "component": "DIREITO SOCIETÁRIO",
+      "class": "03",
+      "professor": "Pedro Vitor Costa Santos Reboucas",
+      "location": "DIR - 104",
+      "scheduleCode": "35N12",
+      "meetings": [
+        {
+          "day": "terça",
+          "start": "18:30",
+          "end": "20:20",
+          "shift": "noite"
+        },
+        {
+          "day": "quinta",
+          "start": "18:30",
+          "end": "20:20",
+          "shift": "noite"
+        }
+      ],
+      "enrolled": 55,
+      "capacity": 55,
+      "daySemester": 8,
+      "nightSemester": 10
+    },
+    {
+      "id": "2026.2-DIRA76-04",
+      "period": "2026.2",
+      "code": "DIRA76",
+      "component": "DIREITO SOCIETÁRIO",
+      "class": "04",
+      "professor": "Pedro Vitor Costa Santos Reboucas",
+      "location": "DIR - 104",
+      "scheduleCode": "35N34",
+      "meetings": [
+        {
+          "day": "terça",
+          "start": "20:20",
+          "end": "22:10",
+          "shift": "noite"
+        },
+        {
+          "day": "quinta",
+          "start": "20:20",
+          "end": "22:10",
+          "shift": "noite"
+        }
+      ],
+      "enrolled": 55,
+      "capacity": 55,
+      "daySemester": 8,
+      "nightSemester": 10
+    },
+    {
+      "id": "2026.2-DIRA79-01",
+      "period": "2026.2",
+      "code": "DIRA79",
+      "component": "60h Aula DISCIPLINA OBRIGATORIO ESTADO",
+      "class": "01",
+      "professor": "Dirley Da Cunha Junior",
+      "location": "DIR - 104",
+      "scheduleCode": "24M56",
+      "meetings": [
+        {
+          "day": "segunda",
+          "start": "10:40",
+          "end": "12:30",
+          "shift": "manhã"
+        },
+        {
+          "day": "quarta",
+          "start": "10:40",
+          "end": "12:30",
+          "shift": "manhã"
+        }
+      ],
+      "enrolled": 50,
+      "capacity": 50,
+      "daySemester": 2,
+      "nightSemester": 2
+    },
+    {
+      "id": "2026.2-DIRA79-02",
+      "period": "2026.2",
+      "code": "DIRA79",
+      "component": "60h Aula DISCIPLINA OBRIGATORIO ESTADO",
+      "class": "02",
+      "professor": "Miguel Calmon Teixeira De Carvalho Dantas",
+      "location": "DIR - 108",
+      "scheduleCode": "35M34",
+      "meetings": [
+        {
+          "day": "terça",
+          "start": "08:50",
+          "end": "10:40",
+          "shift": "manhã"
+        },
+        {
+          "day": "quinta",
+          "start": "08:50",
+          "end": "10:40",
+          "shift": "manhã"
+        }
+      ],
+      "enrolled": 31,
+      "capacity": 45,
+      "daySemester": 2,
+      "nightSemester": 2
+    },
+    {
+      "id": "2026.2-DIRA79-03",
+      "period": "2026.2",
+      "code": "DIRA79",
+      "component": "60h Aula DISCIPLINA OBRIGATORIO ESTADO",
+      "class": "03",
+      "professor": "Fabio Periandro De Almeida Hirsch",
+      "location": "DIR - 113",
+      "scheduleCode": "24N12",
+      "meetings": [
+        {
+          "day": "segunda",
+          "start": "18:30",
+          "end": "20:20",
+          "shift": "noite"
+        },
+        {
+          "day": "quarta",
+          "start": "18:30",
+          "end": "20:20",
+          "shift": "noite"
+        }
+      ],
+      "enrolled": 45,
+      "capacity": 45,
+      "daySemester": 2,
+      "nightSemester": 2
+    },
+    {
+      "id": "2026.2-DIRA79-04",
+      "period": "2026.2",
+      "code": "DIRA79",
+      "component": "60h Aula DISCIPLINA OBRIGATORIO ESTADO",
+      "class": "04",
+      "professor": "Carlos Eduardo Behrmann Ratis Martins",
+      "location": "DIR - 114",
+      "scheduleCode": "24N34",
+      "meetings": [
+        {
+          "day": "segunda",
+          "start": "20:20",
+          "end": "22:10",
+          "shift": "noite"
+        },
+        {
+          "day": "quarta",
+          "start": "20:20",
+          "end": "22:10",
+          "shift": "noite"
+        }
+      ],
+      "enrolled": 30,
+      "capacity": 45,
+      "daySemester": 2,
+      "nightSemester": 2
+    },
+    {
+      "id": "2026.2-DIRA80-01",
+      "period": "2026.2",
+      "code": "DIRA80",
+      "component": "SOCIOLOGIA JURÍDICA",
+      "class": "01",
+      "professor": "Samuel Santana Vida",
+      "location": "DIR - 226",
+      "scheduleCode": "35M56",
+      "meetings": [
+        {
+          "day": "terça",
+          "start": "10:40",
+          "end": "12:30",
+          "shift": "manhã"
+        },
+        {
+          "day": "quinta",
+          "start": "10:40",
+          "end": "12:30",
+          "shift": "manhã"
+        }
+      ],
+      "enrolled": 11,
+      "capacity": 45,
+      "daySemester": 3,
+      "nightSemester": 2
+    },
+    {
+      "id": "2026.2-DIRA80-02",
+      "period": "2026.2",
+      "code": "DIRA80",
+      "component": "SOCIOLOGIA JURÍDICA",
+      "class": "02",
+      "professor": "Sara Da Nova Quadros Cortes",
+      "location": "DIR - 112",
+      "scheduleCode": "35M56",
+      "meetings": [
+        {
+          "day": "terça",
+          "start": "10:40",
+          "end": "12:30",
+          "shift": "manhã"
+        },
+        {
+          "day": "quinta",
+          "start": "10:40",
+          "end": "12:30",
+          "shift": "manhã"
+        }
+      ],
+      "enrolled": 50,
+      "capacity": 50,
+      "daySemester": 3,
+      "nightSemester": 2
+    },
+    {
+      "id": "2026.2-DIRA80-03",
+      "period": "2026.2",
+      "code": "DIRA80",
+      "component": "SOCIOLOGIA JURÍDICA",
+      "class": "03",
+      "professor": "Samuel Santana Vida",
+      "location": "DIR - 114",
+      "scheduleCode": "24N12",
+      "meetings": [
+        {
+          "day": "segunda",
+          "start": "18:30",
+          "end": "20:20",
+          "shift": "noite"
+        },
+        {
+          "day": "quarta",
+          "start": "18:30",
+          "end": "20:20",
+          "shift": "noite"
+        }
+      ],
+      "enrolled": 19,
+      "capacity": 45,
+      "daySemester": 3,
+      "nightSemester": 2
+    },
+    {
+      "id": "2026.2-DIRA80-04",
+      "period": "2026.2",
+      "code": "DIRA80",
+      "component": "SOCIOLOGIA JURÍDICA",
+      "class": "04",
+      "professor": "Leonardo Tochetto Pauperio",
+      "location": "DIR - 112",
+      "scheduleCode": "35N12",
+      "meetings": [
+        {
+          "day": "terça",
+          "start": "18:30",
+          "end": "20:20",
+          "shift": "noite"
+        },
+        {
+          "day": "quinta",
+          "start": "18:30",
+          "end": "20:20",
+          "shift": "noite"
+        }
+      ],
+      "enrolled": 50,
+      "capacity": 50,
+      "daySemester": 3,
+      "nightSemester": 2
+    },
+    {
+      "id": "2026.2-DIRA81-01",
+      "period": "2026.2",
+      "code": "DIRA81",
+      "component": "TEORIA DO DIREITO II",
+      "class": "01",
+      "professor": "Alessandra Oitaven Pearce De Carvalho Monteiro",
+      "location": "DIR - 106",
+      "scheduleCode": "35N12",
+      "meetings": [
+        {
+          "day": "terça",
+          "start": "18:30",
+          "end": "20:20",
+          "shift": "noite"
+        },
+        {
+          "day": "quinta",
+          "start": "18:30",
+          "end": "20:20",
+          "shift": "noite"
+        }
+      ],
+      "enrolled": 60,
+      "capacity": 60,
+      "daySemester": "outros",
+      "nightSemester": 2
+    },
+    {
+      "id": "2026.2-DIRA81-02",
+      "period": "2026.2",
+      "code": "DIRA81",
+      "component": "TEORIA DO DIREITO II",
+      "class": "02",
+      "professor": "Alessandra Oitaven Pearce De Carvalho Monteiro",
+      "location": "DIR - 106",
+      "scheduleCode": "35N34",
+      "meetings": [
+        {
+          "day": "terça",
+          "start": "20:20",
+          "end": "22:10",
+          "shift": "noite"
+        },
+        {
+          "day": "quinta",
+          "start": "20:20",
+          "end": "22:10",
+          "shift": "noite"
+        }
+      ],
+      "enrolled": 60,
+      "capacity": 60,
+      "daySemester": "outros",
+      "nightSemester": 2
+    },
+    {
+      "id": "2026.2-DIRA82-01",
+      "period": "2026.2",
+      "code": "DIRA82",
+      "component": "TEORIA GERAL DO DIREITO CIVIL I",
+      "class": "01",
+      "professor": "Roxana Cardoso Brasileiro Borges",
+      "location": "DIR - 105",
+      "scheduleCode": "35M56",
+      "meetings": [
+        {
+          "day": "terça",
+          "start": "10:40",
+          "end": "12:30",
+          "shift": "manhã"
+        },
+        {
+          "day": "quinta",
+          "start": "10:40",
+          "end": "12:30",
+          "shift": "manhã"
+        }
+      ],
+      "enrolled": 60,
+      "capacity": 60,
+      "daySemester": 2,
+      "nightSemester": 3
+    },
+    {
+      "id": "2026.2-DIRA82-02",
+      "period": "2026.2",
+      "code": "DIRA82",
+      "component": "TEORIA GERAL DO DIREITO CIVIL I",
+      "class": "02",
+      "professor": "Andréa Santana Leone De Souza",
+      "location": "DIR - 115",
+      "scheduleCode": "4T2345",
+      "meetings": [
+        {
+          "day": "quarta",
+          "start": "13:55",
+          "end": "17:35",
+          "shift": "tarde"
+        }
+      ],
+      "enrolled": 26,
+      "capacity": 45,
+      "daySemester": 2,
+      "nightSemester": 3
+    },
+    {
+      "id": "2026.2-DIRA82-03",
+      "period": "2026.2",
+      "code": "DIRA82",
+      "component": "TEORIA GERAL DO DIREITO CIVIL I",
+      "class": "03",
+      "professor": "Gustavo Costa Macedo",
+      "location": "DIR - 108",
+      "scheduleCode": "24N12",
+      "meetings": [
+        {
+          "day": "segunda",
+          "start": "18:30",
+          "end": "20:20",
+          "shift": "noite"
+        },
+        {
+          "day": "quarta",
+          "start": "18:30",
+          "end": "20:20",
+          "shift": "noite"
+        }
+      ],
+      "enrolled": 44,
+      "capacity": 45,
+      "daySemester": 2,
+      "nightSemester": 3
+    },
+    {
+      "id": "2026.2-DIRA82-04",
+      "period": "2026.2",
+      "code": "DIRA82",
+      "component": "TEORIA GERAL DO DIREITO CIVIL I",
+      "class": "04",
+      "professor": "Christiano Cassettari",
+      "location": "DIR - 216",
+      "scheduleCode": "24N34",
+      "meetings": [
+        {
+          "day": "segunda",
+          "start": "20:20",
+          "end": "22:10",
+          "shift": "noite"
+        },
+        {
+          "day": "quarta",
+          "start": "20:20",
+          "end": "22:10",
+          "shift": "noite"
+        }
+      ],
+      "enrolled": 30,
+      "capacity": 45,
+      "daySemester": 2,
+      "nightSemester": 3
+    },
+    {
+      "id": "2026.2-DIRA83-01",
+      "period": "2026.2",
+      "code": "DIRA83",
+      "component": "TEORIA DO DIREITO PENAL I",
+      "class": "01",
+      "professor": "Selma Pereira De Santana",
+      "location": "DIR - 107",
+      "scheduleCode": "24M34",
+      "meetings": [
+        {
+          "day": "segunda",
+          "start": "08:50",
+          "end": "10:40",
+          "shift": "manhã"
+        },
+        {
+          "day": "quarta",
+          "start": "08:50",
+          "end": "10:40",
+          "shift": "manhã"
+        }
+      ],
+      "enrolled": 56,
+      "capacity": 60,
+      "daySemester": 2,
+      "nightSemester": 3
+    },
+    {
+      "id": "2026.2-DIRA83-03",
+      "period": "2026.2",
+      "code": "DIRA83",
+      "component": "TEORIA DO DIREITO PENAL I",
+      "class": "03",
+      "professor": "Sebastian Borges De Albuquerque Mello",
+      "location": "DIR - 224",
+      "scheduleCode": "24M34",
+      "meetings": [
+        {
+          "day": "segunda",
+          "start": "08:50",
+          "end": "10:40",
+          "shift": "manhã"
+        },
+        {
+          "day": "quarta",
+          "start": "08:50",
+          "end": "10:40",
+          "shift": "manhã"
+        }
+      ],
+      "enrolled": 48,
+      "capacity": 55,
+      "daySemester": 2,
+      "nightSemester": 3
+    },
+    {
+      "id": "2026.2-DIRA83-05",
+      "period": "2026.2",
+      "code": "DIRA83",
+      "component": "TEORIA DO DIREITO PENAL I",
+      "class": "05",
+      "professor": "Felipe Marcone Santos Silva",
+      "location": "DIR - 102",
+      "scheduleCode": "35N12",
+      "meetings": [
+        {
+          "day": "terça",
+          "start": "18:30",
+          "end": "20:20",
+          "shift": "noite"
+        },
+        {
+          "day": "quinta",
+          "start": "18:30",
+          "end": "20:20",
+          "shift": "noite"
+        }
+      ],
+      "enrolled": 60,
+      "capacity": 60,
+      "daySemester": 2,
+      "nightSemester": 3
+    },
+    {
+      "id": "2026.2-DIRA83-06",
+      "period": "2026.2",
+      "code": "DIRA83",
+      "component": "TEORIA DO DIREITO PENAL I",
+      "class": "06",
+      "professor": "A Definir",
+      "location": "DIR - 213",
+      "scheduleCode": "35N34",
+      "meetings": [
+        {
+          "day": "terça",
+          "start": "20:20",
+          "end": "22:10",
+          "shift": "noite"
+        },
+        {
+          "day": "quinta",
+          "start": "20:20",
+          "end": "22:10",
+          "shift": "noite"
+        }
+      ],
+      "enrolled": 19,
+      "capacity": 45,
+      "daySemester": 2,
+      "nightSemester": 3
+    },
+    {
+      "id": "2026.2-DIRA84-01",
+      "period": "2026.2",
+      "code": "DIRA84",
+      "component": "DIREITO CONSTITUCIONAL",
+      "class": "01",
+      "professor": "Leonardo Tochetto Pauperio",
+      "location": "DIR - 216",
+      "scheduleCode": "24M34",
+      "meetings": [
+        {
+          "day": "segunda",
+          "start": "08:50",
+          "end": "10:40",
+          "shift": "manhã"
+        },
+        {
+          "day": "quarta",
+          "start": "08:50",
+          "end": "10:40",
+          "shift": "manhã"
+        }
+      ],
+      "enrolled": 45,
+      "capacity": 45,
+      "daySemester": 3,
+      "nightSemester": 3
+    },
+    {
+      "id": "2026.2-DIRA84-02",
+      "period": "2026.2",
+      "code": "DIRA84",
+      "component": "DIREITO CONSTITUCIONAL",
+      "class": "02",
+      "professor": "Miguel Calmon Teixeira De Carvalho Dantas",
+      "location": "DIR - 108",
+      "scheduleCode": "35M12",
+      "meetings": [
+        {
+          "day": "terça",
+          "start": "07:00",
+          "end": "08:50",
+          "shift": "manhã"
+        },
+        {
+          "day": "quinta",
+          "start": "07:00",
+          "end": "08:50",
+          "shift": "manhã"
+        }
+      ],
+      "enrolled": 45,
+      "capacity": 45,
+      "daySemester": 3,
+      "nightSemester": 3
+    },
+    {
+      "id": "2026.2-DIRA84-04",
+      "period": "2026.2",
+      "code": "DIRA84",
+      "component": "DIREITO CONSTITUCIONAL",
+      "class": "04",
+      "professor": "Gabriel Dias Marques Da Cruz",
+      "location": "DIR - 105",
+      "scheduleCode": "35N12",
+      "meetings": [
+        {
+          "day": "terça",
+          "start": "18:30",
+          "end": "20:20",
+          "shift": "noite"
+        },
+        {
+          "day": "quinta",
+          "start": "18:30",
+          "end": "20:20",
+          "shift": "noite"
+        }
+      ],
+      "enrolled": 60,
+      "capacity": 60,
+      "daySemester": 3,
+      "nightSemester": 3
+    },
+    {
+      "id": "2026.2-DIRA84-05",
+      "period": "2026.2",
+      "code": "DIRA84",
+      "component": "DIREITO CONSTITUCIONAL",
+      "class": "05",
+      "professor": "Gabriel Dias Marques Da Cruz",
+      "location": "DIR - 105",
+      "scheduleCode": "35N34",
+      "meetings": [
+        {
+          "day": "terça",
+          "start": "20:20",
+          "end": "22:10",
+          "shift": "noite"
+        },
+        {
+          "day": "quinta",
+          "start": "20:20",
+          "end": "22:10",
+          "shift": "noite"
+        }
+      ],
+      "enrolled": 60,
+      "capacity": 60,
+      "daySemester": 3,
+      "nightSemester": 3
+    },
+    {
+      "id": "2026.2-DIRA85-01",
+      "period": "2026.2",
+      "code": "DIRA85",
+      "component": "FILOSOFIA DO DIREITO",
+      "class": "01",
+      "professor": "Jose Ponciano De Carvalho Junior",
+      "location": "DIR - 224",
+      "scheduleCode": "35M34",
+      "meetings": [
+        {
+          "day": "terça",
+          "start": "08:50",
+          "end": "10:40",
+          "shift": "manhã"
+        },
+        {
+          "day": "quinta",
+          "start": "08:50",
+          "end": "10:40",
+          "shift": "manhã"
+        }
+      ],
+      "enrolled": 43,
+      "capacity": 50,
+      "daySemester": 4,
+      "nightSemester": 4
+    },
+    {
+      "id": "2026.2-DIRA85-02",
+      "period": "2026.2",
+      "code": "DIRA85",
+      "component": "FILOSOFIA DO DIREITO",
+      "class": "02",
+      "professor": "Jose Ponciano De Carvalho Junior",
+      "location": "DIR - 228",
+      "scheduleCode": "35M56",
+      "meetings": [
+        {
+          "day": "terça",
+          "start": "10:40",
+          "end": "12:30",
+          "shift": "manhã"
+        },
+        {
+          "day": "quinta",
+          "start": "10:40",
+          "end": "12:30",
+          "shift": "manhã"
+        }
+      ],
+      "enrolled": 32,
+      "capacity": 45,
+      "daySemester": 4,
+      "nightSemester": 4
+    },
+    {
+      "id": "2026.2-DIRA85-03",
+      "period": "2026.2",
+      "code": "DIRA85",
+      "component": "FILOSOFIA DO DIREITO",
+      "class": "03",
+      "professor": "Alessandra Oitaven Pearce De Carvalho Monteiro",
+      "location": "DIR - 105",
+      "scheduleCode": "24N12",
+      "meetings": [
+        {
+          "day": "segunda",
+          "start": "18:30",
+          "end": "20:20",
+          "shift": "noite"
+        },
+        {
+          "day": "quarta",
+          "start": "18:30",
+          "end": "20:20",
+          "shift": "noite"
+        }
+      ],
+      "enrolled": 60,
+      "capacity": 60,
+      "daySemester": 4,
+      "nightSemester": 4
+    },
+    {
+      "id": "2026.2-DIRA85-04",
+      "period": "2026.2",
+      "code": "DIRA85",
+      "component": "FILOSOFIA DO DIREITO",
+      "class": "04",
+      "professor": "Alessandra Oitaven Pearce De Carvalho Monteiro",
+      "location": "DIR - 105",
+      "scheduleCode": "24N34",
+      "meetings": [
+        {
+          "day": "segunda",
+          "start": "20:20",
+          "end": "22:10",
+          "shift": "noite"
+        },
+        {
+          "day": "quarta",
+          "start": "20:20",
+          "end": "22:10",
+          "shift": "noite"
+        }
+      ],
+      "enrolled": 59,
+      "capacity": 60,
+      "daySemester": 4,
+      "nightSemester": 4
+    },
+    {
+      "id": "2026.2-DIRA86-01",
+      "period": "2026.2",
+      "code": "DIRA86",
+      "component": "TEORIA GERAL DO DIREITO CIVIL II",
+      "class": "01",
+      "professor": "Christiano Cassettari",
+      "location": "DIR - 113",
+      "scheduleCode": "24M12",
+      "meetings": [
+        {
+          "day": "segunda",
+          "start": "07:00",
+          "end": "08:50",
+          "shift": "manhã"
+        },
+        {
+          "day": "quarta",
+          "start": "07:00",
+          "end": "08:50",
+          "shift": "manhã"
+        }
+      ],
+      "enrolled": 31,
+      "capacity": 45,
+      "daySemester": 3,
+      "nightSemester": 4
+    },
+    {
+      "id": "2026.2-DIRA86-02",
+      "period": "2026.2",
+      "code": "DIRA86",
+      "component": "TEORIA GERAL DO DIREITO CIVIL II",
+      "class": "02",
+      "professor": "Roxana Cardoso Brasileiro Borges",
+      "location": "DIR - 105",
+      "scheduleCode": "35M34",
+      "meetings": [
+        {
+          "day": "terça",
+          "start": "08:50",
+          "end": "10:40",
+          "shift": "manhã"
+        },
+        {
+          "day": "quinta",
+          "start": "08:50",
+          "end": "10:40",
+          "shift": "manhã"
+        }
+      ],
+      "enrolled": 60,
+      "capacity": 60,
+      "daySemester": 3,
+      "nightSemester": 4
+    },
+    {
+      "id": "2026.2-DIRA86-03",
+      "period": "2026.2",
+      "code": "DIRA86",
+      "component": "TEORIA GERAL DO DIREITO CIVIL II",
+      "class": "03",
+      "professor": "Pedro Lino De Carvalho Junior",
+      "location": "DIR - 113",
+      "scheduleCode": "35N12",
+      "meetings": [
+        {
+          "day": "terça",
+          "start": "18:30",
+          "end": "20:20",
+          "shift": "noite"
+        },
+        {
+          "day": "quinta",
+          "start": "18:30",
+          "end": "20:20",
+          "shift": "noite"
+        }
+      ],
+      "enrolled": 29,
+      "capacity": 45,
+      "daySemester": 3,
+      "nightSemester": 4
+    },
+    {
+      "id": "2026.2-DIRA86-04",
+      "period": "2026.2",
+      "code": "DIRA86",
+      "component": "TEORIA GERAL DO DIREITO CIVIL II",
+      "class": "04",
+      "professor": "Pedro Lino De Carvalho Junior",
+      "location": "DIR - 113",
+      "scheduleCode": "35N34",
+      "meetings": [
+        {
+          "day": "terça",
+          "start": "20:20",
+          "end": "22:10",
+          "shift": "noite"
+        },
+        {
+          "day": "quinta",
+          "start": "20:20",
+          "end": "22:10",
+          "shift": "noite"
+        }
+      ],
+      "enrolled": 22,
+      "capacity": 45,
+      "daySemester": 3,
+      "nightSemester": 4
+    },
+    {
+      "id": "2026.2-DIRA87-01",
+      "period": "2026.2",
+      "code": "DIRA87",
+      "component": "TEORIA DO PROCESSO",
+      "class": "01",
+      "professor": "Cynthia De Araujo Lima Lopes",
+      "location": "DIR - 115",
+      "scheduleCode": "6N1234",
+      "meetings": [
+        {
+          "day": "sexta",
+          "start": "18:30",
+          "end": "22:10",
+          "shift": "noite"
+        }
+      ],
+      "enrolled": 23,
+      "capacity": 45,
+      "daySemester": "outros",
+      "nightSemester": 4
+    },
+    {
+      "id": "2026.2-DIRA87-02",
+      "period": "2026.2",
+      "code": "DIRA87",
+      "component": "TEORIA DO PROCESSO",
+      "class": "02",
+      "professor": "Gabriela Exposito Tenorio Miranda De Morais",
+      "location": "DIR - 112",
+      "scheduleCode": "24T56",
+      "meetings": [
+        {
+          "day": "segunda",
+          "start": "16:40",
+          "end": "18:30",
+          "shift": "tarde"
+        },
+        {
+          "day": "quarta",
+          "start": "16:40",
+          "end": "18:30",
+          "shift": "tarde"
+        }
+      ],
+      "enrolled": 44,
+      "capacity": 60,
+      "daySemester": "outros",
+      "nightSemester": 4
+    },
+    {
+      "id": "2026.2-DIRA88-01",
+      "period": "2026.2",
+      "code": "DIRA88",
+      "component": "TEORIA DO DIREITO PENAL II",
+      "class": "01",
+      "professor": "Gamil Foppel El Hireche",
+      "location": "DIR - 112",
+      "scheduleCode": "24M56",
+      "meetings": [
+        {
+          "day": "segunda",
+          "start": "10:40",
+          "end": "12:30",
+          "shift": "manhã"
+        },
+        {
+          "day": "quarta",
+          "start": "10:40",
+          "end": "12:30",
+          "shift": "manhã"
+        }
+      ],
+      "enrolled": 41,
+      "capacity": 50,
+      "daySemester": 3,
+      "nightSemester": 4
+    },
+    {
+      "id": "2026.2-DIRA88-02",
+      "period": "2026.2",
+      "code": "DIRA88",
+      "component": "TEORIA DO DIREITO PENAL II",
+      "class": "02",
+      "professor": "Selma Pereira De Santana",
+      "location": "DIR - 107",
+      "scheduleCode": "24M12",
+      "meetings": [
+        {
+          "day": "segunda",
+          "start": "07:00",
+          "end": "08:50",
+          "shift": "manhã"
+        },
+        {
+          "day": "quarta",
+          "start": "07:00",
+          "end": "08:50",
+          "shift": "manhã"
+        }
+      ],
+      "enrolled": 45,
+      "capacity": 60,
+      "daySemester": 3,
+      "nightSemester": 4
+    },
+    {
+      "id": "2026.2-DIRA88-03",
+      "period": "2026.2",
+      "code": "DIRA88",
+      "component": "TEORIA DO DIREITO PENAL II",
+      "class": "03",
+      "professor": "Eduardo Viana Portela Neves",
+      "location": "DIR - 216",
+      "scheduleCode": "35N12",
+      "meetings": [
+        {
+          "day": "terça",
+          "start": "18:30",
+          "end": "20:20",
+          "shift": "noite"
+        },
+        {
+          "day": "quinta",
+          "start": "18:30",
+          "end": "20:20",
+          "shift": "noite"
+        }
+      ],
+      "enrolled": 25,
+      "capacity": 45,
+      "daySemester": 3,
+      "nightSemester": 4
+    },
+    {
+      "id": "2026.2-DIRA88-05",
+      "period": "2026.2",
+      "code": "DIRA88",
+      "component": "TEORIA DO DIREITO PENAL II",
+      "class": "05",
+      "professor": "Felipe Marcone Santos Silva",
+      "location": "DIR - 102",
+      "scheduleCode": "35N34",
+      "meetings": [
+        {
+          "day": "terça",
+          "start": "20:20",
+          "end": "22:10",
+          "shift": "noite"
+        },
+        {
+          "day": "quinta",
+          "start": "20:20",
+          "end": "22:10",
+          "shift": "noite"
+        }
+      ],
+      "enrolled": 60,
+      "capacity": 60,
+      "daySemester": 3,
+      "nightSemester": 4
+    },
+    {
+      "id": "2026.2-DIRA89-01",
+      "period": "2026.2",
+      "code": "DIRA89",
+      "component": "60h Aula DISCIPLINA OBRIGATORIO 60h",
+      "class": "01",
+      "professor": "Harrison Ferreira Leite",
+      "location": "DIR - 212",
+      "scheduleCode": "2T56 2N12",
+      "meetings": [
+        {
+          "day": "segunda",
+          "start": "16:40",
+          "end": "18:30",
+          "shift": "tarde"
+        },
+        {
+          "day": "segunda",
+          "start": "18:30",
+          "end": "20:20",
+          "shift": "noite"
+        }
+      ],
+      "enrolled": 37,
+      "capacity": 45,
+      "daySemester": 3,
+      "nightSemester": 4
+    },
+    {
+      "id": "2026.2-DIRA89-02",
+      "period": "2026.2",
+      "code": "DIRA89",
+      "component": "60h Aula DISCIPLINA OBRIGATORIO 60h",
+      "class": "02",
+      "professor": "Harrison Ferreira Leite",
+      "location": "DIR - 103",
+      "scheduleCode": "2T1234",
+      "meetings": [
+        {
+          "day": "segunda",
+          "start": "13:00",
+          "end": "16:40",
+          "shift": "tarde"
+        }
+      ],
+      "enrolled": 60,
+      "capacity": 60,
+      "daySemester": 3,
+      "nightSemester": 4
+    },
+    {
+      "id": "2026.2-DIRA89-03",
+      "period": "2026.2",
+      "code": "DIRA89",
+      "component": "60h Aula DISCIPLINA OBRIGATORIO 60h",
+      "class": "03",
+      "professor": "Ramon Rocha Santos",
+      "location": "DIR - 105",
+      "scheduleCode": "7M3456",
+      "meetings": [
+        {
+          "day": "sábado",
+          "start": "08:50",
+          "end": "12:30",
+          "shift": "manhã"
+        }
+      ],
+      "enrolled": 60,
+      "capacity": 60,
+      "daySemester": 3,
+      "nightSemester": 4
+    },
+    {
+      "id": "2026.2-DIRA89-04",
+      "period": "2026.2",
+      "code": "DIRA89",
+      "component": "60h Aula DISCIPLINA OBRIGATORIO 60h",
+      "class": "04",
+      "professor": "Ramon Rocha Santos",
+      "location": "DIR - 105",
+      "scheduleCode": "7T1234",
+      "meetings": [
+        {
+          "day": "sábado",
+          "start": "13:00",
+          "end": "16:40",
+          "shift": "tarde"
+        }
+      ],
+      "enrolled": 60,
+      "capacity": 60,
+      "daySemester": 3,
+      "nightSemester": 4
+    },
+    {
+      "id": "2026.2-DIRA90-01",
+      "period": "2026.2",
+      "code": "DIRA90",
+      "component": "DIREITO DAS OBRIGAÇÕES I",
+      "class": "01",
+      "professor": "Iran Furtado De Souza Filho",
+      "location": "DIR - 103",
+      "scheduleCode": "24M34",
+      "meetings": [
+        {
+          "day": "segunda",
+          "start": "08:50",
+          "end": "10:40",
+          "shift": "manhã"
+        },
+        {
+          "day": "quarta",
+          "start": "08:50",
+          "end": "10:40",
+          "shift": "manhã"
+        }
+      ],
+      "enrolled": 60,
+      "capacity": 60,
+      "daySemester": 4,
+      "nightSemester": 5
+    },
+    {
+      "id": "2026.2-DIRA90-02",
+      "period": "2026.2",
+      "code": "DIRA90",
+      "component": "DIREITO DAS OBRIGAÇÕES I",
+      "class": "02",
+      "professor": "Cristiana Menezes Santos",
+      "location": "DIR - 113",
+      "scheduleCode": "2T2345",
+      "meetings": [
+        {
+          "day": "segunda",
+          "start": "13:55",
+          "end": "17:35",
+          "shift": "tarde"
+        }
+      ],
+      "enrolled": 8,
+      "capacity": 45,
+      "daySemester": 4,
+      "nightSemester": 5
+    },
+    {
+      "id": "2026.2-DIRA90-03",
+      "period": "2026.2",
+      "code": "DIRA90",
+      "component": "DIREITO DAS OBRIGAÇÕES I",
+      "class": "03",
+      "professor": "Antonio Lago Junior",
+      "location": "DIR - 220",
+      "scheduleCode": "35N34",
+      "meetings": [
+        {
+          "day": "terça",
+          "start": "20:20",
+          "end": "22:10",
+          "shift": "noite"
+        },
+        {
+          "day": "quinta",
+          "start": "20:20",
+          "end": "22:10",
+          "shift": "noite"
+        }
+      ],
+      "enrolled": 38,
+      "capacity": 45,
+      "daySemester": 4,
+      "nightSemester": 5
+    },
+    {
+      "id": "2026.2-DIRA90-04",
+      "period": "2026.2",
+      "code": "DIRA90",
+      "component": "DIREITO DAS OBRIGAÇÕES I",
+      "class": "04",
+      "professor": "Amanda Souza Barbosa",
+      "location": "DIR - 113",
+      "scheduleCode": "7M3456",
+      "meetings": [
+        {
+          "day": "sábado",
+          "start": "08:50",
+          "end": "12:30",
+          "shift": "manhã"
+        }
+      ],
+      "enrolled": 26,
+      "capacity": 45,
+      "daySemester": 4,
+      "nightSemester": 5
+    },
+    {
+      "id": "2026.2-DIRA91-01",
+      "period": "2026.2",
+      "code": "DIRA91",
+      "component": "DIREITO DAS OBRIGAÇÕES II",
+      "class": "01",
+      "professor": "Mauricio Requiao De Sant Ana",
+      "location": "DIR - 219",
+      "scheduleCode": "24M34",
+      "meetings": [
+        {
+          "day": "segunda",
+          "start": "08:50",
+          "end": "10:40",
+          "shift": "manhã"
+        },
+        {
+          "day": "quarta",
+          "start": "08:50",
+          "end": "10:40",
+          "shift": "manhã"
+        }
+      ],
+      "enrolled": 38,
+      "capacity": 45,
+      "daySemester": 5,
+      "nightSemester": 6
+    },
+    {
+      "id": "2026.2-DIRA91-02",
+      "period": "2026.2",
+      "code": "DIRA91",
+      "component": "DIREITO DAS OBRIGAÇÕES II",
+      "class": "02",
+      "professor": "Rodolfo Mario Veiga Pamplona Filho",
+      "location": "DIR - 103",
+      "scheduleCode": "3T2345",
+      "meetings": [
+        {
+          "day": "terça",
+          "start": "13:55",
+          "end": "17:35",
+          "shift": "tarde"
+        }
+      ],
+      "enrolled": 60,
+      "capacity": 60,
+      "daySemester": 5,
+      "nightSemester": 6
+    },
+    {
+      "id": "2026.2-DIRA91-03",
+      "period": "2026.2",
+      "code": "DIRA91",
+      "component": "DIREITO DAS OBRIGAÇÕES II",
+      "class": "03",
+      "professor": "Eugenio De Souza Kruschewsky",
+      "location": "DIR - 228",
+      "scheduleCode": "24N12",
+      "meetings": [
+        {
+          "day": "segunda",
+          "start": "18:30",
+          "end": "20:20",
+          "shift": "noite"
+        },
+        {
+          "day": "quarta",
+          "start": "18:30",
+          "end": "20:20",
+          "shift": "noite"
+        }
+      ],
+      "enrolled": 45,
+      "capacity": 45,
+      "daySemester": 5,
+      "nightSemester": 6
+    },
+    {
+      "id": "2026.2-DIRA91-04",
+      "period": "2026.2",
+      "code": "DIRA91",
+      "component": "DIREITO DAS OBRIGAÇÕES II",
+      "class": "04",
+      "professor": "Eugenio De Souza Kruschewsky",
+      "location": "DIR - 104",
+      "scheduleCode": "24N34",
+      "meetings": [
+        {
+          "day": "segunda",
+          "start": "20:20",
+          "end": "22:10",
+          "shift": "noite"
+        },
+        {
+          "day": "quarta",
+          "start": "20:20",
+          "end": "22:10",
+          "shift": "noite"
+        }
+      ],
+      "enrolled": 60,
+      "capacity": 60,
+      "daySemester": 5,
+      "nightSemester": 6
+    },
+    {
+      "id": "2026.2-DIRA92-01",
+      "period": "2026.2",
+      "code": "DIRA92",
+      "component": "CONTRATOS",
+      "class": "01",
+      "professor": "Rodrigo Moraes Ferreira",
+      "location": "DIR - 220",
+      "scheduleCode": "24M34",
+      "meetings": [
+        {
+          "day": "segunda",
+          "start": "08:50",
+          "end": "10:40",
+          "shift": "manhã"
+        },
+        {
+          "day": "quarta",
+          "start": "08:50",
+          "end": "10:40",
+          "shift": "manhã"
+        }
+      ],
+      "enrolled": 30,
+      "capacity": 45,
+      "daySemester": 6,
+      "nightSemester": 7
+    },
+    {
+      "id": "2026.2-DIRA92-02",
+      "period": "2026.2",
+      "code": "DIRA92",
+      "component": "CONTRATOS",
+      "class": "02",
+      "professor": "Mauricio Requiao De Sant Ana",
+      "location": "DIR - 219",
+      "scheduleCode": "24M56",
+      "meetings": [
+        {
+          "day": "segunda",
+          "start": "10:40",
+          "end": "12:30",
+          "shift": "manhã"
+        },
+        {
+          "day": "quarta",
+          "start": "10:40",
+          "end": "12:30",
+          "shift": "manhã"
+        }
+      ],
+      "enrolled": 41,
+      "capacity": 45,
+      "daySemester": 6,
+      "nightSemester": 7
+    },
+    {
+      "id": "2026.2-DIRA92-03",
+      "period": "2026.2",
+      "code": "DIRA92",
+      "component": "CONTRATOS",
+      "class": "03",
+      "professor": "Daniela Santos Bomfim",
+      "location": "DIR - 101",
+      "scheduleCode": "24N34",
+      "meetings": [
+        {
+          "day": "segunda",
+          "start": "20:20",
+          "end": "22:10",
+          "shift": "noite"
+        },
+        {
+          "day": "quarta",
+          "start": "20:20",
+          "end": "22:10",
+          "shift": "noite"
+        }
+      ],
+      "enrolled": 50,
+      "capacity": 50,
+      "daySemester": 6,
+      "nightSemester": 7
+    },
+    {
+      "id": "2026.2-DIRA92-04",
+      "period": "2026.2",
+      "code": "DIRA92",
+      "component": "CONTRATOS",
+      "class": "04",
+      "professor": "Christiano Cassettari",
+      "location": "DIR - 228",
+      "scheduleCode": "6N1234",
+      "meetings": [
+        {
+          "day": "sexta",
+          "start": "18:30",
+          "end": "22:10",
+          "shift": "noite"
+        }
+      ],
+      "enrolled": 45,
+      "capacity": 45,
+      "daySemester": 6,
+      "nightSemester": 7
+    },
+    {
+      "id": "2026.2-DIRA95-01",
+      "period": "2026.2",
+      "code": "DIRA95",
+      "component": "DIREITO EMPRESARIAL",
+      "class": "01",
+      "professor": "Raissa Pimentel Silva Siqueira",
+      "location": "DIR - 115",
+      "scheduleCode": "6M3456",
+      "meetings": [
+        {
+          "day": "sexta",
+          "start": "08:50",
+          "end": "12:30",
+          "shift": "manhã"
+        }
+      ],
+      "enrolled": 40,
+      "capacity": 45,
+      "daySemester": 7,
+      "nightSemester": 9
+    },
+    {
+      "id": "2026.2-DIRA95-02",
+      "period": "2026.2",
+      "code": "DIRA95",
+      "component": "DIREITO EMPRESARIAL",
+      "class": "02",
+      "professor": "Adriana Maria Aureliano Da Silva",
+      "location": "DIR - 115",
+      "scheduleCode": "2T2345",
+      "meetings": [
+        {
+          "day": "segunda",
+          "start": "13:55",
+          "end": "17:35",
+          "shift": "tarde"
+        }
+      ],
+      "enrolled": 5,
+      "capacity": 45,
+      "daySemester": 7,
+      "nightSemester": 9
+    },
+    {
+      "id": "2026.2-DIRA95-03",
+      "period": "2026.2",
+      "code": "DIRA95",
+      "component": "DIREITO EMPRESARIAL",
+      "class": "03",
+      "professor": "Pedro Vitor Costa Santos Reboucas",
+      "location": "DIR - 226",
+      "scheduleCode": "24N12",
+      "meetings": [
+        {
+          "day": "segunda",
+          "start": "18:30",
+          "end": "20:20",
+          "shift": "noite"
+        },
+        {
+          "day": "quarta",
+          "start": "18:30",
+          "end": "20:20",
+          "shift": "noite"
+        }
+      ],
+      "enrolled": 33,
+      "capacity": 45,
+      "daySemester": 7,
+      "nightSemester": 9
+    },
+    {
+      "id": "2026.2-DIRA95-04",
+      "period": "2026.2",
+      "code": "DIRA95",
+      "component": "DIREITO EMPRESARIAL",
+      "class": "04",
+      "professor": "Pedro Vitor Costa Santos Reboucas",
+      "location": "DIR - 226",
+      "scheduleCode": "24N34",
+      "meetings": [
+        {
+          "day": "segunda",
+          "start": "20:20",
+          "end": "22:10",
+          "shift": "noite"
+        },
+        {
+          "day": "quarta",
+          "start": "20:20",
+          "end": "22:10",
+          "shift": "noite"
+        }
+      ],
+      "enrolled": 29,
+      "capacity": 45,
+      "daySemester": 7,
+      "nightSemester": 9
+    },
+    {
+      "id": "2026.2-DIRA96-01",
+      "period": "2026.2",
+      "code": "DIRA96",
+      "component": "TRABALHO DE CONCLUSÃO DE CURSO I",
+      "class": "01",
+      "professor": "Claudia Albagli Nogueira Serpa",
+      "location": "DIR - 102",
+      "scheduleCode": "24M56",
+      "meetings": [
+        {
+          "day": "segunda",
+          "start": "10:40",
+          "end": "12:30",
+          "shift": "manhã"
+        },
+        {
+          "day": "quarta",
+          "start": "10:40",
+          "end": "12:30",
+          "shift": "manhã"
+        }
+      ],
+      "enrolled": 40,
+      "capacity": 40,
+      "daySemester": 8,
+      "nightSemester": 11
+    },
+    {
+      "id": "2026.2-DIRA96-02",
+      "period": "2026.2",
+      "code": "DIRA96",
+      "component": "TRABALHO DE CONCLUSÃO DE CURSO I",
+      "class": "02",
+      "professor": "Mauricio Azevedo De Araujo",
+      "location": "DIR - 228",
+      "scheduleCode": "3T2345",
+      "meetings": [
+        {
+          "day": "terça",
+          "start": "13:55",
+          "end": "17:35",
+          "shift": "tarde"
+        }
+      ],
+      "enrolled": 37,
+      "capacity": 40,
+      "daySemester": 8,
+      "nightSemester": 11
+    },
+    {
+      "id": "2026.2-DIRA96-03",
+      "period": "2026.2",
+      "code": "DIRA96",
+      "component": "TRABALHO DE CONCLUSÃO DE CURSO I",
+      "class": "03",
+      "professor": "Jonnas Esmeraldo Marques De Vasconcelos",
+      "location": "DIR - 108",
+      "scheduleCode": "6M3456",
+      "meetings": [
+        {
+          "day": "sexta",
+          "start": "08:50",
+          "end": "12:30",
+          "shift": "manhã"
+        }
+      ],
+      "enrolled": 34,
+      "capacity": 40,
+      "daySemester": 8,
+      "nightSemester": 11
+    },
+    {
+      "id": "2026.2-DIRA96-04",
+      "period": "2026.2",
+      "code": "DIRA96",
+      "component": "TRABALHO DE CONCLUSÃO DE CURSO I",
+      "class": "04",
+      "professor": "Iuri Mattos De Carvalho",
+      "location": "DIR - 212",
+      "scheduleCode": "7M3456",
+      "meetings": [
+        {
+          "day": "sábado",
+          "start": "08:50",
+          "end": "12:30",
+          "shift": "manhã"
+        }
+      ],
+      "enrolled": 21,
+      "capacity": 40,
+      "daySemester": 8,
+      "nightSemester": 11
+    },
+    {
+      "id": "2026.2-DIRA96-05",
+      "period": "2026.2",
+      "code": "DIRA96",
+      "component": "TRABALHO DE CONCLUSÃO DE CURSO I",
+      "class": "05",
+      "professor": "Rafael Casais Neto",
+      "location": "DIR - 219",
+      "scheduleCode": "24N34",
+      "meetings": [
+        {
+          "day": "segunda",
+          "start": "20:20",
+          "end": "22:10",
+          "shift": "noite"
+        },
+        {
+          "day": "quarta",
+          "start": "20:20",
+          "end": "22:10",
+          "shift": "noite"
+        }
+      ],
+      "enrolled": 40,
+      "capacity": 40,
+      "daySemester": 8,
+      "nightSemester": 11
+    },
+    {
+      "id": "2026.2-DIRA97-01",
+      "period": "2026.2",
+      "code": "DIRA97",
+      "component": "TRABALHO DE CONCLUSÃO DE CURSO II",
+      "class": "01",
+      "professor": "Mauricio Azevedo De Araujo",
+      "location": "DIR (DIR)",
+      "scheduleCode": "7T3456",
+      "meetings": [
+        {
+          "day": "sábado",
+          "start": "14:50",
+          "end": "18:30",
+          "shift": "tarde"
+        }
+      ],
+      "enrolled": 267,
+      "capacity": 400,
+      "daySemester": 9,
+      "nightSemester": 12
+    },
+    {
+      "id": "2026.2-DIRB01-01",
+      "period": "2026.2",
+      "code": "DIRB01",
+      "component": "POLÍTICA CRIMINAL E CRIMINOLOGIA",
+      "class": "01",
+      "professor": "Juliana Pinheiro Damasceno E Santos",
+      "location": "DIR - 114",
+      "scheduleCode": "35M56",
+      "meetings": [
+        {
+          "day": "terça",
+          "start": "10:40",
+          "end": "12:30",
+          "shift": "manhã"
+        },
+        {
+          "day": "quinta",
+          "start": "10:40",
+          "end": "12:30",
+          "shift": "manhã"
+        }
+      ],
+      "enrolled": 15,
+      "capacity": 45,
+      "daySemester": "optativa",
+      "nightSemester": "optativa"
+    },
+    {
+      "id": "2026.2-DIRB02-01",
+      "period": "2026.2",
+      "code": "DIRB02",
+      "component": "DIREITO PENAL ESPECIAL",
+      "class": "01",
+      "professor": "Fernanda Ravazzano Lopes Baqueiro",
+      "location": "DIR - 220",
+      "scheduleCode": "24T56",
+      "meetings": [
+        {
+          "day": "segunda",
+          "start": "16:40",
+          "end": "18:30",
+          "shift": "tarde"
+        },
+        {
+          "day": "quarta",
+          "start": "16:40",
+          "end": "18:30",
+          "shift": "tarde"
+        }
+      ],
+      "enrolled": 31,
+      "capacity": 45,
+      "daySemester": "optativa",
+      "nightSemester": "optativa"
+    },
+    {
+      "id": "2026.2-DIRB03-01",
+      "period": "2026.2",
+      "code": "DIRB03",
+      "component": "60h Aula DISCIPLINA OPTATIVO PROCEDIMENTOS ESPECIAIS CÍVEIS",
+      "class": "01",
+      "professor": "Wilson Alves De Souza",
+      "location": "DIR - 102",
+      "scheduleCode": "6M56 6T12",
+      "meetings": [
+        {
+          "day": "sexta",
+          "start": "10:40",
+          "end": "12:30",
+          "shift": "manhã"
+        },
+        {
+          "day": "sexta",
+          "start": "13:00",
+          "end": "14:50",
+          "shift": "tarde"
+        }
+      ],
+      "enrolled": 5,
+      "capacity": 45,
+      "daySemester": "optativa",
+      "nightSemester": "optativa"
+    },
+    {
+      "id": "2026.2-DIRB07-01",
+      "period": "2026.2",
+      "code": "DIRB07",
+      "component": "MEDIAÇÃO E ARBITRAGEM",
+      "class": "01",
+      "professor": "Ana Paula Rocha Do Bomfim",
+      "location": "ADM",
+      "scheduleCode": "2N1234",
+      "meetings": [
+        {
+          "day": "segunda",
+          "start": "18:30",
+          "end": "22:10",
+          "shift": "noite"
+        }
+      ],
+      "enrolled": 18,
+      "capacity": 45,
+      "daySemester": "optativa",
+      "nightSemester": "optativa"
+    },
+    {
+      "id": "2026.2-DIRB15-01",
+      "period": "2026.2",
+      "code": "DIRB15",
+      "component": "DIREITOS REAIS II",
+      "class": "01",
+      "professor": "Joao Carlos Macedo Monteiro",
+      "location": "DIR - 224",
+      "scheduleCode": "24M56",
+      "meetings": [
+        {
+          "day": "segunda",
+          "start": "10:40",
+          "end": "12:30",
+          "shift": "manhã"
+        },
+        {
+          "day": "quarta",
+          "start": "10:40",
+          "end": "12:30",
+          "shift": "manhã"
+        }
+      ],
+      "enrolled": 60,
+      "capacity": 60,
+      "daySemester": "optativa",
+      "nightSemester": "optativa"
+    },
+    {
+      "id": "2026.2-DIRB33-01",
+      "period": "2026.2",
+      "code": "DIRB33",
+      "component": "60h Aula DISCIPLINA OPTATIVO VIA 'MESCs'",
+      "class": "01",
+      "professor": "Ana Paula Rocha Do Bomfim",
+      "location": "DIR - 107",
+      "scheduleCode": "2T2345",
+      "meetings": [
+        {
+          "day": "segunda",
+          "start": "13:55",
+          "end": "17:35",
+          "shift": "tarde"
+        }
+      ],
+      "enrolled": 30,
+      "capacity": 30,
+      "daySemester": "optativa",
+      "nightSemester": "optativa"
+    },
+    {
+      "id": "2026.2-DIRC32-01",
+      "period": "2026.2",
+      "code": "DIRC32",
+      "component": "DIREITOS HUMANOS",
+      "class": "01",
+      "professor": "Camila Magalhaes Carvalho",
+      "location": "DIR - 107",
+      "scheduleCode": "24M56",
+      "meetings": [
+        {
+          "day": "segunda",
+          "start": "10:40",
+          "end": "12:30",
+          "shift": "manhã"
+        },
+        {
+          "day": "quarta",
+          "start": "10:40",
+          "end": "12:30",
+          "shift": "manhã"
+        }
+      ],
+      "enrolled": 60,
+      "capacity": 60,
+      "daySemester": "optativa",
+      "nightSemester": "optativa"
+    },
+    {
+      "id": "2026.2-DIRC35-01",
+      "period": "2026.2",
+      "code": "DIRC35",
+      "component": "Direito E Pandemia",
+      "class": "01",
+      "professor": "Sara Da Nova Quadros Cortes",
+      "location": "DIR - 212",
+      "scheduleCode": "5T2345",
+      "meetings": [
+        {
+          "day": "quinta",
+          "start": "13:55",
+          "end": "17:35",
+          "shift": "tarde"
+        }
+      ],
+      "enrolled": 21,
+      "capacity": 60,
+      "daySemester": "outros",
+      "nightSemester": "outros"
+    },
+    {
+      "id": "2026.2-DIRC37-01",
+      "period": "2026.2",
+      "code": "DIRC37",
+      "component": "DIREITO ROMANO",
+      "class": "01",
+      "professor": "Gustavo Costa Macedo",
+      "location": "DIR - 108",
+      "scheduleCode": "24M34",
+      "meetings": [
+        {
+          "day": "segunda",
+          "start": "08:50",
+          "end": "10:40",
+          "shift": "manhã"
+        },
+        {
+          "day": "quarta",
+          "start": "08:50",
+          "end": "10:40",
+          "shift": "manhã"
+        }
+      ],
+      "enrolled": 24,
+      "capacity": 45,
+      "daySemester": "optativa",
+      "nightSemester": "optativa"
+    },
+    {
+      "id": "2026.2-ECOB40-04",
+      "period": "2026.2",
+      "code": "ECOB40",
+      "component": "INTRODUÇÃO À ECONOMIA I",
+      "class": "04",
+      "professor": "Juliana Lago Dos Santos",
+      "location": "PAC - 204",
+      "scheduleCode": "24M56",
+      "meetings": [
+        {
+          "day": "segunda",
+          "start": "10:40",
+          "end": "12:30",
+          "shift": "manhã"
+        },
+        {
+          "day": "quarta",
+          "start": "10:40",
+          "end": "12:30",
+          "shift": "manhã"
+        }
+      ],
+      "enrolled": 44,
+      "capacity": 51,
+      "daySemester": 1,
+      "nightSemester": 2
+    },
+    {
+      "id": "2026.2-ECOB40-07",
+      "period": "2026.2",
+      "code": "ECOB40",
+      "component": "INTRODUÇÃO À ECONOMIA I",
+      "class": "07",
+      "professor": "Juliana Lago Dos Santos",
+      "location": "A definir",
+      "scheduleCode": "24T56",
+      "meetings": [
+        {
+          "day": "segunda",
+          "start": "16:40",
+          "end": "18:30",
+          "shift": "tarde"
+        },
+        {
+          "day": "quarta",
+          "start": "16:40",
+          "end": "18:30",
+          "shift": "tarde"
+        }
+      ],
+      "enrolled": 55,
+      "capacity": 55,
+      "daySemester": 1,
+      "nightSemester": 2
+    },
+    {
+      "id": "2026.2-ECOB40-13",
+      "period": "2026.2",
+      "code": "ECOB40",
+      "component": "INTRODUÇÃO À ECONOMIA I",
+      "class": "13",
+      "professor": "Alice Daiane Rocha De Mattos",
+      "location": "PAC - 208",
+      "scheduleCode": "35T12",
+      "meetings": [
+        {
+          "day": "terça",
+          "start": "13:00",
+          "end": "14:50",
+          "shift": "tarde"
+        },
+        {
+          "day": "quinta",
+          "start": "13:00",
+          "end": "14:50",
+          "shift": "tarde"
+        }
+      ],
+      "enrolled": 51,
+      "capacity": 55,
+      "daySemester": 1,
+      "nightSemester": 2
+    },
+    {
+      "id": "2026.2-ECOB40-16",
+      "period": "2026.2",
+      "code": "ECOB40",
+      "component": "INTRODUÇÃO À ECONOMIA I",
+      "class": "16",
+      "professor": "Julyan Gleyvison Machado Gouveia Lins",
+      "location": "PAF 6 -",
+      "scheduleCode": "6N1234",
+      "meetings": [
+        {
+          "day": "sexta",
+          "start": "18:30",
+          "end": "22:10",
+          "shift": "noite"
+        }
+      ],
+      "enrolled": 45,
+      "capacity": 55,
+      "daySemester": 1,
+      "nightSemester": 2
+    },
+    {
+      "id": "2026.2-EDC456-01",
+      "period": "2026.2",
+      "code": "EDC456",
+      "component": "Acc: Ação Interdisciplinar Em Áreas De Reforma Agrária",
+      "class": "01",
+      "professor": "Nair Casagrande",
+      "location": "EDC (EDC)",
+      "scheduleCode": "2N1234",
+      "meetings": [
+        {
+          "day": "segunda",
+          "start": "18:30",
+          "end": "22:10",
+          "shift": "noite"
+        }
+      ],
+      "enrolled": 20,
+      "capacity": 20,
+      "daySemester": "outros",
+      "nightSemester": "outros"
+    },
+    {
+      "id": "2026.2-ENFD24-01",
+      "period": "2026.2",
+      "code": "ENFD24",
+      "component": "Accs: Prevenção E Enfrentamento De Violências",
+      "class": "01",
+      "professor": "Nadirlene Pereira Gomes (10H), Rosana Maria De Oliveira Silva (30H) E Jeane Freitas De Oliveira",
+      "location": "ENF (ENF)",
+      "scheduleCode": "2T2345",
+      "meetings": [
+        {
+          "day": "segunda",
+          "start": "13:55",
+          "end": "17:35",
+          "shift": "tarde"
+        }
+      ],
+      "enrolled": 26,
+      "capacity": 26,
+      "daySemester": "outros",
+      "nightSemester": "outros"
+    },
+    {
+      "id": "2026.2-FCH001-06",
+      "period": "2026.2",
+      "code": "FCH001",
+      "component": "INTRODUÇÃO À FILOSOFIA",
+      "class": "06",
+      "professor": "Carlos Fernando Carrer Da Cunha",
+      "location": "A definir",
+      "scheduleCode": "24T56",
+      "meetings": [
+        {
+          "day": "segunda",
+          "start": "16:40",
+          "end": "18:30",
+          "shift": "tarde"
+        },
+        {
+          "day": "quarta",
+          "start": "16:40",
+          "end": "18:30",
+          "shift": "tarde"
+        }
+      ],
+      "enrolled": 16,
+      "capacity": 30,
+      "daySemester": 1,
+      "nightSemester": 1
+    },
+    {
+      "id": "2026.2-FCH001-07",
+      "period": "2026.2",
+      "code": "FCH001",
+      "component": "INTRODUÇÃO À FILOSOFIA",
+      "class": "07",
+      "professor": "Rafael Fernandes Mendes Dos Santos",
+      "location": "PAC - 202",
+      "scheduleCode": "35M12",
+      "meetings": [
+        {
+          "day": "terça",
+          "start": "07:00",
+          "end": "08:50",
+          "shift": "manhã"
+        },
+        {
+          "day": "quinta",
+          "start": "07:00",
+          "end": "08:50",
+          "shift": "manhã"
+        }
+      ],
+      "enrolled": 38,
+      "capacity": 40,
+      "daySemester": 1,
+      "nightSemester": 1
+    },
+    {
+      "id": "2026.2-FCH001-10",
+      "period": "2026.2",
+      "code": "FCH001",
+      "component": "INTRODUÇÃO À FILOSOFIA",
+      "class": "10",
+      "professor": "Carlos Fernando Carrer Da Cunha",
+      "location": "PAC - 203",
+      "scheduleCode": "24M12",
+      "meetings": [
+        {
+          "day": "segunda",
+          "start": "07:00",
+          "end": "08:50",
+          "shift": "manhã"
+        },
+        {
+          "day": "quarta",
+          "start": "07:00",
+          "end": "08:50",
+          "shift": "manhã"
+        }
+      ],
+      "enrolled": 27,
+      "capacity": 35,
+      "daySemester": 1,
+      "nightSemester": 1
+    },
+    {
+      "id": "2026.2-FCH001-11",
+      "period": "2026.2",
+      "code": "FCH001",
+      "component": "INTRODUÇÃO À FILOSOFIA",
+      "class": "11",
+      "professor": "Carlos Fernando Carrer Da Cunha",
+      "location": "PAC - 209",
+      "scheduleCode": "35N34",
+      "meetings": [
+        {
+          "day": "terça",
+          "start": "20:20",
+          "end": "22:10",
+          "shift": "noite"
+        },
+        {
+          "day": "quinta",
+          "start": "20:20",
+          "end": "22:10",
+          "shift": "noite"
+        }
+      ],
+      "enrolled": 69,
+      "capacity": 70,
+      "daySemester": 1,
+      "nightSemester": 1
+    },
+    {
+      "id": "2026.2-FCH001-12",
+      "period": "2026.2",
+      "code": "FCH001",
+      "component": "INTRODUÇÃO À FILOSOFIA",
+      "class": "12",
+      "professor": "Rayane Batista De Araujo",
+      "location": "PAC - 204",
+      "scheduleCode": "35M12",
+      "meetings": [
+        {
+          "day": "terça",
+          "start": "07:00",
+          "end": "08:50",
+          "shift": "manhã"
+        },
+        {
+          "day": "quinta",
+          "start": "07:00",
+          "end": "08:50",
+          "shift": "manhã"
+        }
+      ],
+      "enrolled": 33,
+      "capacity": 35,
+      "daySemester": 1,
+      "nightSemester": 1
+    },
+    {
+      "id": "2026.2-FCH001-13",
+      "period": "2026.2",
+      "code": "FCH001",
+      "component": "INTRODUÇÃO À FILOSOFIA",
+      "class": "13",
+      "professor": "Rayane Batista De Araujo",
+      "location": "PAC - 209",
+      "scheduleCode": "24T56",
+      "meetings": [
+        {
+          "day": "segunda",
+          "start": "16:40",
+          "end": "18:30",
+          "shift": "tarde"
+        },
+        {
+          "day": "quarta",
+          "start": "16:40",
+          "end": "18:30",
+          "shift": "tarde"
+        }
+      ],
+      "enrolled": 29,
+      "capacity": 35,
+      "daySemester": 1,
+      "nightSemester": 1
+    },
+    {
+      "id": "2026.2-FCH001-14",
+      "period": "2026.2",
+      "code": "FCH001",
+      "component": "INTRODUÇÃO À FILOSOFIA",
+      "class": "14",
+      "professor": "Diego Luiz Warmling",
+      "location": "PAC - 201",
+      "scheduleCode": "24M12",
+      "meetings": [
+        {
+          "day": "segunda",
+          "start": "07:00",
+          "end": "08:50",
+          "shift": "manhã"
+        },
+        {
+          "day": "quarta",
+          "start": "07:00",
+          "end": "08:50",
+          "shift": "manhã"
+        }
+      ],
+      "enrolled": 21,
+      "capacity": 35,
+      "daySemester": 1,
+      "nightSemester": 1
+    },
+    {
+      "id": "2026.2-FCH001-16",
+      "period": "2026.2",
+      "code": "FCH001",
+      "component": "INTRODUÇÃO À FILOSOFIA",
+      "class": "16",
+      "professor": "A Definir",
+      "location": "DIR - 228",
+      "scheduleCode": "24M12",
+      "meetings": [
+        {
+          "day": "segunda",
+          "start": "07:00",
+          "end": "08:50",
+          "shift": "manhã"
+        },
+        {
+          "day": "quarta",
+          "start": "07:00",
+          "end": "08:50",
+          "shift": "manhã"
+        }
+      ],
+      "enrolled": 3,
+      "capacity": 35,
+      "daySemester": 1,
+      "nightSemester": 1
+    },
+    {
+      "id": "2026.2-FCH007-05",
+      "period": "2026.2",
+      "code": "FCH007",
+      "component": "INTRODUCAO SOCIOLOGIA II",
+      "class": "05",
+      "professor": "Felipe Andre Padilha",
+      "location": "A definir",
+      "scheduleCode": "6T6 6N1234",
+      "meetings": [
+        {
+          "day": "sexta",
+          "start": "17:35",
+          "end": "18:30",
+          "shift": "tarde"
+        },
+        {
+          "day": "sexta",
+          "start": "18:30",
+          "end": "22:10",
+          "shift": "noite"
+        }
+      ],
+      "enrolled": 55,
+      "capacity": 60,
+      "daySemester": 1,
+      "nightSemester": 1
+    },
+    {
+      "id": "2026.2-FCH007-06",
+      "period": "2026.2",
+      "code": "FCH007",
+      "component": "INTRODUCAO SOCIOLOGIA II",
+      "class": "06",
+      "professor": "A Definir",
+      "location": "A definir",
+      "scheduleCode": "24M12 6M1",
+      "meetings": [
+        {
+          "day": "segunda",
+          "start": "07:00",
+          "end": "08:50",
+          "shift": "manhã"
+        },
+        {
+          "day": "quarta",
+          "start": "07:00",
+          "end": "08:50",
+          "shift": "manhã"
+        },
+        {
+          "day": "sexta",
+          "start": "07:00",
+          "end": "07:55",
+          "shift": "manhã"
+        }
+      ],
+      "enrolled": 49,
+      "capacity": 60,
+      "daySemester": 1,
+      "nightSemester": 1
+    },
+    {
+      "id": "2026.2-FCH007-07",
+      "period": "2026.2",
+      "code": "FCH007",
+      "component": "INTRODUCAO SOCIOLOGIA II",
+      "class": "07",
+      "professor": "A Definir",
+      "location": "A definir",
+      "scheduleCode": "5T6 35N12",
+      "meetings": [
+        {
+          "day": "quinta",
+          "start": "17:35",
+          "end": "18:30",
+          "shift": "tarde"
+        },
+        {
+          "day": "terça",
+          "start": "18:30",
+          "end": "20:20",
+          "shift": "noite"
+        },
+        {
+          "day": "quinta",
+          "start": "18:30",
+          "end": "20:20",
+          "shift": "noite"
+        }
+      ],
+      "enrolled": 34,
+      "capacity": 60,
+      "daySemester": 1,
+      "nightSemester": 1
+    },
+    {
+      "id": "2026.2-FCH007-08",
+      "period": "2026.2",
+      "code": "FCH007",
+      "component": "INTRODUCAO SOCIOLOGIA II",
+      "class": "08",
+      "professor": "A Definir",
+      "location": "PASL - 05",
+      "scheduleCode": "35M12 6M2",
+      "meetings": [
+        {
+          "day": "terça",
+          "start": "07:00",
+          "end": "08:50",
+          "shift": "manhã"
+        },
+        {
+          "day": "quinta",
+          "start": "07:00",
+          "end": "08:50",
+          "shift": "manhã"
+        },
+        {
+          "day": "sexta",
+          "start": "07:55",
+          "end": "08:50",
+          "shift": "manhã"
+        }
+      ],
+      "enrolled": 31,
+      "capacity": 60,
+      "daySemester": 1,
+      "nightSemester": 1
+    },
+    {
+      "id": "2026.2-FCH124-01",
+      "period": "2026.2",
+      "code": "FCH124",
+      "component": "ANTROPOLOGIA I",
+      "class": "01",
+      "professor": "Anne Alencar Monteiro",
+      "location": "DIR - 102",
+      "scheduleCode": "24M12",
+      "meetings": [
+        {
+          "day": "segunda",
+          "start": "07:00",
+          "end": "08:50",
+          "shift": "manhã"
+        },
+        {
+          "day": "quarta",
+          "start": "07:00",
+          "end": "08:50",
+          "shift": "manhã"
+        }
+      ],
+      "enrolled": 62,
+      "capacity": 62,
+      "daySemester": 2,
+      "nightSemester": 1
+    },
+    {
+      "id": "2026.2-FCH124-02",
+      "period": "2026.2",
+      "code": "FCH124",
+      "component": "ANTROPOLOGIA I",
+      "class": "02",
+      "professor": "Yann Pellissier",
+      "location": "PAF 3 -",
+      "scheduleCode": "24M56",
+      "meetings": [
+        {
+          "day": "segunda",
+          "start": "10:40",
+          "end": "12:30",
+          "shift": "manhã"
+        },
+        {
+          "day": "quarta",
+          "start": "10:40",
+          "end": "12:30",
+          "shift": "manhã"
+        }
+      ],
+      "enrolled": 50,
+      "capacity": 50,
+      "daySemester": 2,
+      "nightSemester": 1
+    },
+    {
+      "id": "2026.2-FCH124-03",
+      "period": "2026.2",
+      "code": "FCH124",
+      "component": "ANTROPOLOGIA I",
+      "class": "03",
+      "professor": "Ana Clara Sousa Damasio Dos Santos",
+      "location": "PAF 3 -",
+      "scheduleCode": "35M12",
+      "meetings": [
+        {
+          "day": "terça",
+          "start": "07:00",
+          "end": "08:50",
+          "shift": "manhã"
+        },
+        {
+          "day": "quinta",
+          "start": "07:00",
+          "end": "08:50",
+          "shift": "manhã"
+        }
+      ],
+      "enrolled": 47,
+      "capacity": 50,
+      "daySemester": 2,
+      "nightSemester": 1
+    },
+    {
+      "id": "2026.2-FCH124-04",
+      "period": "2026.2",
+      "code": "FCH124",
+      "component": "ANTROPOLOGIA I",
+      "class": "04",
+      "professor": "Ana Clara Sousa Damasio Dos Santos",
+      "location": "PAF 3 -",
+      "scheduleCode": "35N12",
+      "meetings": [
+        {
+          "day": "terça",
+          "start": "18:30",
+          "end": "20:20",
+          "shift": "noite"
+        },
+        {
+          "day": "quinta",
+          "start": "18:30",
+          "end": "20:20",
+          "shift": "noite"
+        }
+      ],
+      "enrolled": 50,
+      "capacity": 50,
+      "daySemester": 2,
+      "nightSemester": 1
+    },
+    {
+      "id": "2026.2-FCH124-06",
+      "period": "2026.2",
+      "code": "FCH124",
+      "component": "ANTROPOLOGIA I",
+      "class": "06",
+      "professor": "Ana Clara Sousa Damasio Dos Santos",
+      "location": "PRS - 11 -",
+      "scheduleCode": "4T1234",
+      "meetings": [
+        {
+          "day": "quarta",
+          "start": "13:00",
+          "end": "16:40",
+          "shift": "tarde"
+        }
+      ],
+      "enrolled": 50,
+      "capacity": 50,
+      "daySemester": 2,
+      "nightSemester": 1
+    },
+    {
+      "id": "2026.2-FCHF17-02",
+      "period": "2026.2",
+      "code": "FCHF17",
+      "component": "Política, Estado E Sociedade",
+      "class": "02",
+      "professor": "Antonio Jorge Fonseca Sanches De Almeida",
+      "location": "PRS - 11 -",
+      "scheduleCode": "3T2345",
+      "meetings": [
+        {
+          "day": "terça",
+          "start": "13:55",
+          "end": "17:35",
+          "shift": "tarde"
+        }
+      ],
+      "enrolled": 21,
+      "capacity": 60,
+      "daySemester": "outros",
+      "nightSemester": "outros"
+    },
+    {
+      "id": "2026.2-FCHF20-01",
+      "period": "2026.2",
+      "code": "FCHF20",
+      "component": "Gênero E Poder",
+      "class": "01",
+      "professor": "Cloves Luiz Pereira Oliveira (30H) E Camila Tribess",
+      "location": "PASL - 04",
+      "scheduleCode": "24M34",
+      "meetings": [
+        {
+          "day": "segunda",
+          "start": "08:50",
+          "end": "10:40",
+          "shift": "manhã"
+        },
+        {
+          "day": "quarta",
+          "start": "08:50",
+          "end": "10:40",
+          "shift": "manhã"
+        }
+      ],
+      "enrolled": 5,
+      "capacity": 80,
+      "daySemester": "outros",
+      "nightSemester": "outros"
+    },
+    {
+      "id": "2026.2-FCHF51-01",
+      "period": "2026.2",
+      "code": "FCHF51",
+      "component": "Autoritarismo E Democracia",
+      "class": "01",
+      "professor": "Paulo Fabio Dantas Neto",
+      "location": "PRS - 02 -",
+      "scheduleCode": "35M56",
+      "meetings": [
+        {
+          "day": "terça",
+          "start": "10:40",
+          "end": "12:30",
+          "shift": "manhã"
+        },
+        {
+          "day": "quinta",
+          "start": "10:40",
+          "end": "12:30",
+          "shift": "manhã"
+        }
+      ],
+      "enrolled": 11,
+      "capacity": 70,
+      "daySemester": "outros",
+      "nightSemester": "outros"
+    },
+    {
+      "id": "2026.2-FCHM59-01",
+      "period": "2026.2",
+      "code": "FCHM59",
+      "component": "História E Filosofia Nas Ciências Sociais",
+      "class": "01",
+      "professor": "Wendel Antunes Cintra",
+      "location": "PASL - 13",
+      "scheduleCode": "24M56",
+      "meetings": [
+        {
+          "day": "segunda",
+          "start": "10:40",
+          "end": "12:30",
+          "shift": "manhã"
+        },
+        {
+          "day": "quarta",
+          "start": "10:40",
+          "end": "12:30",
+          "shift": "manhã"
+        }
+      ],
+      "enrolled": 32,
+      "capacity": 80,
+      "daySemester": "outros",
+      "nightSemester": "outros"
+    },
+    {
+      "id": "2026.2-FCHM61-01",
+      "period": "2026.2",
+      "code": "FCHM61",
+      "component": "Teoria Política Moderna",
+      "class": "01",
+      "professor": "Renato Francisquini Teixeira",
+      "location": "PASL - 05",
+      "scheduleCode": "24M34",
+      "meetings": [
+        {
+          "day": "segunda",
+          "start": "08:50",
+          "end": "10:40",
+          "shift": "manhã"
+        },
+        {
+          "day": "quarta",
+          "start": "08:50",
+          "end": "10:40",
+          "shift": "manhã"
+        }
+      ],
+      "enrolled": 30,
+      "capacity": 80,
+      "daySemester": "outros",
+      "nightSemester": "outros"
+    },
+    {
+      "id": "2026.2-FCHM66-01",
+      "period": "2026.2",
+      "code": "FCHM66",
+      "component": "Elitismo, Pluralismo E Democracia",
+      "class": "01",
+      "professor": "Cloves Luiz Pereira Oliveira",
+      "location": "PASL - 06",
+      "scheduleCode": "35M12",
+      "meetings": [
+        {
+          "day": "terça",
+          "start": "07:00",
+          "end": "08:50",
+          "shift": "manhã"
+        },
+        {
+          "day": "quinta",
+          "start": "07:00",
+          "end": "08:50",
+          "shift": "manhã"
+        }
+      ],
+      "enrolled": 13,
+      "capacity": 80,
+      "daySemester": "outros",
+      "nightSemester": "outros"
+    },
+    {
+      "id": "2026.2-FCHM70-01",
+      "period": "2026.2",
+      "code": "FCHM70",
+      "component": "Pensamento Político Brasileiro",
+      "class": "01",
+      "professor": "Paulo Fabio Dantas Neto",
+      "location": "PRS - 02 -",
+      "scheduleCode": "24M56",
+      "meetings": [
+        {
+          "day": "segunda",
+          "start": "10:40",
+          "end": "12:30",
+          "shift": "manhã"
+        },
+        {
+          "day": "quarta",
+          "start": "10:40",
+          "end": "12:30",
+          "shift": "manhã"
+        }
+      ],
+      "enrolled": 15,
+      "capacity": 80,
+      "daySemester": "outros",
+      "nightSemester": "outros"
+    },
+    {
+      "id": "2026.2-FCHM73-02",
+      "period": "2026.2",
+      "code": "FCHM73",
+      "component": "Instituições Políticas Brasileiras Contemporâneas",
+      "class": "02",
+      "professor": "Olivia Carolino Pires",
+      "location": "PAF 3 -",
+      "scheduleCode": "24N12",
+      "meetings": [
+        {
+          "day": "segunda",
+          "start": "18:30",
+          "end": "20:20",
+          "shift": "noite"
+        },
+        {
+          "day": "quarta",
+          "start": "18:30",
+          "end": "20:20",
+          "shift": "noite"
+        }
+      ],
+      "enrolled": 12,
+      "capacity": 60,
+      "daySemester": "outros",
+      "nightSemester": "outros"
+    },
+    {
+      "id": "2026.2-FCHM76-01",
+      "period": "2026.2",
+      "code": "FCHM76",
+      "component": "Lab. De Pesquisa Em C. Sociais Ii:Abordagem Quantitativa",
+      "class": "01",
+      "professor": "Enzo Lenine Nunes Batista Oliveira Lima",
+      "location": "PASL - 13",
+      "scheduleCode": "6M123456",
+      "meetings": [
+        {
+          "day": "sexta",
+          "start": "07:00",
+          "end": "12:30",
+          "shift": "manhã"
+        }
+      ],
+      "enrolled": 30,
+      "capacity": 70,
+      "daySemester": "outros",
+      "nightSemester": "outros"
+    },
+    {
+      "id": "2026.2-FCHM94-01",
+      "period": "2026.2",
+      "code": "FCHM94",
+      "component": "Antropologia De Gênero E Sexualidade",
+      "class": "01",
+      "professor": "Moises Vieira De Andrade Lino E Silva",
+      "location": "PASL - 03",
+      "scheduleCode": "35T23",
+      "meetings": [
+        {
+          "day": "terça",
+          "start": "13:55",
+          "end": "15:45",
+          "shift": "tarde"
+        },
+        {
+          "day": "quinta",
+          "start": "13:55",
+          "end": "15:45",
+          "shift": "tarde"
+        }
+      ],
+      "enrolled": 7,
+      "capacity": 60,
+      "daySemester": "outros",
+      "nightSemester": "outros"
+    },
+    {
+      "id": "2026.2-FCHN74-01",
+      "period": "2026.2",
+      "code": "FCHN74",
+      "component": "Tópicos Especiais Em Política Ambiental E Ecologia Política",
+      "class": "01",
+      "professor": "Maria Salete Souza De Amorim",
+      "location": "PASL - 14",
+      "scheduleCode": "3T2345",
+      "meetings": [
+        {
+          "day": "terça",
+          "start": "13:55",
+          "end": "17:35",
+          "shift": "tarde"
+        }
+      ],
+      "enrolled": 32,
+      "capacity": 70,
+      "daySemester": "outros",
+      "nightSemester": "outros"
+    },
+    {
+      "id": "2026.2-FCHN90-01",
+      "period": "2026.2",
+      "code": "FCHN90",
+      "component": "Teoria Politica Contemporânea",
+      "class": "01",
+      "professor": "Sue Angelica Serra Iamamoto",
+      "location": "PASL - 09",
+      "scheduleCode": "35M56",
+      "meetings": [
+        {
+          "day": "terça",
+          "start": "10:40",
+          "end": "12:30",
+          "shift": "manhã"
+        },
+        {
+          "day": "quinta",
+          "start": "10:40",
+          "end": "12:30",
+          "shift": "manhã"
+        }
+      ],
+      "enrolled": 12,
+      "capacity": 70,
+      "daySemester": "outros",
+      "nightSemester": "outros"
+    },
+    {
+      "id": "2026.2-GADM0037-01",
+      "period": "2026.2",
+      "code": "GADM0037",
+      "component": "Accs – Políticas Públicas Para Comunidades Tradicionais",
+      "class": "01",
+      "professor": "Renata Alvarez Rossi",
+      "location": "ADM -",
+      "scheduleCode": "6N1234",
+      "meetings": [
+        {
+          "day": "sexta",
+          "start": "18:30",
+          "end": "22:10",
+          "shift": "noite"
+        }
+      ],
+      "enrolled": 40,
+      "capacity": 40,
+      "daySemester": "outros",
+      "nightSemester": "outros"
+    },
+    {
+      "id": "2026.2-GARQ0010-02",
+      "period": "2026.2",
+      "code": "GARQ0010",
+      "component": "Accs - Território E Negritude: Direito À Cidade E Reparação",
+      "class": "02",
+      "professor": "Felipe Santos Estrela De Carvalho",
+      "location": "PAF 6 -",
+      "scheduleCode": "5M3456",
+      "meetings": [
+        {
+          "day": "quinta",
+          "start": "08:50",
+          "end": "12:30",
+          "shift": "manhã"
+        }
+      ],
+      "enrolled": 16,
+      "capacity": 16,
+      "daySemester": "outros",
+      "nightSemester": "outros"
+    },
+    {
+      "id": "2026.2-GDIR0005-01",
+      "period": "2026.2",
+      "code": "GDIR0005",
+      "component": "DIREITO E RELAÇÕES RACIAIS",
+      "class": "01",
+      "professor": "Samuel Santana Vida",
+      "location": "DIR - 226",
+      "scheduleCode": "35M34",
+      "meetings": [
+        {
+          "day": "terça",
+          "start": "08:50",
+          "end": "10:40",
+          "shift": "manhã"
+        },
+        {
+          "day": "quinta",
+          "start": "08:50",
+          "end": "10:40",
+          "shift": "manhã"
+        }
+      ],
+      "enrolled": 19,
+      "capacity": 45,
+      "daySemester": 9,
+      "nightSemester": 11
+    },
+    {
+      "id": "2026.2-GDIR0005-03",
+      "period": "2026.2",
+      "code": "GDIR0005",
+      "component": "DIREITO E RELAÇÕES RACIAIS",
+      "class": "03",
+      "professor": "Tatiana Emilia Dias Gomes",
+      "location": "DIR - 113",
+      "scheduleCode": "24N34",
+      "meetings": [
+        {
+          "day": "segunda",
+          "start": "20:20",
+          "end": "22:10",
+          "shift": "noite"
+        },
+        {
+          "day": "quarta",
+          "start": "20:20",
+          "end": "22:10",
+          "shift": "noite"
+        }
+      ],
+      "enrolled": 42,
+      "capacity": 45,
+      "daySemester": 9,
+      "nightSemester": 11
+    },
+    {
+      "id": "2026.2-GDIR0006-01",
+      "period": "2026.2",
+      "code": "GDIR0006",
+      "component": "PRÁTICA JURÍDICA CÍVEL I",
+      "class": "01",
+      "professor": "Edilton Meireles De Oliveira Santos",
+      "location": "DIR - 212",
+      "scheduleCode": "3T1234 7N1",
+      "meetings": [
+        {
+          "day": "terça",
+          "start": "13:00",
+          "end": "16:40",
+          "shift": "tarde"
+        },
+        {
+          "day": "sábado",
+          "start": "18:30",
+          "end": "19:25",
+          "shift": "noite"
+        }
+      ],
+      "enrolled": 17,
+      "capacity": 40,
+      "daySemester": 7,
+      "nightSemester": 8
+    },
+    {
+      "id": "2026.2-GDIR0006-02",
+      "period": "2026.2",
+      "code": "GDIR0006",
+      "component": "PRÁTICA JURÍDICA CÍVEL I",
+      "class": "02",
+      "professor": "Antonio Adonias Aguiar Bastos",
+      "location": "DIR - 212",
+      "scheduleCode": "4T1234 7N3",
+      "meetings": [
+        {
+          "day": "quarta",
+          "start": "13:00",
+          "end": "16:40",
+          "shift": "tarde"
+        },
+        {
+          "day": "sábado",
+          "start": "20:20",
+          "end": "21:15",
+          "shift": "noite"
+        }
+      ],
+      "enrolled": 29,
+      "capacity": 40,
+      "daySemester": 7,
+      "nightSemester": 8
+    },
+    {
+      "id": "2026.2-GDIR0006-03",
+      "period": "2026.2",
+      "code": "GDIR0006",
+      "component": "PRÁTICA JURÍDICA CÍVEL I",
+      "class": "03",
+      "professor": "Antonio Adonias Aguiar Bastos",
+      "location": "DIR - 212",
+      "scheduleCode": "4T56 4N12 7N1",
+      "meetings": [
+        {
+          "day": "quarta",
+          "start": "16:40",
+          "end": "18:30",
+          "shift": "tarde"
+        },
+        {
+          "day": "quarta",
+          "start": "18:30",
+          "end": "20:20",
+          "shift": "noite"
+        },
+        {
+          "day": "sábado",
+          "start": "18:30",
+          "end": "19:25",
+          "shift": "noite"
+        }
+      ],
+      "enrolled": 15,
+      "capacity": 40,
+      "daySemester": 7,
+      "nightSemester": 8
+    },
+    {
+      "id": "2026.2-GDIR0006-04",
+      "period": "2026.2",
+      "code": "GDIR0006",
+      "component": "PRÁTICA JURÍDICA CÍVEL I",
+      "class": "04",
+      "professor": "Gabriela Exposito Tenorio Miranda De Morais",
+      "location": "DIR - 225",
+      "scheduleCode": "3T56 3N12 7N1",
+      "meetings": [
+        {
+          "day": "terça",
+          "start": "16:40",
+          "end": "18:30",
+          "shift": "tarde"
+        },
+        {
+          "day": "terça",
+          "start": "18:30",
+          "end": "20:20",
+          "shift": "noite"
+        },
+        {
+          "day": "sábado",
+          "start": "18:30",
+          "end": "19:25",
+          "shift": "noite"
+        }
+      ],
+      "enrolled": 31,
+      "capacity": 40,
+      "daySemester": 7,
+      "nightSemester": 8
+    },
+    {
+      "id": "2026.2-GDIR0006-05",
+      "period": "2026.2",
+      "code": "GDIR0006",
+      "component": "PRÁTICA JURÍDICA CÍVEL I",
+      "class": "05",
+      "professor": "Bruno Cesar De Carvalho Coelho",
+      "location": "DIR - 218",
+      "scheduleCode": "24N34 7N2",
+      "meetings": [
+        {
+          "day": "segunda",
+          "start": "20:20",
+          "end": "22:10",
+          "shift": "noite"
+        },
+        {
+          "day": "quarta",
+          "start": "20:20",
+          "end": "22:10",
+          "shift": "noite"
+        },
+        {
+          "day": "sábado",
+          "start": "19:25",
+          "end": "20:20",
+          "shift": "noite"
+        }
+      ],
+      "enrolled": 43,
+      "capacity": 45,
+      "daySemester": 7,
+      "nightSemester": 8
+    },
+    {
+      "id": "2026.2-GDIR0006-06",
+      "period": "2026.2",
+      "code": "GDIR0006",
+      "component": "PRÁTICA JURÍDICA CÍVEL I",
+      "class": "06",
+      "professor": "A Definir",
+      "location": "DIR - 225",
+      "scheduleCode": "24M56 7N2",
+      "meetings": [
+        {
+          "day": "segunda",
+          "start": "10:40",
+          "end": "12:30",
+          "shift": "manhã"
+        },
+        {
+          "day": "quarta",
+          "start": "10:40",
+          "end": "12:30",
+          "shift": "manhã"
+        },
+        {
+          "day": "sábado",
+          "start": "19:25",
+          "end": "20:20",
+          "shift": "noite"
+        }
+      ],
+      "enrolled": 15,
+      "capacity": 40,
+      "daySemester": 7,
+      "nightSemester": 8
+    },
+    {
+      "id": "2026.2-GDIR0007-01",
+      "period": "2026.2",
+      "code": "GDIR0007",
+      "component": "PRÁTICA JURÍDICA CÍVEL II",
+      "class": "01",
+      "professor": "Francisco Bertino Bezerra De Carvalho",
+      "location": "DIR - 115",
+      "scheduleCode": "35M34 7N2",
+      "meetings": [
+        {
+          "day": "terça",
+          "start": "08:50",
+          "end": "10:40",
+          "shift": "manhã"
+        },
+        {
+          "day": "quinta",
+          "start": "08:50",
+          "end": "10:40",
+          "shift": "manhã"
+        },
+        {
+          "day": "sábado",
+          "start": "19:25",
+          "end": "20:20",
+          "shift": "noite"
+        }
+      ],
+      "enrolled": 19,
+      "capacity": 40,
+      "daySemester": 8,
+      "nightSemester": 9
+    },
+    {
+      "id": "2026.2-GDIR0007-02",
+      "period": "2026.2",
+      "code": "GDIR0007",
+      "component": "PRÁTICA JURÍDICA CÍVEL II",
+      "class": "02",
+      "professor": "Francisco Bertino Bezerra De Carvalho",
+      "location": "DIR - 115",
+      "scheduleCode": "35M56 7N4",
+      "meetings": [
+        {
+          "day": "terça",
+          "start": "10:40",
+          "end": "12:30",
+          "shift": "manhã"
+        },
+        {
+          "day": "quinta",
+          "start": "10:40",
+          "end": "12:30",
+          "shift": "manhã"
+        },
+        {
+          "day": "sábado",
+          "start": "21:15",
+          "end": "22:10",
+          "shift": "noite"
+        }
+      ],
+      "enrolled": 21,
+      "capacity": 40,
+      "daySemester": 8,
+      "nightSemester": 9
+    },
+    {
+      "id": "2026.2-GDIR0007-03",
+      "period": "2026.2",
+      "code": "GDIR0007",
+      "component": "PRÁTICA JURÍDICA CÍVEL II",
+      "class": "03",
+      "professor": "Paula Sarno Braga Lago",
+      "location": "DIR - 112",
+      "scheduleCode": "35M12 7N3",
+      "meetings": [
+        {
+          "day": "terça",
+          "start": "07:00",
+          "end": "08:50",
+          "shift": "manhã"
+        },
+        {
+          "day": "quinta",
+          "start": "07:00",
+          "end": "08:50",
+          "shift": "manhã"
+        },
+        {
+          "day": "sábado",
+          "start": "20:20",
+          "end": "21:15",
+          "shift": "noite"
+        }
+      ],
+      "enrolled": 28,
+      "capacity": 40,
+      "daySemester": 8,
+      "nightSemester": 9
+    },
+    {
+      "id": "2026.2-GDIR0007-04",
+      "period": "2026.2",
+      "code": "GDIR0007",
+      "component": "PRÁTICA JURÍDICA CÍVEL II",
+      "class": "04",
+      "professor": "Gabriela Exposito Tenorio Miranda De Morais",
+      "location": "DIR - 112",
+      "scheduleCode": "24N12 7N4",
+      "meetings": [
+        {
+          "day": "segunda",
+          "start": "18:30",
+          "end": "20:20",
+          "shift": "noite"
+        },
+        {
+          "day": "quarta",
+          "start": "18:30",
+          "end": "20:20",
+          "shift": "noite"
+        },
+        {
+          "day": "sábado",
+          "start": "21:15",
+          "end": "22:10",
+          "shift": "noite"
+        }
+      ],
+      "enrolled": 50,
+      "capacity": 50,
+      "daySemester": 8,
+      "nightSemester": 9
+    },
+    {
+      "id": "2026.2-GDIR0007-05",
+      "period": "2026.2",
+      "code": "GDIR0007",
+      "component": "PRÁTICA JURÍDICA CÍVEL II",
+      "class": "05",
+      "professor": "Bruno Cesar De Carvalho Coelho",
+      "location": "DIR - 218",
+      "scheduleCode": "24N12 7N3",
+      "meetings": [
+        {
+          "day": "segunda",
+          "start": "18:30",
+          "end": "20:20",
+          "shift": "noite"
+        },
+        {
+          "day": "quarta",
+          "start": "18:30",
+          "end": "20:20",
+          "shift": "noite"
+        },
+        {
+          "day": "sábado",
+          "start": "20:20",
+          "end": "21:15",
+          "shift": "noite"
+        }
+      ],
+      "enrolled": 28,
+      "capacity": 40,
+      "daySemester": 8,
+      "nightSemester": 9
+    },
+    {
+      "id": "2026.2-GDIR0008-01",
+      "period": "2026.2",
+      "code": "GDIR0008",
+      "component": "PRÁTICA JURÍDICA TRABALHISTA",
+      "class": "01",
+      "professor": "Rosangela Rodrigues Dias De Lacerda",
+      "location": "DIR - 114",
+      "scheduleCode": "24M12 7N4",
+      "meetings": [
+        {
+          "day": "segunda",
+          "start": "07:00",
+          "end": "08:50",
+          "shift": "manhã"
+        },
+        {
+          "day": "quarta",
+          "start": "07:00",
+          "end": "08:50",
+          "shift": "manhã"
+        },
+        {
+          "day": "sábado",
+          "start": "21:15",
+          "end": "22:10",
+          "shift": "noite"
+        }
+      ],
+      "enrolled": 16,
+      "capacity": 40,
+      "daySemester": 9,
+      "nightSemester": 10
+    },
+    {
+      "id": "2026.2-GDIR0008-02",
+      "period": "2026.2",
+      "code": "GDIR0008",
+      "component": "PRÁTICA JURÍDICA TRABALHISTA",
+      "class": "02",
+      "professor": "Rosangela Rodrigues Dias De Lacerda",
+      "location": "DIR - 114",
+      "scheduleCode": "24M34 7N3",
+      "meetings": [
+        {
+          "day": "segunda",
+          "start": "08:50",
+          "end": "10:40",
+          "shift": "manhã"
+        },
+        {
+          "day": "quarta",
+          "start": "08:50",
+          "end": "10:40",
+          "shift": "manhã"
+        },
+        {
+          "day": "sábado",
+          "start": "20:20",
+          "end": "21:15",
+          "shift": "noite"
+        }
+      ],
+      "enrolled": 25,
+      "capacity": 40,
+      "daySemester": 9,
+      "nightSemester": 10
+    },
+    {
+      "id": "2026.2-GDIR0008-03",
+      "period": "2026.2",
+      "code": "GDIR0008",
+      "component": "PRÁTICA JURÍDICA TRABALHISTA",
+      "class": "03",
+      "professor": "Rosangela Rodrigues",
+      "location": "DIR - 114",
+      "scheduleCode": "35M12 7N1",
+      "meetings": [
+        {
+          "day": "terça",
+          "start": "07:00",
+          "end": "08:50",
+          "shift": "manhã"
+        },
+        {
+          "day": "quinta",
+          "start": "07:00",
+          "end": "08:50",
+          "shift": "manhã"
+        },
+        {
+          "day": "sábado",
+          "start": "18:30",
+          "end": "19:25",
+          "shift": "noite"
+        }
+      ],
+      "enrolled": 23,
+      "capacity": 40,
+      "daySemester": 9,
+      "nightSemester": 10
+    },
+    {
+      "id": "2026.2-GDIR0008-04",
+      "period": "2026.2",
+      "code": "GDIR0008",
+      "component": "PRÁTICA JURÍDICA TRABALHISTA",
+      "class": "04",
+      "professor": "Claudio Dias Lima Filho",
+      "location": "DIR - 224",
+      "scheduleCode": "6N1234 7N1",
+      "meetings": [
+        {
+          "day": "sexta",
+          "start": "18:30",
+          "end": "22:10",
+          "shift": "noite"
+        },
+        {
+          "day": "sábado",
+          "start": "18:30",
+          "end": "19:25",
+          "shift": "noite"
+        }
+      ],
+      "enrolled": 50,
+      "capacity": 50,
+      "daySemester": 9,
+      "nightSemester": 10
+    },
+    {
+      "id": "2026.2-GDIR0008-05",
+      "period": "2026.2",
+      "code": "GDIR0008",
+      "component": "PRÁTICA JURÍDICA TRABALHISTA",
+      "class": "05",
+      "professor": "Claudio Dias Lima Filho",
+      "location": "DIR - 224",
+      "scheduleCode": "7M3456 7N2",
+      "meetings": [
+        {
+          "day": "sábado",
+          "start": "08:50",
+          "end": "12:30",
+          "shift": "manhã"
+        },
+        {
+          "day": "sábado",
+          "start": "19:25",
+          "end": "20:20",
+          "shift": "noite"
+        }
+      ],
+      "enrolled": 50,
+      "capacity": 50,
+      "daySemester": 9,
+      "nightSemester": 10
+    },
+    {
+      "id": "2026.2-GDIR0009-01",
+      "period": "2026.2",
+      "code": "GDIR0009",
+      "component": "PRÁTICA JURÍDICA PENAL",
+      "class": "01",
+      "professor": "Cesar De Faria Junior",
+      "location": "DIR - 225",
+      "scheduleCode": "35M34 7N2",
+      "meetings": [
+        {
+          "day": "terça",
+          "start": "08:50",
+          "end": "10:40",
+          "shift": "manhã"
+        },
+        {
+          "day": "quinta",
+          "start": "08:50",
+          "end": "10:40",
+          "shift": "manhã"
+        },
+        {
+          "day": "sábado",
+          "start": "19:25",
+          "end": "20:20",
+          "shift": "noite"
+        }
+      ],
+      "enrolled": 8,
+      "capacity": 40,
+      "daySemester": 10,
+      "nightSemester": 10
+    },
+    {
+      "id": "2026.2-GDIR0009-02",
+      "period": "2026.2",
+      "code": "GDIR0009",
+      "component": "PRÁTICA JURÍDICA PENAL",
+      "class": "02",
+      "professor": "Elmir Duclerc Ramalho Junior",
+      "location": "DIR - 113",
+      "scheduleCode": "6T3456 7N3",
+      "meetings": [
+        {
+          "day": "sexta",
+          "start": "14:50",
+          "end": "18:30",
+          "shift": "tarde"
+        },
+        {
+          "day": "sábado",
+          "start": "20:20",
+          "end": "21:15",
+          "shift": "noite"
+        }
+      ],
+      "enrolled": 34,
+      "capacity": 40,
+      "daySemester": 10,
+      "nightSemester": 10
+    },
+    {
+      "id": "2026.2-GDIR0009-03",
+      "period": "2026.2",
+      "code": "GDIR0009",
+      "component": "PRÁTICA JURÍDICA PENAL",
+      "class": "03",
+      "professor": "Misael Neto Bispo Da Franca",
+      "location": "DIR - 212",
+      "scheduleCode": "24N34 7N2",
+      "meetings": [
+        {
+          "day": "segunda",
+          "start": "20:20",
+          "end": "22:10",
+          "shift": "noite"
+        },
+        {
+          "day": "quarta",
+          "start": "20:20",
+          "end": "22:10",
+          "shift": "noite"
+        },
+        {
+          "day": "sábado",
+          "start": "19:25",
+          "end": "20:20",
+          "shift": "noite"
+        }
+      ],
+      "enrolled": 31,
+      "capacity": 40,
+      "daySemester": 10,
+      "nightSemester": 10
+    },
+    {
+      "id": "2026.2-GDIR0009-04",
+      "period": "2026.2",
+      "code": "GDIR0009",
+      "component": "PRÁTICA JURÍDICA PENAL",
+      "class": "04",
+      "professor": "Fabiano Cavalcante Pimentel",
+      "location": "DIR - 115",
+      "scheduleCode": "24N12 7N1",
+      "meetings": [
+        {
+          "day": "segunda",
+          "start": "18:30",
+          "end": "20:20",
+          "shift": "noite"
+        },
+        {
+          "day": "quarta",
+          "start": "18:30",
+          "end": "20:20",
+          "shift": "noite"
+        },
+        {
+          "day": "sábado",
+          "start": "18:30",
+          "end": "19:25",
+          "shift": "noite"
+        }
+      ],
+      "enrolled": 40,
+      "capacity": 40,
+      "daySemester": 10,
+      "nightSemester": 10
+    },
+    {
+      "id": "2026.2-GDIR0009-05",
+      "period": "2026.2",
+      "code": "GDIR0009",
+      "component": "PRÁTICA JURÍDICA PENAL",
+      "class": "05",
+      "professor": "Thaize De Carvalho Correia",
+      "location": "DIR - 108",
+      "scheduleCode": "35M56 7N4",
+      "meetings": [
+        {
+          "day": "terça",
+          "start": "10:40",
+          "end": "12:30",
+          "shift": "manhã"
+        },
+        {
+          "day": "quinta",
+          "start": "10:40",
+          "end": "12:30",
+          "shift": "manhã"
+        },
+        {
+          "day": "sábado",
+          "start": "21:15",
+          "end": "22:10",
+          "shift": "noite"
+        }
+      ],
+      "enrolled": 45,
+      "capacity": 45,
+      "daySemester": 10,
+      "nightSemester": 10
+    },
+    {
+      "id": "2026.2-GFCH0032-01",
+      "period": "2026.2",
+      "code": "GFCH0032",
+      "component": "Accs - Formação Em Direitos Humanos: Promotoras Legais Populares",
+      "class": "01",
+      "professor": "Camila Tribess (60H) E Camila Magalhaes Carvalho",
+      "location": "A definir",
+      "scheduleCode": "7M3456",
+      "meetings": [
+        {
+          "day": "sábado",
+          "start": "08:50",
+          "end": "12:30",
+          "shift": "manhã"
+        }
+      ],
+      "enrolled": 40,
+      "capacity": 40,
+      "daySemester": "outros",
+      "nightSemester": "outros"
+    },
+    {
+      "id": "2026.2-HACB79-01",
+      "period": "2026.2",
+      "code": "HACB79",
+      "component": "Accs: Promoção Da Saúde E Qualidade De Vida",
+      "class": "01",
+      "professor": "Maria Constantina Caputo",
+      "location": "PAC - 209",
+      "scheduleCode": "2T1234",
+      "meetings": [
+        {
+          "day": "segunda",
+          "start": "13:00",
+          "end": "16:40",
+          "shift": "tarde"
+        }
+      ],
+      "enrolled": 30,
+      "capacity": 30,
+      "daySemester": "outros",
+      "nightSemester": "outros"
+    },
+    {
+      "id": "2026.2-IPSA01-01",
+      "period": "2026.2",
+      "code": "IPSA01",
+      "component": "PSICOLOGIA I",
+      "class": "01",
+      "professor": "Lucas Vezedek Passarinho",
+      "location": "DIR - 106",
+      "scheduleCode": "35M12",
+      "meetings": [
+        {
+          "day": "terça",
+          "start": "07:00",
+          "end": "08:50",
+          "shift": "manhã"
+        },
+        {
+          "day": "quinta",
+          "start": "07:00",
+          "end": "08:50",
+          "shift": "manhã"
+        }
+      ],
+      "enrolled": 50,
+      "capacity": 50,
+      "daySemester": 2,
+      "nightSemester": "outros"
+    },
+    {
+      "id": "2026.2-IPSA01-02",
+      "period": "2026.2",
+      "code": "IPSA01",
+      "component": "PSICOLOGIA I",
+      "class": "02",
+      "professor": "Milena Nogueira Azevedo",
+      "location": "DIR - 102",
+      "scheduleCode": "35M56",
+      "meetings": [
+        {
+          "day": "terça",
+          "start": "10:40",
+          "end": "12:30",
+          "shift": "manhã"
+        },
+        {
+          "day": "quinta",
+          "start": "10:40",
+          "end": "12:30",
+          "shift": "manhã"
+        }
+      ],
+      "enrolled": 49,
+      "capacity": 50,
+      "daySemester": 2,
+      "nightSemester": "outros"
+    },
+    {
+      "id": "2026.2-IPSA14-01",
+      "period": "2026.2",
+      "code": "IPSA14",
+      "component": "PSICOLOGIA SOCIAL I",
+      "class": "01",
+      "professor": "Ana Paula Vedovato Marques De Oliveira",
+      "location": "DIR - 101",
+      "scheduleCode": "35N12",
+      "meetings": [
+        {
+          "day": "terça",
+          "start": "18:30",
+          "end": "20:20",
+          "shift": "noite"
+        },
+        {
+          "day": "quinta",
+          "start": "18:30",
+          "end": "20:20",
+          "shift": "noite"
+        }
+      ],
+      "enrolled": 48,
+      "capacity": 50,
+      "daySemester": "outros",
+      "nightSemester": 11
+    },
+    {
+      "id": "2026.2-IPSA14-02",
+      "period": "2026.2",
+      "code": "IPSA14",
+      "component": "PSICOLOGIA SOCIAL I",
+      "class": "02",
+      "professor": "Ana Paula Vedovato Marques De Oliveira",
+      "location": "DIR - 101",
+      "scheduleCode": "35N34",
+      "meetings": [
+        {
+          "day": "terça",
+          "start": "20:20",
+          "end": "22:10",
+          "shift": "noite"
+        },
+        {
+          "day": "quinta",
+          "start": "20:20",
+          "end": "22:10",
+          "shift": "noite"
+        }
+      ],
+      "enrolled": 46,
+      "capacity": 50,
+      "daySemester": "outros",
+      "nightSemester": 11
+    },
+    {
+      "id": "2026.2-MATF54-01",
+      "period": "2026.2",
+      "code": "MATF54",
+      "component": "Accs:Onda Educativa, Digital, Ecologista E Pan-Afro-Indígena",
+      "class": "01",
+      "professor": "Paul Denis Etienne Regnier",
+      "location": "PAF 1 -",
+      "scheduleCode": "24T56",
+      "meetings": [
+        {
+          "day": "segunda",
+          "start": "16:40",
+          "end": "18:30",
+          "shift": "tarde"
+        },
+        {
+          "day": "quarta",
+          "start": "16:40",
+          "end": "18:30",
+          "shift": "tarde"
+        }
+      ],
+      "enrolled": 60,
+      "capacity": 60,
+      "daySemester": "outros",
+      "nightSemester": "outros"
+    },
+    {
+      "id": "2026.2-MED142-01",
+      "period": "2026.2",
+      "code": "MED142",
+      "component": "MEDICINA LEGAL",
+      "class": "01",
+      "professor": "Carla Patricia Oliveira Da Silva",
+      "location": "MED",
+      "scheduleCode": "4T2345",
+      "meetings": [
+        {
+          "day": "quarta",
+          "start": "13:55",
+          "end": "17:35",
+          "shift": "tarde"
+        }
+      ],
+      "enrolled": 40,
+      "capacity": 40,
+      "daySemester": "optativa",
+      "nightSemester": "optativa"
+    },
+    {
+      "id": "2026.2-MED142-02",
+      "period": "2026.2",
+      "code": "MED142",
+      "component": "MEDICINA LEGAL",
+      "class": "02",
+      "professor": "Renee Amorim Dos Santos Felix",
+      "location": "MED",
+      "scheduleCode": "2T2345",
+      "meetings": [
+        {
+          "day": "segunda",
+          "start": "13:55",
+          "end": "17:35",
+          "shift": "tarde"
+        }
+      ],
+      "enrolled": 40,
+      "capacity": 40,
+      "daySemester": "optativa",
+      "nightSemester": "optativa"
+    },
+    {
+      "id": "2026.2-MEDC88-02",
+      "period": "2026.2",
+      "code": "MEDC88",
+      "component": "Medicina E Mercado De Trabalho",
+      "class": "02",
+      "professor": "Bruno Gil De Carvalho Lima",
+      "location": "DIR - 107",
+      "scheduleCode": "4T23",
+      "meetings": [
+        {
+          "day": "quarta",
+          "start": "13:55",
+          "end": "15:45",
+          "shift": "tarde"
+        }
+      ],
+      "enrolled": 20,
+      "capacity": 50,
+      "daySemester": "outros",
+      "nightSemester": "outros"
+    },
+    {
+      "id": "2026.2-MEDC91-01",
+      "period": "2026.2",
+      "code": "MEDC91",
+      "component": "DIREITO MÉDICO, BIOÉTICA E BIODIREITO",
+      "class": "01",
+      "professor": "Camila Vasconcelos De Oliveira",
+      "location": "MED",
+      "scheduleCode": "5M56 6M34",
+      "meetings": [
+        {
+          "day": "quinta",
+          "start": "10:40",
+          "end": "12:30",
+          "shift": "manhã"
+        },
+        {
+          "day": "sexta",
+          "start": "08:50",
+          "end": "10:40",
+          "shift": "manhã"
+        }
+      ],
+      "enrolled": 50,
+      "capacity": 50,
+      "daySemester": "optativa",
+      "nightSemester": "optativa"
+    }
+  ]
+}

@@ -1,0 +1,105 @@
+export type ReactionCounts = {
+  heart: number
+  point: number
+  skull: number
+  dance: number
+}
+
+export type Profile = {
+  handle: string
+  name: string
+  shortName: string
+  bio: string
+  avatar: string
+  avatarPosition: string
+  avatarSize?: string
+}
+
+export type HashtagColor = 'blue' | 'green' | 'gold' | 'violet' | 'red' | 'gray'
+
+export type Hashtag = {
+  id: string
+  name: string
+  slug: string
+  color: HashtagColor
+  active: boolean
+}
+
+export type Notice = {
+  id: string
+  title: string
+  text: string
+  media?: { src: string; alt: string }
+  category: string
+  date: string
+  state: 'publicado'
+  author: string
+  hashtagIds: string[]
+  base: ReactionCounts
+}
+
+export type SystemLink = {
+  id: string
+  name: string
+  description: string
+  category: string
+  url: string
+}
+
+export type DocumentItem = {
+  id: string
+  title: string
+  description: string
+  updatedAt: string
+  file: string
+}
+
+export const profiles: Profile[] = [
+  { handle: 'carb', name: 'Centro Acadêmico Ruy Barbosa', shortName: 'CA', bio: 'Diretorias, áreas e avisos gerais do CARB.', avatar: '/carb-og-v2.png', avatarPosition: '30% 76%' },
+  { handle: 'fdufba', name: 'Faculdade de Direito da UFBA', shortName: 'FD', bio: 'Comunicados públicos da Faculdade de Direito.', avatar: '/carb-og-v2.png', avatarPosition: '51% 76%' },
+  { handle: 'ufba', name: 'Universidade Federal da Bahia', shortName: 'UF', bio: 'Comunicações gerais e serviços públicos da UFBA.', avatar: '/carb-og-v2.png', avatarPosition: '73% 76%' },
+  { handle: 'extensoes', name: 'Extensões', shortName: 'EX', bio: 'Projetos e atividades de extensão.', avatar: '/carb-og-v2.png', avatarPosition: '95% 76%' },
+  { handle: 'pesquisa', name: 'Pesquisa', shortName: 'PQ', bio: 'Grupos e atividades de pesquisa.', avatar: '/carb-og-v2.png', avatarPosition: '73% 76%' },
+  { handle: 'vagas', name: 'Vagas', shortName: 'VG', bio: 'Estágio, emprego, concurso e monitoria.', avatar: '/carb-og-v2.png', avatarPosition: '51% 76%' },
+]
+
+export const hashtags: Hashtag[] = [
+  { id: 'hashtag-comunidade', name: 'Comunidade', slug: 'comunidade', color: 'blue', active: true },
+  { id: 'hashtag-matricula', name: 'Matrícula', slug: 'matricula', color: 'green', active: true },
+  { id: 'hashtag-comunicacao', name: 'Comunicação', slug: 'comunicacao', color: 'gold', active: true },
+  { id: 'hashtag-infraestrutura', name: 'Infraestrutura', slug: 'infraestrutura', color: 'gray', active: true },
+  { id: 'hashtag-extensao', name: 'Extensão', slug: 'extensao', color: 'green', active: true },
+  { id: 'hashtag-pesquisa', name: 'Pesquisa', slug: 'pesquisa', color: 'violet', active: true },
+  { id: 'hashtag-calendario', name: 'Calendário', slug: 'calendario', color: 'violet', active: true },
+  { id: 'hashtag-estagio', name: 'Estágio', slug: 'estagio', color: 'blue', active: true },
+  { id: 'hashtag-clt', name: 'CLT', slug: 'clt', color: 'green', active: true },
+  { id: 'hashtag-concurso', name: 'Concurso', slug: 'concurso', color: 'gold', active: true },
+  { id: 'hashtag-monitoria', name: 'Monitoria', slug: 'monitoria', color: 'red', active: true },
+]
+
+// ponytail: conteúdo demonstrativo migra para a fonte editorial quando houver backend homologado.
+export const notices: Notice[] = [
+  { id: 'a1', title: 'Semana de acolhimento', text: 'Confira a programação sintética de recepção e os espaços de convivência do campus.', media: { src: '/carb-og-v2.png', alt: 'Identidade visual do portal CARB com quatro retratos da comunidade acadêmica.' }, category: 'Comunidade', date: '25 ago. 2026', state: 'publicado', author: 'carb', hashtagIds: ['hashtag-comunidade'], base: { heart: 18, point: 11, skull: 2, dance: 7 } },
+  { id: 'a2', title: 'Prazo para ajuste de matrícula', text: 'O período demonstrativo de ajuste termina na sexta-feira, às 18h.', category: 'Acadêmico', date: '24 ago. 2026', state: 'publicado', author: 'carb', hashtagIds: ['hashtag-matricula', 'hashtag-calendario'], base: { heart: 31, point: 23, skull: 4, dance: 3 } },
+  { id: 'a3', title: 'Manutenção na biblioteca', text: 'A sala de estudos do primeiro andar ficará fechada durante a manhã para manutenção.', category: 'Infraestrutura', date: '22 ago. 2026', state: 'publicado', author: 'carb', hashtagIds: ['hashtag-infraestrutura', 'hashtag-comunicacao'], base: { heart: 7, point: 12, skull: 6, dance: 1 } },
+  { id: 'a4', title: 'Oficina de pesquisa jurídica', text: 'Atividade fictícia sobre busca de jurisprudência, com inscrição gratuita.', category: 'Extensão', date: '20 ago. 2026', state: 'publicado', author: 'extensoes', hashtagIds: ['hashtag-extensao', 'hashtag-pesquisa'], base: { heart: 24, point: 15, skull: 1, dance: 10 } },
+  { id: 'a5', title: 'Atualização do calendário', text: 'Uma versão revisada do calendário acadêmico de demonstração está disponível.', category: 'Acadêmico', date: '18 ago. 2026', state: 'publicado', author: 'carb', hashtagIds: ['hashtag-calendario', 'hashtag-matricula'], base: { heart: 15, point: 19, skull: 3, dance: 2 } },
+  { id: 'a6', title: 'Encontro de grupos de estudo', text: 'Grupos fictícios apresentarão suas linhas de pesquisa no auditório principal.', category: 'Pesquisa', date: '16 ago. 2026', state: 'publicado', author: 'pesquisa', hashtagIds: ['hashtag-pesquisa'], base: { heart: 12, point: 9, skull: 0, dance: 6 } },
+  { id: 'a7', title: 'Plantão de dúvidas do semestre', text: 'Atendimento coletivo simulado para dúvidas sobre componentes e horários.', category: 'Acadêmico', date: '14 ago. 2026', state: 'publicado', author: 'carb', hashtagIds: ['hashtag-matricula'], base: { heart: 20, point: 16, skull: 2, dance: 4 } },
+  { id: 'a8', title: 'Feira de projetos estudantis', text: 'Exposição fictícia de iniciativas desenvolvidas pela comunidade acadêmica.', category: 'Comunidade', date: '12 ago. 2026', state: 'publicado', author: 'extensoes', hashtagIds: ['hashtag-comunidade', 'hashtag-extensao'], base: { heart: 27, point: 18, skull: 1, dance: 13 } },
+]
+
+export const systems: SystemLink[] = [
+  { id: 's1', name: 'Portal UFBA', description: 'Página pública institucional e acesso aos serviços disponíveis.', category: 'Institucional', url: 'https://www.ufba.br/' },
+  { id: 's2', name: 'Biblioteca Universitária', description: 'Informações públicas sobre bibliotecas, acervo e serviços.', category: 'Biblioteca', url: 'https://sibi.ufba.br/' },
+  { id: 's3', name: 'Calendário acadêmico', description: 'Página pública para consulta de calendários e comunicados acadêmicos.', category: 'Acadêmico', url: 'https://supac.ufba.br/' },
+  { id: 's4', name: 'Moodle UFBA', description: 'Ambiente virtual institucional; o Portal CARB não solicita credenciais.', category: 'Ensino', url: 'https://www.moodle.ufba.br/' },
+  { id: 's5', name: 'Pergamum UFBA', description: 'Consulta pública ao catálogo das bibliotecas da UFBA.', category: 'Biblioteca', url: 'https://pergamum.bib.ufba.br/' },
+  { id: 's6', name: 'SIGAA UFBA', description: 'Acesso ao sistema acadêmico institucional da UFBA.', category: 'Acadêmico', url: 'https://sigaa.ufba.br/sigaa/public/home.jsf' },
+]
+
+export const documents: DocumentItem[] = [
+  { id: 'd1', title: 'Matriz curricular - Direito diurno', description: 'Estrutura curricular presencial MT, em vigor desde 2025.2, com 10 semestres recomendados.', updatedAt: 'Emitida em 27 ago. 2026', file: '/documentos/matriz-direito-diurno.pdf' },
+  { id: 'd2', title: 'Matriz curricular - Direito noturno', description: 'Estrutura curricular presencial N, em vigor desde 2025.2, com 12 semestres recomendados.', updatedAt: 'Emitida em 27 ago. 2026', file: '/documentos/matriz-direito-noturno.pdf' },
+  { id: 'd3', title: 'Turmas abertas - 2026.2', description: 'Relatório de turmas abertas usado para alimentar o planejador deste protótipo.', updatedAt: 'Consulta de 27 ago. 2026', file: '/documentos/turmas-abertas-2026-2.pdf' },
+]
