@@ -6,7 +6,11 @@ const anonKey = import.meta.env.VITE_SUPABASE_ANON_KEY?.trim()
 
 export const supabaseConfigured = Boolean(url && anonKey)
 export const supabase = supabaseConfigured ? createClient(url, anonKey) : null
-const publicSupabase = supabaseConfigured ? createClient(url, anonKey, { auth: { persistSession: false, autoRefreshToken: false, detectSessionInUrl: false } }) : null
+// O cliente público é anônimo por decisão de segurança: não pode herdar a sessão administrativa.
+// Como os dois clientes coexistem na mesma aba, uma storageKey própria evita que ambos disputem
+// a mesma chave de storage — causa do aviso de múltiplas instâncias de GoTrueClient — sem alterar
+// o comportamento de autenticação de nenhum dos dois.
+const publicSupabase = supabaseConfigured ? createClient(url, anonKey, { auth: { persistSession: false, autoRefreshToken: false, detectSessionInUrl: false, storageKey: 'carb:public-read' } }) : null
 export const anonymousReactionId = () => {
   const key = 'carb:anonymous-reaction-id'
   const stored = localStorage.getItem(key)

@@ -1,6 +1,7 @@
 import { renderToStaticMarkup } from 'react-dom/server'
 import { describe, expect, it } from 'vitest'
-import { AdminApp, ContentProfilesPage, PostsPage, SecurityPage, UsersPage } from './AdminApp'
+import { AdminApp, ContentProfilesPage, HashtagsPage, InteractionChart, PostsPage, ReactionChart, SecurityPage, UsersPage } from './AdminApp'
+import { reactionRows } from './metrics'
 
 const refresh = async () => undefined
 const context = {
@@ -64,5 +65,75 @@ describe('entrada administrativa', () => {
     expect(users).toContain('aria-label="Conta de Pessoa sintética ativa" checked=""')
     expect(users).toContain('aria-label="Conta de Pessoa inativa ativa"/>')
     expect(users).toContain('aria-label="Conta de Pessoa sem função ativa" checked=""')
+  })
+})
+
+const chartPosts = [
+  { post_id: 'post-1', title: 'Aviso sintético com reações', total: 10, heart: 5, point: 3, skull: 1, dance: 1 },
+  { post_id: 'post-2', title: 'Aviso sintético sem reações', total: 0, heart: 0, point: 0, skull: 0, dance: 0 },
+]
+
+describe('gráficos do dashboard', () => {
+  it('converte as contagens do JSON para números antes de escalar', () => {
+    const metrics = { reactions_by_post: [{ post_id: 'post-1', title: 'Aviso', total: '10', heart: '5', point: '3', skull: '1', dance: '1' }] }
+    expect(reactionRows(metrics as never)).toEqual([{ post_id: 'post-1', title: 'Aviso', total: 10, heart: 5, point: 3, skull: 1, dance: 1 }])
+    expect(reactionRows(null)).toEqual([])
+  })
+
+  it('escala as barras de interação pelo maior total e mantém o número visível', () => {
+    const html = renderToStaticMarkup(<InteractionChart posts={chartPosts} windowLabel="últimos 7 dias" />)
+    expect(html).toContain('Aviso sintético com reações')
+    expect(html).toContain('style="width:100%"')
+    expect(html).toContain('style="width:0%"')
+    expect(html).toContain('<strong class="bar-chart-value">10</strong>')
+    expect(html).toContain('<strong class="bar-chart-value">0</strong>')
+  })
+
+  it('renderiza os quatro emojis com número, ícone decorativo e nome acessível', () => {
+    const html = renderToStaticMarkup(<ReactionChart posts={chartPosts} windowLabel="últimos 7 dias" />)
+    for (const icon of ['smiling-face-with-open-mouth_1f6030', 'crying-face_1f6220', 'no-entry-sign_1f6ab0', 'kiss-mark_1f48b']) expect(html).toContain(`/icons/${icon}.png`)
+    expect(html).toContain('aria-label="Rosto sorridente: 5 reações"')
+    expect(html).toContain('aria-label="Sinal de proibido: 1 reação"')
+    expect(html).toContain('aria-label="Marca de beijo: 0 reações"')
+    expect(html).toContain('alt=""')
+    expect(html).toContain('style="height:100%"')
+    expect(html).toContain('style="height:0%"')
+  })
+
+  it('explica o conjunto vazio nos dois gráficos', () => {
+    expect(renderToStaticMarkup(<InteractionChart posts={[]} windowLabel="últimos 7 dias" />)).toContain('Nenhuma publicação visível na janela selecionada.')
+    expect(renderToStaticMarkup(<ReactionChart posts={[]} windowLabel="todo o histórico persistido" />)).toContain('Nenhuma publicação visível na janela selecionada.')
+  })
+})
+
+describe('paleta de hashtags', () => {
+  const palette = [
+    { id: 'tag-blue', name: 'Azulada', slug: 'azulada', color: 'blue', active: true },
+    { id: 'tag-green', name: 'Verdejante', slug: 'verdejante', color: 'green', active: true },
+    { id: 'tag-gold', name: 'Dourada', slug: 'dourada', color: 'gold', active: true },
+    { id: 'tag-violet', name: 'Violácea', slug: 'violacea', color: 'violet', active: true },
+    { id: 'tag-red', name: 'Rubra', slug: 'rubra', color: 'red', active: false },
+    { id: 'tag-gray', name: 'Acinzentada', slug: 'acinzentada', color: 'gray', active: true },
+  ]
+  const html = renderToStaticMarkup(<HashtagsPage context={{ ...context, hashtags: palette } as never} refresh={refresh} />)
+
+  it('mostra bolinha com nome em português para os seis valores persistidos', () => {
+    for (const [color, label] of [['blue', 'Azul'], ['green', 'Verde'], ['gold', 'Dourado'], ['violet', 'Violeta'], ['red', 'Vermelho'], ['gray', 'Cinza']]) {
+      expect(html).toContain(`background:var(--hashtag-${color}, var(--hashtag-gray))`)
+      expect(html).toContain(`aria-label="${label}" title="${label}"`)
+    }
+  })
+
+  it('não exibe token em inglês como texto visível', () => {
+    const visible = html.replace(/<[^>]*>/g, ' ')
+    for (const token of ['blue', 'green', 'gold', 'violet', 'red', 'gray']) expect(visible).not.toContain(token)
+  })
+
+  it('preserva o valor enviado ao banco e substitui o prompt de cor por radios acessíveis', () => {
+    for (const color of ['blue', 'green', 'gold', 'violet', 'red', 'gray']) expect(html).toContain(`value="${color}"/>`)
+    expect(html.match(/name="hashtag-cor-tag-blue"/g)).toHaveLength(6)
+    expect(html).toContain('aria-label="Azul" name="hashtag-cor-tag-blue" checked="" value="blue"')
+    expect(html).toContain('<legend>Cor de #Azulada</legend>')
+    expect(html).toContain('Renomear')
   })
 })

@@ -47,3 +47,20 @@ Fluxos críticos: navegação, busca, login/MFA, planejador de matrícula, envio
 
 Nenhuma história está pronta se introduzir barreira de teclado, foco, leitura, contraste, compreensão ou autenticação. Exceções exigem risco, responsável, prazo e alternativa acessível documentados.
 
+## 6. Evidência já implementada
+
+Verificável no repositório. Não substitui avaliação manual, leitor de tela real nem teste com pessoas usuárias — ver `TBD-ACC-01` em [decisions.md](decisions.md).
+
+| Requisito | Evidência | Estado |
+|---|---|---|
+| `OBR-ACC-01` | HTML semântico com `section`, `ul`, `fieldset`/`legend` e hierarquia de títulos no portal e no painel | parcialmente verificado |
+| `OBR-ACC-02` | controles nativos (`button`, `input`, `select`, `a`); nenhum `div` clicável nos fluxos principais | parcialmente verificado |
+| `OBR-ACC-04` | `.skip-link` em `src/styles.css`, primeiro controle da página | verificado |
+| `OBR-ACC-05` | `label` associado em todos os formulários administrativos; `aria-label` em toggles e na paleta de cores | verificado |
+| `OBR-ACC-06` | contraste ≥ 4.5:1 da paleta e do tema em `src/design-tokens.test.ts`; nos gráficos, número e rótulo existem em texto e não dependem de cor, imagem ou tamanho da barra | verificado |
+| `OBR-ACC-07` | ícones de reação são decorativos (`alt=""`) e o nome acessível vem do `aria-label` do grupo, no formato `Rosto sorridente: 12 reações`; anexos editoriais exigem texto alternativo no formulário | verificado |
+| `OBR-ACC-08` | layout responsivo com `minmax`/`flex-wrap`, listas de gráfico com rolagem nativa e quebra de títulos longos por `overflow-wrap: anywhere` | parcialmente verificado |
+| `OBR-ACC-10` | estados de carregamento, erro e conjunto vazio anunciados por `role="status"` e `role="alert"` | verificado |
+| movimento | `@media (prefers-reduced-motion: reduce)` desliga transições e animações, inclusive as barras dos gráficos | verificado |
+
+Pendente de avaliação manual: ordem de foco completa (`OBR-ACC-03`), fluxo de MFA com tecnologia assistiva (`OBR-ACC-11`) e documento/canal público de acessibilidade (`OBR-ACC-12`).

@@ -1,4 +1,4 @@
-# Hashtags globais — v1.2
+# Hashtags globais
 
 ## Semântica e grão
 
@@ -46,3 +46,11 @@ npm run build
 ## Limites e evolução
 
 As validações do navegador não equivalem a constraints de banco. Uma futura relação N:N persistente deverá aplicar unicidade e integridade no backend; isso não faz parte da v1.2. Não use dados pessoais reais.
+
+## Cor no painel administrativo
+
+O valor persistido em `hashtags.color` continua sendo um dos seis identificadores técnicos `blue`, `green`, `gold`, `violet`, `red` e `gray` — esses tokens são chave de dados, não texto de interface, e não mudam.
+
+Na interface administrativa nenhum deles aparece como texto. Cada hashtag exibe uma bolinha preenchida com a variável CSS `--hashtag-*` correspondente e o nome acessível em português (`Azul`, `Verde`, `Dourado`, `Violeta`, `Vermelho`, `Cinza`), exposto por `aria-label` e por `title`. A troca de cor usa uma paleta de radios com bolinha e nome acessível, no lugar do antigo `window.prompt`.
+
+O mapeamento vive em `HASHTAG_COLOR_OPTIONS` (`src/hashtags.ts`) e é reutilizado pela criação, pela edição e pela listagem. Um valor fora do catálogo cai no rótulo `Cor não catalogada` e na cor cinza, sem quebrar a tela. Contraste da paleta verificado em `src/design-tokens.test.ts`; mapeamento e ausência de token inglês visível verificados em `src/admin/AdminApp.test.tsx`.

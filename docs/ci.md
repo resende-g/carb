@@ -6,12 +6,14 @@ O workflow `.github/workflows/ci.yml` produz evidência automatizada para cada p
 
 O CI não implanta aplicação, migrations ou Edge Functions e não acessa o projeto Supabase remoto. Nenhum secret é necessário.
 
+Branches de trabalho fora dessa lista — por exemplo `clean-code` — não disparam o workflow e, portanto, não geram evidência automatizada. Enquanto o trabalho estiver nelas, a validação equivalente precisa ser executada localmente pelos comandos abaixo, ou a lista de gatilhos precisa ser ampliada por decisão de governança.
+
 ## Checks obrigatórios
 
 | Check | Evidência |
 |---|---|
-| `Frontend quality` | instalação reproduzível por `npm ci`, ESLint, TypeScript, 38 testes Vitest e build Vite |
-| `Supabase database` | banco PostgreSQL 17 local criado do zero, migrations e seed, 41 asserções pgTAP e advisors sem erro |
+| `Frontend quality` | instalação reproduzível por `npm ci`, ESLint, TypeScript, 49 testes Vitest e build Vite |
+| `Supabase database` | banco PostgreSQL 17 local criado do zero, migrations e seed, 55 asserções pgTAP e advisors sem erro |
 
 As actions externas são fixadas por SHA imutável. O workflow fixa Node.js 22 e Supabase CLI 2.116.0, evitando alterações silenciosas de ferramenta entre execuções.
 

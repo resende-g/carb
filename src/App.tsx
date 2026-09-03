@@ -11,10 +11,10 @@ import { Separator } from './components/ui/separator'
 import { documents, hashtags as initialHashtags, notices, profiles as initialProfiles, systems, type Hashtag, type Notice, type Profile, type ReactionCounts } from './data'
 import { filterNotices, recentPostingProfiles, trendingHashtags } from './feed'
 import { meetingLabel, selectionIssue, TIME_ROWS, type ClassOffering, type SelectionIssue, type Semester, type Shift } from './planner'
+import { REACTION_OPTIONS, type Reaction } from './reactions'
 import { anonymousReactionId, loadPublicData, persistReaction, PUBLIC_DATA_REFRESH_MS, supabaseConfigured } from './supabase'
 
 type Tab = 'avisos' | 'sistemas' | 'planejador' | 'acervo'
-type Reaction = keyof ReactionCounts
 type Curriculum = {
   name: string
   semesters: number
@@ -35,12 +35,6 @@ const academicData = academicDataJson as AcademicData
 const REACTIONS_KEY = 'carb:reactions'
 const COMPLETED_KEY = 'carb:completed-components'
 const THEME_KEY = 'carb:theme'
-const REACTION_OPTIONS: { key: Reaction; icon: string; label: string }[] = [
-  { key: 'heart', icon: '/icons/smiling-face-with-open-mouth_1f6030.png', label: 'Rosto sorridente' },
-  { key: 'point', icon: '/icons/crying-face_1f6220.png', label: 'Rosto chorando' },
-  { key: 'skull', icon: '/icons/no-entry-sign_1f6ab0.png', label: 'Sinal de proibido' },
-  { key: 'dance', icon: '/icons/kiss-mark_1f48b.png', label: 'Marca de beijo' },
-]
 const TAB_LABELS: Record<Tab, string> = { avisos: 'Avisos', sistemas: 'Sistemas', planejador: 'Planejador', acervo: 'Acervo documental' }
 const NAVIGATION: { tab: Exclude<Tab, 'avisos'>; label: string; icon: AdminIconName }[] = [
   { tab: 'planejador', label: 'Montador de grade', icon: 'calendar' },

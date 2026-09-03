@@ -1,5 +1,32 @@
 # Changelog
 
+## 1.0.0 — 2026-09-02
+
+Primeiro lançamento público. As entradas 1.3.3 e anteriores permanecem como histórico do protótipo e continuam válidas para rastreabilidade.
+
+### Adicionado
+
+- Gráfico de interações por publicação e gráfico de distribuição de reações por emoji no dashboard administrativo, em HTML e CSS nativos, sem biblioteca de gráficos.
+- Migration `20260903003840_dashboard_metrics_reactions_by_emoji.sql`, que substitui `public.dashboard_metrics(integer)` de forma compatível e passa a expor `heart`, `point`, `skull` e `dance` por publicação.
+- Testes pgTAP de `dashboard_metrics`: autorização, grão de uma linha por `post_id`, soma por emoji, publicação sem reação, janelas de 7 e 30 dias e total, e restrição por perfil editorial.
+- Bolinhas de cor com nome acessível em português no catálogo de hashtags, com paleta explícita de radios no lugar do `window.prompt` de cor.
+- Documentação de contrato das métricas, inventário técnico, runbooks, critérios de homologação e registro de decisões externas pendentes.
+
+### Alterado
+
+- Versão pública passou a ser 1.0.0 em `package.json`, `package-lock.json`, `README.md` e documentação operacional.
+- `docs/deployment-v1.3.md` passou a se chamar `docs/deployment.md`; migrations, branches históricas e versões de terceiros mantêm os identificadores originais.
+- Os metadados das quatro reações passaram a viver em `src/reactions.ts`, reutilizados pelo portal público e pelo painel.
+
+### Corrigido
+
+- O cliente público do Supabase usa `storageKey` própria e deixa de disputar a chave de storage com o cliente administrativo, eliminando o aviso de múltiplas instâncias de `GoTrueClient` sem alterar o comportamento de autenticação.
+
+### Limitações
+
+- Plataforma de execução, IdP, observabilidade, cofre de segredos, backup/restauração testada e aceite institucional continuam sendo decisões externas registradas em `docs/decisions.md`.
+- Runbook escrito não equivale a restauração testada; controle implementado não equivale a homologação aprovada.
+
 ## 1.3.3 — 2026-09-02
 
 ### Corrigido

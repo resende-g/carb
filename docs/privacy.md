@@ -1,8 +1,8 @@
 # Privacidade e proteção de dados
 
-## Estado implementado na v1.3
+## Estado implementado na v1.0.0
 
-A v1.3 mantém dados de demonstração públicos ou sintéticos. Contas administrativas devem ser individuais, mas dados pessoais reais só podem ser usados após definição institucional de controlador, base legal, retenção e operadores. Reações públicas usam um UUID aleatório armazenado no navegador; não coletam IP nem fingerprint pela aplicação e sua limitação antiabuso está documentada. Carteirinha, autenticação estudantil e documentos pessoais permanecem fora do escopo.
+A v1.0.0 mantém dados de demonstração públicos ou sintéticos. Contas administrativas devem ser individuais, mas dados pessoais reais só podem ser usados após definição institucional de controlador, base legal, retenção e operadores. Reações públicas usam um UUID aleatório armazenado no navegador; não coletam IP nem fingerprint pela aplicação e sua limitação antiabuso está documentada. Carteirinha, autenticação estudantil e documentos pessoais permanecem fora do escopo.
 
 ## 1. Premissa
 

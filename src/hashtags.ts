@@ -1,4 +1,4 @@
-import type { Hashtag } from './data'
+import type { Hashtag, HashtagColor } from './data'
 
 const comparable = (value: string) => value.trim().toLocaleLowerCase('pt-BR')
 
@@ -29,3 +29,14 @@ export function hashtagCatalogErrors(hashtags: Hashtag[]) {
     ...duplicates('slug'),
   ]
 }
+
+export const HASHTAG_COLOR_OPTIONS: { value: HashtagColor; label: string }[] = [
+  { value: 'blue', label: 'Azul' },
+  { value: 'green', label: 'Verde' },
+  { value: 'gold', label: 'Dourado' },
+  { value: 'violet', label: 'Violeta' },
+  { value: 'red', label: 'Vermelho' },
+  { value: 'gray', label: 'Cinza' },
+]
+
+export const hashtagColorLabel = (value: string) => HASHTAG_COLOR_OPTIONS.find((option) => option.value === value)?.label || 'Cor não catalogada'

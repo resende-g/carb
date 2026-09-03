@@ -1,4 +1,4 @@
-# Deploy do protótipo v1.3
+# Deploy da v1.0.0
 
 **URL pública:** https://carb.portal-carb-prototipo.workers.dev
 
@@ -13,7 +13,7 @@ VITE_SUPABASE_URL=... VITE_SUPABASE_ANON_KEY=... npm run deploy
 
 O build recebe somente a URL pública e a chave publicável do Supabase. Nunca envie `service_role` ao frontend ou ao Cloudflare.
 
-As três migrations, o seed sintético e as Edge Functions já foram aplicados ao projeto remoto de desenvolvimento. Antes de liberar o painel administrativo, ainda é necessário configurar SMTP e redirects do Auth e executar o bootstrap do primeiro `SUPERADMIN` em ambiente seguro.
+As migrations de `supabase/migrations/`, o seed sintético e as Edge Functions são aplicados ao projeto Supabase de destino na ordem cronológica dos arquivos; até esta versão, o projeto remoto usado é o de desenvolvimento. Antes de liberar o painel administrativo, ainda é necessário configurar SMTP e redirects do Auth e executar o bootstrap do primeiro `SUPERADMIN` em ambiente seguro.
 
 ## Rollback
 

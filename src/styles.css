@@ -611,3 +611,51 @@ footer strong { color: #fff; }
     @apply font-sans;
   }
 }
+
+/* Dashboard — gráficos nativos de interações e reações por publicação */
+.bar-chart, .reaction-chart { display: grid; gap: .75rem; max-height: 26rem; margin: 1rem 0 0; padding: 0 .25rem 0 0; overflow-y: auto; list-style: none; }
+.bar-chart li { display: grid; grid-template-columns: minmax(8rem, 1fr) minmax(6rem, 2fr) auto; gap: .75rem; align-items: center; }
+.bar-chart-label { overflow-wrap: anywhere; font-size: .85rem; line-height: 1.35; }
+.bar-chart-track { height: 1rem; border-radius: 999px; background: #1e1e1e; }
+.bar-chart-fill { display: block; height: 100%; border-radius: 999px; background: var(--hashtag-blue); transition: width .2s ease; }
+.bar-chart-value { font-size: 1.05rem; font-variant-numeric: tabular-nums; }
+.reaction-chart li { display: grid; gap: .5rem; padding: .65rem 0; border-top: 1px solid #292929; }
+.reaction-chart li:first-child { border-top: 0; padding-top: 0; }
+.reaction-columns { display: flex; flex-wrap: wrap; gap: 1rem; }
+.reaction-column { display: grid; justify-items: center; gap: .3rem; width: 3.25rem; }
+.reaction-column strong { font-size: .95rem; font-variant-numeric: tabular-nums; }
+.reaction-track { display: flex; align-items: flex-end; width: 1.5rem; height: 4.5rem; border-radius: .35rem; background: #1e1e1e; }
+.reaction-fill { display: block; width: 100%; border-radius: .35rem; background: var(--hashtag-violet); transition: height .2s ease; }
+.reaction-column img { width: 22px; height: 22px; }
+
+/* Hashtags — bolinhas de cor com nome acessível em português */
+.hashtag-color-dot { display: inline-block; width: .85rem; height: .85rem; border: 1px solid rgba(255, 255, 255, .35); border-radius: 50%; vertical-align: middle; }
+.hashtag-row-name { display: flex; align-items: center; gap: .4rem; }
+.hashtag-palette { display: flex; flex-wrap: wrap; gap: .3rem .6rem; margin: 0; padding: .45rem .6rem; border: 1px solid #454545; border-radius: .55rem; }
+.hashtag-palette legend { padding: 0 .25rem; font-size: .75rem; font-weight: 800; }
+.hashtag-palette label { display: flex; align-items: center; gap: .3rem; font-size: .8rem; }
+.hashtag-palette input { width: 18px; min-height: 18px; }
+.hashtag-create-form { grid-template-columns: minmax(180px, 1fr) auto auto; }
+.hashtag-palette-compact { gap: .15rem .35rem; padding: .3rem .4rem; }
+.hashtag-palette-compact label { position: relative; }
+.hashtag-palette-compact input { position: absolute; inset: 0; width: 100%; height: 100%; min-height: 0; margin: 0; opacity: 0; }
+.hashtag-palette-compact .hashtag-color-dot { width: 1.15rem; height: 1.15rem; }
+.hashtag-palette-compact input:checked + .hashtag-color-dot { outline: 2px solid #fff; outline-offset: 2px; }
+.hashtag-palette-compact input:focus-visible + .hashtag-color-dot { outline: 3px solid #fff; outline-offset: 3px; }
+.hashtag-palette-compact legend { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+
+@media (max-width: 760px) {
+  .hashtag-create-form { grid-template-columns: 1fr; }
+  .bar-chart li { grid-template-columns: 1fr auto; }
+  .bar-chart-label { grid-column: 1 / -1; }
+  .reaction-columns { gap: .6rem; }
+  .reaction-column { width: 2.75rem; }
+}
+
+:root[data-theme="light"] .bar-chart-track,
+:root[data-theme="light"] .reaction-track { background: #e4e4e8; }
+:root[data-theme="light"] .reaction-chart li { border-top-color: #d8d8dc; }
+:root[data-theme="light"] .hashtag-palette { border-color: #c8c8cc; }
+:root[data-theme="light"] .hashtag-color-dot { border-color: rgba(0, 0, 0, .35); }
+:root[data-theme="light"] .hashtag-palette-compact input:checked + .hashtag-color-dot,
+:root[data-theme="light"] .hashtag-palette-compact input:focus-visible + .hashtag-color-dot { outline-color: #111; }

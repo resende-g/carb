@@ -1,6 +1,6 @@
 # Segurança do Portal CARB
 
-## Estado implementado na v1.3
+## Estado implementado na v1.0.0
 
 - autorização derivada do banco, com `EDITOR`, `ADMIN` e `SUPERADMIN`, AAL2 e RLS deny-by-default;
 - TOTP administrado pelo Supabase Auth, sem segredo MFA no banco da aplicação;
@@ -13,7 +13,7 @@
 
 O AAL2 é exigido em toda nova sessão. Não há confiança de MFA por 24 horas nem mecanismo paralelo de dispositivo confiável.
 
-Ainda dependem do ambiente implantado: CSP/HSTS, SMTP, CAPTCHA, limites operacionais, backup/restauração, monitoramento e pentest. Portanto, a v1.3 não deve ser tratada como produção homologada.
+Ainda dependem do ambiente implantado: CSP/HSTS, SMTP, CAPTCHA, limites operacionais, backup/restauração, monitoramento e pentest. Portanto, a v1.0.0 não deve ser tratada como produção homologada.
 
 ## 1. Objetivo
 

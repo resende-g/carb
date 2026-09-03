@@ -1,6 +1,8 @@
 import { FormEvent, useEffect, useMemo, useState } from 'react'
 import type { Session } from '@supabase/supabase-js'
-import { hashtagSlug, normalizeHashtagName } from '../hashtags'
+import { hashtagColorLabel, HASHTAG_COLOR_OPTIONS, hashtagSlug, normalizeHashtagName } from '../hashtags'
+import { barPercent, largestValue, reactionCountLabel, REACTION_OPTIONS } from '../reactions'
+import { reactionRows, type Metrics, type ReactionsByPost } from './metrics'
 import { signedUrl, supabase, supabaseConfigured } from '../supabase'
 import { invokeEdge } from './edgeFunctions'
 import { adminRoutes, avatarIssue, canDecideOwnable, confirmCustodyTransfer, operationalAccountState, passwordIssue, userActivationAction } from './rules'
@@ -21,12 +23,10 @@ type Hashtag = { id: string; name: string; slug: string; color: string; active: 
 type Post = { id: string; content_profile_id: string; title: string; body: string; category: string; status: Status; created_by: string; rejection_reason: string | null; media_path: string | null; media_alt: string | null; media_mime_type: string | null; media_size_bytes: number | null; created_at: string }
 type Revision = { id: string; post_id: string; title: string; body: string; category: string; change_summary: string; status: string; created_by: string; decision_reason: string | null; created_at: string }
 type Document = { id: string; content_profile_id: string; title: string; description: string; status: string; storage_path: string; original_filename: string; created_by: string; decision_reason: string | null; created_at: string }
-type Metrics = { window_days: number | null; posts: number; pending_posts: number; approved_posts: number; rejected_posts: number; documents: number; removal_requests: number; reactions: number; reactions_by_post: { post_id: string; title: string; total: number }[] }
 type Context = { profiles: Profile[]; assignments: Assignment[]; contentProfiles: ContentProfile[]; permissions: Permission[]; hashtags: Hashtag[]; posts: Post[]; postHashtags: { post_id: string; hashtag_id: string }[]; revisions: Revision[]; documents: Document[] }
 
 const roles: Role[] = ['EDITOR', 'ADMIN', 'SUPERADMIN']
 const roleOffices: Record<Role, Office[]> = { EDITOR: ['COMMUNICATION_DIRECTOR'], ADMIN: ['CARB_PRESIDENT'], SUPERADMIN: ['TECHNICAL_CUSTODIAN', 'STI_ADMIN'] }
-const colors = ['blue', 'green', 'gold', 'violet', 'red', 'gray']
 const labels: Record<string, string> = {
   COMMUNICATION_DIRECTOR: 'Diretoria de Comunicação', CARB_PRESIDENT: 'Presidência do CARB', TECHNICAL_CUSTODIAN: 'Custódia técnica', STI_ADMIN: 'Administração STI',
   DRAFT: 'Rascunho', PENDING_APPROVAL: 'Em aprovação', APPROVED: 'Aprovado', PUBLISHED: 'Publicado', REJECTED: 'Rejeitado', REMOVAL_REQUESTED: 'Remoção solicitada', REMOVED: 'Removido',
@@ -149,6 +149,20 @@ async function loadContext(): Promise<Context> {
   return { profiles: results[0].data as Profile[], assignments: results[1].data as Assignment[], contentProfiles: contentProfiles.map((profile, index) => ({ ...profile, avatar_url: avatarUrls[index] })), permissions: results[3].data as Permission[], hashtags: results[4].data as Hashtag[], posts: results[5].data as Post[], postHashtags: results[6].data as { post_id: string; hashtag_id: string }[], revisions: results[7].data as Revision[], documents: results[8].data as Document[] }
 }
 
+export function InteractionChart({ posts, windowLabel }: { posts: ReactionsByPost[]; windowLabel: string }) {
+  const largest = largestValue(posts.map((item) => item.total))
+  return <section className="admin-card"><h2>Interações por publicação</h2><p>Uma interação é uma reação persistida. Janela: {windowLabel}. Publicações sem reação também aparecem, com total zero.</p>{posts.length
+    ? <ul className="bar-chart">{posts.map((item) => <li key={item.post_id}><span className="bar-chart-label">{item.title}</span><span className="bar-chart-track"><span className="bar-chart-fill" style={{ width: `${barPercent(item.total, largest)}%` }} /></span><strong className="bar-chart-value">{item.total}</strong></li>)}</ul>
+    : <p role="status">Nenhuma publicação visível na janela selecionada.</p>}</section>
+}
+
+export function ReactionChart({ posts, windowLabel }: { posts: ReactionsByPost[]; windowLabel: string }) {
+  const largest = largestValue(posts.flatMap((item) => REACTION_OPTIONS.map(({ key }) => item[key])))
+  return <section className="admin-card"><h2>Reações por publicação</h2><p>Distribuição por emoji da mesma janela: {windowLabel}. O total de cada publicação é a soma das quatro reações.</p>{posts.length
+    ? <ul className="reaction-chart">{posts.map((item) => <li key={item.post_id}><span className="bar-chart-label">{item.title}</span><div className="reaction-columns">{REACTION_OPTIONS.map(({ key, icon, label }) => <div className="reaction-column" key={key} role="group" aria-label={`${label}: ${reactionCountLabel(item[key])}`}><strong>{item[key]}</strong><span className="reaction-track"><span className="reaction-fill" style={{ height: `${barPercent(item[key], largest)}%` }} /></span><img src={icon} alt="" aria-hidden="true" /></div>)}</div></li>)}</ul>
+    : <p role="status">Nenhuma publicação visível na janela selecionada.</p>}</section>
+}
+
 function Dashboard() {
   const [days, setDays] = useState<string>('7')
   const [metrics, setMetrics] = useState<Metrics | null>(null)
@@ -161,7 +175,9 @@ function Dashboard() {
     })
   }, [days])
   const items = metrics ? [['Posts', metrics.posts], ['Pendentes', metrics.pending_posts], ['Aprovados/publicados', metrics.approved_posts], ['Rejeitados', metrics.rejected_posts], ['Documentos', metrics.documents], ['Remoções', metrics.removal_requests], ['Reações', metrics.reactions]] : []
-  return <section><div className="admin-page-heading"><div><p className="eyebrow">Dados persistidos</p><h1>Dashboard</h1></div><label>Janela<select value={days} onChange={(event) => setDays(event.target.value)}><option value="7">7 dias</option><option value="30">30 dias</option><option value="total">Total</option></select></label></div>{message && <p role="status">{message}</p>}<div className="metric-grid">{items.map(([name, value]) => <article className="admin-card" key={name}><span>{name}</span><strong>{value}</strong></article>)}</div>{metrics?.reactions_by_post.length ? <section className="admin-card"><h2>Reações por publicação</h2><ul className="admin-list">{metrics.reactions_by_post.map((item) => <li key={item.post_id}><span>{item.title}</span><strong>{item.total}</strong></li>)}</ul></section> : null}</section>
+  const posts = reactionRows(metrics)
+  const windowLabel = days === 'total' ? 'todo o histórico persistido' : `últimos ${days} dias`
+  return <section><div className="admin-page-heading"><div><p className="eyebrow">Dados persistidos</p><h1>Dashboard</h1></div><label>Janela<select value={days} onChange={(event) => setDays(event.target.value)}><option value="7">7 dias</option><option value="30">30 dias</option><option value="total">Total</option></select></label></div>{message && <p role="status">{message}</p>}<div className="metric-grid">{items.map(([name, value]) => <article className="admin-card" key={name}><span>{name}</span><strong>{value}</strong></article>)}</div>{metrics && <><InteractionChart posts={posts} windowLabel={windowLabel} /><ReactionChart posts={posts} windowLabel={windowLabel} /></>}</section>
 }
 
 type PostFormProps = { context: Context; userId: string; editing: Post | null; onNew: () => void; refresh: () => Promise<void> }
@@ -257,7 +273,16 @@ export function PostsPage({ context, userId, roles: userRoles, refresh, selected
   return <section><div className="admin-page-heading"><div><p className="eyebrow">Posts</p><h1>Fluxo editorial</h1></div>{selectedId && <a href="/admin/posts" onClick={(event) => { event.preventDefault(); route('/admin/posts') }}>← Voltar à lista</a>}</div><div className="admin-stack"><PostForm context={context} userId={userId} editing={editing} onNew={() => setEditing(null)} refresh={refresh} /><section className="admin-card"><h2>Publicações e rascunhos</h2><div className="admin-stack">{visiblePosts.map((post) => <article className="workflow-item" key={post.id}><p><span className="status-pill">{labels[post.status]}</span> · {context.contentProfiles.find(({ id }) => id === post.content_profile_id)?.name}</p><h3><a href={`/admin/posts/${post.id}`} onClick={(event) => { event.preventDefault(); route(`/admin/posts/${post.id}`) }}>{post.title}</a></h3><p>{post.body}</p>{post.rejection_reason && <p><strong>Justificativa:</strong> {post.rejection_reason}</p>}<div className="row-actions">{post.status === 'DRAFT' && (post.created_by === userId || moderate) && <><button onClick={() => setEditing(post)}>Editar</button><button onClick={() => removeDraft(post)}>Excluir</button></>}{post.status === 'DRAFT' && post.created_by === userId && <button onClick={() => transition(post, 'PENDING_APPROVAL')}>Submeter</button>}{post.status === 'PENDING_APPROVAL' && canDecideOwnable(moderate, userId, post.created_by) && <><button onClick={() => transition(post, 'APPROVED')}>Aprovar</button><button onClick={() => transition(post, 'REJECTED')}>Rejeitar</button></>}{post.status === 'APPROVED' && moderate && <button onClick={() => transition(post, 'PUBLISHED')}>Publicar</button>}{post.status === 'PUBLISHED' && <button onClick={() => transition(post, 'REMOVAL_REQUESTED')}>Solicitar remoção</button>}{post.status === 'REMOVAL_REQUESTED' && moderate && <><button onClick={() => transition(post, 'REMOVED')}>Remover</button><button onClick={() => transition(post, 'PUBLISHED')}>Manter publicado</button></>}</div>{post.status === 'PUBLISHED' && <RevisionForm post={post} context={context} refresh={refresh} />}</article>)}{!visiblePosts.length && <p>Nenhum post no escopo atual.</p>}</div></section></div>{context.revisions.length ? <section className="admin-card"><h2>Revisões</h2><ul className="admin-list">{context.revisions.filter((revision) => !selectedId || revision.post_id === selectedId).map((revision) => <li key={revision.id}><span><strong>{revision.title}</strong><small>{revision.status} · {revision.change_summary}</small>{revision.decision_reason && <small>{revision.decision_reason}</small>}</span>{revision.status === 'PENDING_APPROVAL' && canDecideOwnable(moderate, userId, revision.created_by) && <span className="row-actions"><button onClick={() => decideRevision(revision, true)}>Aprovar</button><button onClick={() => decideRevision(revision, false)}>Rejeitar</button></span>}</li>)}</ul></section> : null}{message && <p className="admin-toast" role="status">{message}</p>}</section>
 }
 
-function HashtagsPage({ context, refresh }: { context: Context; refresh: () => Promise<void> }) {
+export function HashtagColorDot({ color }: { color: string }) {
+  const label = hashtagColorLabel(color)
+  return <span className="hashtag-color-dot" role="img" aria-label={label} title={label} style={{ background: `var(--hashtag-${color}, var(--hashtag-gray))` }} />
+}
+
+export function HashtagPalette({ legend, name, value, compact, onChange }: { legend: string; name: string; value: string; compact?: boolean; onChange: (color: string) => void }) {
+  return <fieldset className={compact ? 'hashtag-palette hashtag-palette-compact' : 'hashtag-palette'}><legend>{legend}</legend>{HASHTAG_COLOR_OPTIONS.map((option) => <label key={option.value} title={option.label}><input type="radio" name={name} value={option.value} checked={value === option.value} aria-label={option.label} onChange={() => onChange(option.value)} /><span className="hashtag-color-dot" style={{ background: `var(--hashtag-${option.value})` }} aria-hidden="true" />{!compact && <span>{option.label}</span>}</label>)}</fieldset>
+}
+
+export function HashtagsPage({ context, refresh }: { context: Context; refresh: () => Promise<void> }) {
   const [name, setName] = useState('')
   const [color, setColor] = useState('blue')
   const [message, setMessage] = useState('')
@@ -273,16 +298,20 @@ function HashtagsPage({ context, refresh }: { context: Context; refresh: () => P
     const { error } = await supabase.from('hashtags').update({ active: !hashtag.active }).eq('id', hashtag.id)
     setMessage(error?.message || 'Hashtag atualizada.'); if (!error) await refresh()
   }
-  const edit = async (hashtag: Hashtag) => {
+  const rename = async (hashtag: Hashtag) => {
     if (!supabase) return
     const nextName = window.prompt('Nome da hashtag:', hashtag.name)?.trim()
     if (!nextName) return
-    const nextColor = window.prompt(`Cor (${colors.join(', ')}):`, hashtag.color)?.trim()
-    if (!nextColor || !colors.includes(nextColor)) return setMessage('Cor inválida.')
-    const { error } = await supabase.from('hashtags').update({ name: normalizeHashtagName(nextName), slug: hashtagSlug(nextName), color: nextColor }).eq('id', hashtag.id)
+    const { error } = await supabase.from('hashtags').update({ name: normalizeHashtagName(nextName), slug: hashtagSlug(nextName) }).eq('id', hashtag.id)
     setMessage(error?.message || 'Hashtag atualizada.'); if (!error) await refresh()
   }
-  return <section><div className="admin-page-heading"><div><p className="eyebrow">Catálogo global</p><h1>Hashtags</h1></div></div><section className="admin-card"><form className="admin-inline-form" onSubmit={create}><label>Nome<input value={name} onChange={(event) => setName(event.target.value)} required /></label><label>Cor<select value={color} onChange={(event) => setColor(event.target.value)}>{colors.map((value) => <option key={value}>{value}</option>)}</select></label><button className="primary">Criar</button></form><ul className="admin-list">{context.hashtags.map((hashtag) => <li key={hashtag.id}><span>#{hashtag.name} · {hashtag.color} · {hashtag.active ? 'ativa' : 'inativa'}</span><span className="row-actions"><button onClick={() => edit(hashtag)}>Editar</button><Toggle checked={hashtag.active} label="Ativa" ariaLabel={`Hashtag ${hashtag.name} ativa`} onCheckedChange={() => void toggle(hashtag)} /></span></li>)}</ul>{message && <p role="status">{message}</p>}</section></section>
+  const recolor = async (hashtag: Hashtag, nextColor: string) => {
+    if (!supabase) return
+    if (!HASHTAG_COLOR_OPTIONS.some((option) => option.value === nextColor)) return setMessage('Cor inválida.')
+    const { error } = await supabase.from('hashtags').update({ color: nextColor }).eq('id', hashtag.id)
+    setMessage(error?.message || 'Cor atualizada.'); if (!error) await refresh()
+  }
+  return <section><div className="admin-page-heading"><div><p className="eyebrow">Catálogo global</p><h1>Hashtags</h1></div></div><section className="admin-card"><form className="admin-inline-form hashtag-create-form" onSubmit={create}><label>Nome<input value={name} onChange={(event) => setName(event.target.value)} required /></label><HashtagPalette legend="Cor" name="nova-hashtag-cor" value={color} onChange={setColor} /><button className="primary">Criar</button></form><ul className="admin-list">{context.hashtags.map((hashtag) => <li key={hashtag.id}><span><span className="hashtag-row-name">#{hashtag.name} <HashtagColorDot color={hashtag.color} /></span><small>{hashtag.active ? 'ativa' : 'inativa'}</small></span><span className="row-actions"><HashtagPalette legend={`Cor de #${hashtag.name}`} name={`hashtag-cor-${hashtag.id}`} value={hashtag.color} compact onChange={(nextColor) => void recolor(hashtag, nextColor)} /><button onClick={() => rename(hashtag)}>Renomear</button><Toggle checked={hashtag.active} label="Ativa" ariaLabel={`Hashtag ${hashtag.name} ativa`} onCheckedChange={() => void toggle(hashtag)} /></span></li>)}</ul>{message && <p role="status">{message}</p>}</section></section>
 }
 
 export function ContentProfilesPage({ context, refresh }: { context: Context; refresh: () => Promise<void> }) {
