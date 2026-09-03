@@ -2,7 +2,7 @@
 
 ## Objetivo
 
-O workflow `.github/workflows/ci.yml` produz evidência automatizada para cada push e pull request direcionado a `main`, `v1.3` ou `v1.3.2`. Também pode ser executado manualmente por `workflow_dispatch`.
+O workflow `.github/workflows/ci.yml` produz evidência automatizada para cada push e pull request direcionado a `main` ou `v1.0.0`. Também pode ser executado manualmente por `workflow_dispatch`.
 
 O CI não implanta aplicação, migrations ou Edge Functions e não acessa o projeto Supabase remoto. Nenhum secret é necessário.
 
@@ -37,7 +37,7 @@ Os comandos do Supabase exigem Docker. O banco local usa apenas migrations, test
 
 ## Política de proteção
 
-Para as branches mantidas (`main`, `v1.3` e `v1.3.2`):
+Para as branches mantidas (`main` e `v1.0.0`):
 
 - exigir pull request antes do merge;
 - exigir um review, descartando aprovações antigas após novos commits;
@@ -46,7 +46,7 @@ Para as branches mantidas (`main`, `v1.3` e `v1.3.2`):
 - bloquear force push e exclusão;
 - manter bypass administrativo apenas enquanto o repositório tiver uma única pessoa responsável, registrando seu uso; remover o bypass quando houver segundo mantenedor ou custódia da STI-UFBA.
 
-Branches históricas (`v0`, `v1`, `v1.1`, `v1.2` e `v1.3.1`) são referências imutáveis e não recebem novas alterações.
+Branches históricas (`v0`, `v1`, `v1.1`, `v1.2` e `v1.3*`) são referências imutáveis e não recebem novas alterações.
 
 ## Alteração da suíte
 
