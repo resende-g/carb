@@ -66,8 +66,4 @@ export function selectionIssue(selected: ClassOffering[], candidate: ClassOfferi
   return null
 }
 
-export function selectionProblem(selected: ClassOffering[], candidate: ClassOffering) {
-  return selectionIssue(selected, candidate)?.message || null
-}
-
 export const meetingLabel = (meeting: Meeting) => `${meeting.day}, ${meeting.start}-${meeting.end}`

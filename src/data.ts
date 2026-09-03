@@ -55,12 +55,12 @@ export type DocumentItem = {
 }
 
 export const profiles: Profile[] = [
-  { handle: 'carb', name: 'Centro Acadêmico Ruy Barbosa', shortName: 'CA', bio: 'Diretorias, áreas e avisos gerais do CARB.', avatar: '/og.png', avatarPosition: '30% 76%' },
-  { handle: 'fdufba', name: 'Faculdade de Direito da UFBA', shortName: 'FD', bio: 'Comunicados públicos da Faculdade de Direito.', avatar: '/og.png', avatarPosition: '51% 76%' },
-  { handle: 'ufba', name: 'Universidade Federal da Bahia', shortName: 'UF', bio: 'Comunicações gerais e serviços públicos da UFBA.', avatar: '/og.png', avatarPosition: '73% 76%' },
-  { handle: 'extensoes', name: 'Extensões', shortName: 'EX', bio: 'Projetos e atividades de extensão.', avatar: '/og.png', avatarPosition: '95% 76%' },
-  { handle: 'pesquisa', name: 'Pesquisa', shortName: 'PQ', bio: 'Grupos e atividades de pesquisa.', avatar: '/og.png', avatarPosition: '73% 76%' },
-  { handle: 'vagas', name: 'Vagas', shortName: 'VG', bio: 'Estágio, emprego, concurso e monitoria.', avatar: '/og.png', avatarPosition: '51% 76%' },
+  { handle: 'carb', name: 'Centro Acadêmico Ruy Barbosa', shortName: 'CA', bio: 'Diretorias, áreas e avisos gerais do CARB.', avatar: '/carb-og-v2.png', avatarPosition: '30% 76%' },
+  { handle: 'fdufba', name: 'Faculdade de Direito da UFBA', shortName: 'FD', bio: 'Comunicados públicos da Faculdade de Direito.', avatar: '/carb-og-v2.png', avatarPosition: '51% 76%' },
+  { handle: 'ufba', name: 'Universidade Federal da Bahia', shortName: 'UF', bio: 'Comunicações gerais e serviços públicos da UFBA.', avatar: '/carb-og-v2.png', avatarPosition: '73% 76%' },
+  { handle: 'extensoes', name: 'Extensões', shortName: 'EX', bio: 'Projetos e atividades de extensão.', avatar: '/carb-og-v2.png', avatarPosition: '95% 76%' },
+  { handle: 'pesquisa', name: 'Pesquisa', shortName: 'PQ', bio: 'Grupos e atividades de pesquisa.', avatar: '/carb-og-v2.png', avatarPosition: '73% 76%' },
+  { handle: 'vagas', name: 'Vagas', shortName: 'VG', bio: 'Estágio, emprego, concurso e monitoria.', avatar: '/carb-og-v2.png', avatarPosition: '51% 76%' },
 ]
 
 export const hashtags: Hashtag[] = [
@@ -79,7 +79,7 @@ export const hashtags: Hashtag[] = [
 
 // ponytail: conteúdo demonstrativo migra para a fonte editorial quando houver backend homologado.
 export const notices: Notice[] = [
-  { id: 'a1', title: 'Semana de acolhimento', text: 'Confira a programação sintética de recepção e os espaços de convivência do campus.', media: { src: '/og.png', alt: 'Identidade visual do portal CARB com quatro retratos da comunidade acadêmica.' }, category: 'Comunidade', date: '25 ago. 2026', state: 'publicado', author: 'carb', hashtagIds: ['hashtag-comunidade'], base: { heart: 18, point: 11, skull: 2, dance: 7 } },
+  { id: 'a1', title: 'Semana de acolhimento', text: 'Confira a programação sintética de recepção e os espaços de convivência do campus.', media: { src: '/carb-og-v2.png', alt: 'Identidade visual do portal CARB com quatro retratos da comunidade acadêmica.' }, category: 'Comunidade', date: '25 ago. 2026', state: 'publicado', author: 'carb', hashtagIds: ['hashtag-comunidade'], base: { heart: 18, point: 11, skull: 2, dance: 7 } },
   { id: 'a2', title: 'Prazo para ajuste de matrícula', text: 'O período demonstrativo de ajuste termina na sexta-feira, às 18h.', category: 'Acadêmico', date: '24 ago. 2026', state: 'publicado', author: 'carb', hashtagIds: ['hashtag-matricula', 'hashtag-calendario'], base: { heart: 31, point: 23, skull: 4, dance: 3 } },
   { id: 'a3', title: 'Manutenção na biblioteca', text: 'A sala de estudos do primeiro andar ficará fechada durante a manhã para manutenção.', category: 'Infraestrutura', date: '22 ago. 2026', state: 'publicado', author: 'carb', hashtagIds: ['hashtag-infraestrutura', 'hashtag-comunicacao'], base: { heart: 7, point: 12, skull: 6, dance: 1 } },
   { id: 'a4', title: 'Oficina de pesquisa jurídica', text: 'Atividade fictícia sobre busca de jurisprudência, com inscrição gratuita.', category: 'Extensão', date: '20 ago. 2026', state: 'publicado', author: 'extensoes', hashtagIds: ['hashtag-extensao', 'hashtag-pesquisa'], base: { heart: 24, point: 15, skull: 1, dance: 10 } },

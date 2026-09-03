@@ -104,7 +104,7 @@ Deno.serve(async (request) => {
       return json({ error: existingAccountMessage(existingProfile, Boolean(existingRoles?.length)), existing_user_id: existing.user.id }, 409, headers)
     }
 
-    const siteUrl = (Deno.env.get('SITE_URL') || 'https://carb-v1-3.portal-carb-prototipo.workers.dev').replace(/\/+$/, '')
+    const siteUrl = (Deno.env.get('SITE_URL') || 'https://carb.portal-carb-prototipo.workers.dev').replace(/\/+$/, '')
     const redirectTo = `${siteUrl}/admin`
     const { data, error } = await admin.auth.admin.inviteUserByEmail(email, { data: { full_name: fullName }, redirectTo })
     if (error || !data.user) {

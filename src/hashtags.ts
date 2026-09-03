@@ -17,13 +17,6 @@ export function hashtagSlug(value: string) {
 
 export const uniqueHashtagIds = (ids: string[]) => [...new Set(ids)]
 
-export const activeHashtags = (hashtags: Hashtag[]) => hashtags.filter((hashtag) => hashtag.active)
-
-export const hashtagsByIds = (hashtags: Hashtag[], ids: string[]) => {
-  const selected = new Set(uniqueHashtagIds(ids))
-  return hashtags.filter((hashtag) => selected.has(hashtag.id))
-}
-
 export function hashtagCatalogErrors(hashtags: Hashtag[]) {
   const duplicates = (field: 'id' | 'name' | 'slug') => hashtags
     .filter((hashtag, index) => hashtags.findIndex((candidate) => comparable(candidate[field]) === comparable(hashtag[field])) !== index)

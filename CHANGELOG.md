@@ -1,5 +1,19 @@
 # Changelog
 
+## 1.3.3 — 2026-09-02
+
+### Corrigido
+
+- O feed público preserva a ordem das URLs assinadas, renova os assets antes da expiração e não perde publicações quando há caminhos nulos.
+- Publicações preservam quebras de linha e transformam endereços iniciados por `www.` em links HTTPS.
+- Avatares de perfis públicos podem ser lidos conforme a política de Storage prevista.
+
+### Alterado
+
+- Navegação, administração, planejador e reações usam controles e ícones semânticos refinados.
+- Assets, parser CSV, helpers e documentação histórica sem consumidores foram removidos.
+- Variantes nativas do Tailwind substituem `shadcn/tailwind.css`; `shadcn` e `tw-animate-css` deixaram de ser dependências.
+
 ## 1.3.2 — 2026-08-31
 
 ### Corrigido

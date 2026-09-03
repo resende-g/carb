@@ -1,8 +1,8 @@
-# Portal CARB — v1.3.2
+# Portal CARB — v1.3.3
 
 Protótipo público full-stack do Portal do Centro Acadêmico Ruy Barbosa (CARB), construído com React, TypeScript, Vite, Tailwind CSS 4, Shadcn/ui e Supabase. Usa somente conteúdo público ou sintético e **não representa sistema institucional homologado ou pronto para produção**.
 
-**Publicado em:** https://carb-v1-3.portal-carb-prototipo.workers.dev
+**Publicado em:** https://carb.portal-carb-prototipo.workers.dev
 
 ## Executar
 
@@ -39,7 +39,7 @@ npx --yes supabase@2.116.0 stop --no-backup
 
 O GitHub Actions executa a mesma validação em cada push e pull request das branches mantidas, sem secrets e sem acesso ao Supabase remoto.
 
-## Escopo da v1.3.2
+## Escopo da v1.3.3
 
 - PostgreSQL versionado por migrations, seed sintético e testes pgTAP;
 - Supabase Auth com contas individuais, TOTP/AAL2 obrigatório em cada sessão e expiração administrativa absoluta em 60 minutos;
@@ -71,7 +71,6 @@ O GitHub Actions executa a mesma validação em cada push e pull request das bra
 - [Sucessão institucional](docs/succession.md)
 - [Logs de auditoria](docs/audit-logs.md)
 - [Deploy v1.3](docs/deployment-v1.3.md)
-- [Contexto de implementação](PROMPT_PROTOTIPO_LOCAL.md)
 - [Arquitetura](docs/architecture.md)
 - [Acessibilidade](docs/accessibility.md)
 - [Segurança](docs/security.md)

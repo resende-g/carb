@@ -83,7 +83,7 @@ export async function loadPublicData(anonymousId: string) {
     name: profile.name,
     shortName: profile.name.slice(0, 2).toLocaleUpperCase('pt-BR'),
     bio: profile.description,
-    avatar: profileAvatars[index] || '/og.png',
+    avatar: profileAvatars[index] || '/carb-og-v2.png',
     avatarPosition: profileAvatars[index] ? 'center' : '30% 76%',
     avatarSize: profileAvatars[index] ? 'cover' : undefined,
   }))

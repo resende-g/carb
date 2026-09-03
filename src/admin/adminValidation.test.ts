@@ -18,9 +18,13 @@ describe('contrato do onboarding administrativo', () => {
 
   it('mantém autorização AAL2 e operações privilegiadas no servidor', () => {
     const source = readFileSync(new URL('../../supabase/functions/admin-users/index.ts', import.meta.url), 'utf8')
+    const httpSource = readFileSync(new URL('../../supabase/functions/_shared/http.ts', import.meta.url), 'utf8')
     expect(source).toContain("claims.aal !== 'aal2'")
     expect(source).toContain("actorClient.rpc('set_user_active'")
     expect(source).toContain("admin.rpc('complete_admin_onboarding'")
     expect(source).toContain('deleteUser(data.user.id)')
+    expect(source).toContain('https://carb.portal-carb-prototipo.workers.dev')
+    expect(httpSource).toContain('https://carb.portal-carb-prototipo.workers.dev')
+    expect(`${source}\n${httpSource}`).not.toContain('carb-v1-3.portal-carb-prototipo.workers.dev')
   })
 })

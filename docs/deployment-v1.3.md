@@ -1,6 +1,6 @@
 # Deploy do protótipo v1.3
 
-**URL pública:** https://carb-v1-3.portal-carb-prototipo.workers.dev
+**URL pública:** https://carb.portal-carb-prototipo.workers.dev
 
 ## Frontend
 

@@ -1,4 +1,4 @@
-# Supabase v1.3.2
+# Supabase v1.3.3
 
 ## Frontend
 
@@ -26,8 +26,8 @@ SUPABASE_URL=... SUPABASE_SERVICE_ROLE_KEY=... SUPERADMIN_EMAIL=... \
 
 ## Estado validado
 
-Com Supabase CLI 2.116.0 e Docker, `supabase db reset --local` aplicou as três migrations e o seed em PostgreSQL 17.6.1. `supabase test db --local` aprovou os 18 testes pgTAP. Os advisors locais não reportaram erros.
+Com Supabase CLI 2.116.0 e Docker, `supabase db reset --local` aplicou as 11 migrations e o seed. `supabase test db --local` aprovou os 41 testes pgTAP.
 
-No projeto remoto de desenvolvimento, as três migrations e o seed sintético estão aplicados. Há 13 tabelas públicas sob RLS, seis perfis de conteúdo, 11 hashtags ativas, oito posts publicados, 342 reações sintéticas e um bucket privado. `admin-auth` e `admin-users` estão ativas na versão 2; o CORS da primeira respondeu 204 para a origem pública do Cloudflare.
+Migrations, seed, Edge Functions e contagens do projeto remoto devem ser revalidados antes de cada release; evidências locais ou históricas não comprovam o estado remoto atual.
 
-O fallback de configuração já autoriza desenvolvimento local e `https://carb-v1-3.portal-carb-prototipo.workers.dev`. Variáveis `ALLOWED_ORIGINS` e `SITE_URL`, quando definidas, substituem esse fallback.
+O fallback de configuração já autoriza desenvolvimento local e `https://carb.portal-carb-prototipo.workers.dev`. Variáveis `ALLOWED_ORIGINS` e `SITE_URL`, quando definidas, substituem esse fallback.

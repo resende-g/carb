@@ -52,4 +52,4 @@ Foram removidas regras sem consumidores após a migração: dropdown de tags por
 
 ## Limites
 
-A migração não adiciona carregamento, backend ou segurança. O pacote `shadcn` permanece como dependência de desenvolvimento porque o CSS atual importa `shadcn/tailwind.css`; componentes Radix e utilitários usados permanecem como dependências de execução.
+A migração não adiciona carregamento, backend ou segurança. Variantes nativas do Tailwind substituem o CSS auxiliar do CLI Shadcn; componentes Radix e utilitários usados permanecem como dependências de execução.
