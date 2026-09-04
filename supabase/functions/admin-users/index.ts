@@ -68,11 +68,11 @@ Deno.serve(async (request) => {
 
   const now = new Date().toISOString()
   const [{ data: profile }, { data: role }, { data: adminSession }] = await Promise.all([
-    admin.from('profiles').select('active').eq('id', actorId).maybeSingle(),
+    admin.from('profiles').select('active,admin_sessions_blocked').eq('id', actorId).maybeSingle(),
     admin.from('role_assignments').select('id').eq('user_id', actorId).eq('role', 'SUPERADMIN').eq('active', true).lte('starts_at', now).or(`ends_at.is.null,ends_at.gt.${now}`).limit(1),
     admin.from('admin_sessions').select('session_id').eq('session_id', claims.session_id).eq('user_id', actorId).is('revoked_at', null).gt('expires_at', now).maybeSingle(),
   ])
-  if (!profile?.active || !role?.length) return json({ error: 'Somente SUPERADMIN ativo pode executar esta ação.' }, 403, headers)
+  if (!profile?.active || profile.admin_sessions_blocked || !role?.length) return json({ error: 'Somente SUPERADMIN ativo pode executar esta ação.' }, 403, headers)
   if (!adminSession) return json({ error: 'Sessão administrativa expirada. Entre novamente.' }, 401, headers)
 
   let input: Record<string, unknown>
@@ -152,12 +152,11 @@ Deno.serve(async (request) => {
     const { data, error } = await admin.auth.admin.mfa.listFactors({ userId })
     if (error) return json({ error: 'Não foi possível consultar os fatores.' }, 400, headers)
     await admin.from('audit_logs').insert({ actor_user_id: actorId, event: 'MFA_RESET_REQUESTED', entity_type: 'profile', entity_id: userId })
+    const { error: revokeError } = await admin.rpc('begin_mfa_reset', { p_user_id: userId, p_actor: actorId })
+    if (revokeError) return json({ error: 'Não foi possível revogar as sessões administrativas.' }, 500, headers)
     for (const factor of data.factors) {
       const { error: deleteError } = await admin.auth.admin.mfa.deleteFactor({ userId, id: factor.id })
       if (deleteError) return json({ error: 'A revogação do MFA ficou incompleta.' }, 500, headers)
-    }
-    if (data.factors.some((factor) => factor.status === 'verified')) {
-      await admin.from('audit_logs').insert({ actor_user_id: actorId, event: 'SESSIONS_REVOKED', entity_type: 'profile', entity_id: userId, metadata: { reason: 'mfa_reset' } })
     }
     return json({ removed_factors: data.factors.length }, 200, headers)
   }
@@ -175,12 +174,10 @@ Deno.serve(async (request) => {
       if (banError) return json({ error: 'A função foi transferida, mas o bloqueio da conta anterior precisa ser repetido.', transfer_complete: true, auth_cleanup_pending: true }, 500, headers)
       const { data: factors, error: factorsError } = await admin.auth.admin.mfa.listFactors({ userId: result.old_user_id })
       if (factorsError) return json({ error: 'A função foi transferida, mas a limpeza de MFA precisa ser repetida.', transfer_complete: true, auth_cleanup_pending: true }, 500, headers)
-      const verified = factors.factors.filter((factor) => factor.status === 'verified')
       for (const factor of factors.factors) {
         const { error: deleteError } = await admin.auth.admin.mfa.deleteFactor({ userId: result.old_user_id, id: factor.id })
         if (deleteError) return json({ error: 'A função foi transferida, mas a limpeza de MFA ficou incompleta.', transfer_complete: true, auth_cleanup_pending: true }, 500, headers)
       }
-      if (verified.length) await admin.from('audit_logs').insert({ actor_user_id: actorId, event: 'SESSIONS_REVOKED', entity_type: 'profile', entity_id: result.old_user_id, metadata: { reason: 'custody_transfer' } })
     }
     return json(data, 200, headers)
   }

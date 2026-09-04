@@ -1,3 +1,5 @@
+import type { SupabaseClient } from '@supabase/supabase-js'
+
 export const ADMIN_SESSION_DURATION_MS = 60 * 60 * 1000
 
 type TokenPayload = { session_id?: unknown }
@@ -37,4 +39,16 @@ export function adminSessionDeadline(token: string, storage: StorageLike = local
 export function forgetAdminSession(token: string, storage: StorageLike = localStorage) {
   const sessionId = adminSessionId(token)
   if (sessionId) storage.removeItem(storageKey(sessionId))
+}
+
+export async function revokeAdminSessions(client: Pick<SupabaseClient, 'rpc'>) {
+  const { error } = await client.rpc('revoke_current_admin_sessions')
+  if (error) throw error
+}
+
+export async function endAdminSessions(client: Pick<SupabaseClient, 'rpc' | 'auth'>, token: string, storage: StorageLike = localStorage) {
+  const { error: revocationError } = await client.rpc('revoke_current_admin_sessions')
+  forgetAdminSession(token, storage)
+  const { error } = await client.auth.signOut({ scope: 'global' })
+  if (revocationError || error) throw revocationError || error
 }
