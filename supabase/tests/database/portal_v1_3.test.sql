@@ -1,6 +1,6 @@
 begin;
 create extension if not exists pgtap with schema extensions;
-select plan(75);
+select plan(85);
 
 insert into auth.users (id, email) values
   ('30000000-0000-4000-8000-000000000010', 'sem-papel@example.invalid'),
@@ -156,6 +156,18 @@ select throws_ok($$select public.revoke_role('31000000-0000-4000-8000-0000000000
 select ok(public.grant_role('30000000-0000-4000-8000-000000000014','SUPERADMIN','STI_ADMIN') is not null, 'segundo SUPERADM é permitido');
 select throws_ok($$select public.revoke_role('31000000-0000-4000-8000-000000000013')$$, null, null, 'não é possível reduzir de 2 para 1 SUPERADM');
 select ok(public.grant_role('30000000-0000-4000-8000-000000000015','SUPERADMIN','TECHNICAL_CUSTODIAN') is not null, 'terceiro SUPERADM é permitido');
+select throws_ok($$select public.revoke_role('31000000-0000-4000-8000-000000000013')$$, null, null, 'SUPERADMIN não revoga a própria atribuição mesmo quando restariam 2');
+select throws_ok($$select public.set_user_active('30000000-0000-4000-8000-000000000013', false)$$, null, null, 'SUPERADMIN não desativa a própria conta mesmo quando restariam 2');
+select throws_ok($$select public.transfer_custody('31000000-0000-4000-8000-000000000013','30000000-0000-4000-8000-000000000016','SUPERADMIN','TECHNICAL_CUSTODIAN')$$, null, null, 'SUPERADMIN não transfere a própria atribuição para contornar a proteção');
+select ok((select active from public.role_assignments where id = '31000000-0000-4000-8000-000000000013'), 'autorrevogação bloqueada preserva a atribuição');
+select ok((select active from public.profiles where id = '30000000-0000-4000-8000-000000000013'), 'autodesativação bloqueada preserva a conta');
+set local "request.jwt.claims" = '{"sub":"30000000-0000-4000-8000-000000000014","role":"authenticated","aal":"aal2","session_id":"41000000-0000-4000-8000-000000000014"}';
+select lives_ok($$select public.set_user_active('30000000-0000-4000-8000-000000000015', false)$$, 'outro SUPERADMIN desativa a conta quando restam 2 ativos');
+select is((select active from public.profiles where id = '30000000-0000-4000-8000-000000000015'), false, 'desativação por outro SUPERADMIN persiste');
+select lives_ok($$select public.set_user_active('30000000-0000-4000-8000-000000000015', true)$$, 'outro SUPERADMIN reativa a conta');
+select lives_ok($$select public.revoke_role('31000000-0000-4000-8000-000000000013')$$, 'outro SUPERADMIN revoga a atribuição quando restam 2 ativos');
+select ok(public.grant_role('30000000-0000-4000-8000-000000000013','SUPERADMIN','STI_ADMIN') is not null, 'outro SUPERADMIN restaura a atribuição para os testes seguintes');
+set local "request.jwt.claims" = '{"sub":"30000000-0000-4000-8000-000000000013","role":"authenticated","aal":"aal2","session_id":"41000000-0000-4000-8000-000000000013"}';
 select throws_ok($$select public.grant_role('30000000-0000-4000-8000-000000000016','SUPERADMIN','STI_ADMIN')$$, null, null, 'não é possível aumentar de 3 para 4 SUPERADM');
 select lives_ok($$select public.set_user_active('30000000-0000-4000-8000-000000000011', false)$$, 'SUPERADMIN desativa conta ativa pela RPC');
 select is((select active from public.profiles where id = '30000000-0000-4000-8000-000000000011'), false, 'conta desativada fica inativa');
