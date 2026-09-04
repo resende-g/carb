@@ -66,10 +66,10 @@ Deno.serve(async (request) => {
   }
 
   const expiresAt = new Date(Date.now() + adminSessionDurationMs).toISOString()
-  const { error: sessionError } = await admin.from('admin_sessions').insert({
-    session_id: sessionId,
-    user_id: data.user.id,
-    expires_at: expiresAt,
+  const { error: sessionError } = await admin.rpc('open_admin_session', {
+    p_session_id: sessionId,
+    p_user_id: data.user.id,
+    p_expires_at: expiresAt,
   })
   if (sessionError) {
     await authClient.auth.signOut()

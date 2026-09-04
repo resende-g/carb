@@ -7,13 +7,18 @@
 - duração administrativa absoluta de 60 minutos por `session_id`, sem extensão por refresh do JWT;
 - conta individual, vínculo editorial explícito e impedimento de autoaprovação;
 - auditoria append-only e proteção transacional do último SUPERADMIN ativo;
-- bucket privado com MIME, tamanho e autorização validados;
+- bucket privado com namespace, propriedade, estado editorial e limites declarados de MIME/tamanho validados;
 - `service_role` restrita à Edge Function e ao bootstrap executado em ambiente administrativo.
-- CI com permissões somente de leitura, actions fixadas por SHA e testes contra Supabase local sem secrets.
+- CI com permissões somente de leitura, actions fixadas por SHA e testes contra Supabase local sem secrets;
+- varredura de dependências no CI (`npm audit`, reprovando `high` e `critical`) e atualizações semanais por Dependabot, sem auto-merge.
 
-O AAL2 é exigido em toda nova sessão. Não há confiança de MFA por 24 horas nem mecanismo paralelo de dispositivo confiável.
+O AAL2 é exigido para exercer autoridade administrativa. Remover ou redefinir o fator revoga as sessões e bloqueia essa autoridade até a verificação de um novo fator; não há confiança de MFA por 24 horas nem mecanismo paralelo de dispositivo confiável.
 
-Ainda dependem do ambiente implantado: CSP/HSTS, SMTP, CAPTCHA, limites operacionais, backup/restauração, monitoramento e pentest. Portanto, a v1.0.0 não deve ser tratada como produção homologada.
+Os caminhos do Storage são vinculados a namespace, proprietário e registro editorial: `posts/<uuid da pessoa>/`, `documents/<uuid da pessoa>/` e `profile-avatars/<uuid do perfil>/` não se cruzam, o objeto não pode ser movido para fora do próprio namespace e nem `media_path`, nem `storage_path`, nem `avatar_path` aceitam apontar para um objeto de outra origem. As regressões correspondentes estão em `supabase/tests/database/portal_v1_3.test.sql`.
+
+Um exercício local de resposta a incidente, com dados sintéticos, está registrado em [incident-exercise.md](incident-exercise.md).
+
+MIME e tamanho ainda são metadados fornecidos pelo cliente; validação por conteúdo e antivírus dependem do serviço definido em `TBD-STI-03`. Também dependem do ambiente implantado: CSP/HSTS, SMTP, CAPTCHA/WAF, limites operacionais, backup/restauração, monitoramento e pentest. Portanto, a v1.0.0 não deve ser tratada como produção homologada.
 
 ## 1. Objetivo
 

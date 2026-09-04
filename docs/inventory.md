@@ -66,6 +66,7 @@ Regras invariantes: o navegador recebe somente `VITE_SUPABASE_URL` e `VITE_SUPAB
 | React / Vite / Tailwind / Radix | ver `package.json` | frontend | baixo |
 | PostgreSQL | `major_version = 17` em `supabase/config.toml` | banco | médio: extensões e versão precisam ser confirmadas (`TBD-STI-02`) |
 | pgTAP | `create extension if not exists pgtap` | testes de banco | baixo, mas exige extensão disponível no destino |
+| `axe-core` / `jsdom` | ver `package.json` | avaliação automática de acessibilidade em `src/a11y.test.tsx` | baixo: só de desenvolvimento, não entra no build |
 | Deno (Edge Functions) | runtime do Supabase | funções privilegiadas | médio: precisa de runtime equivalente no destino (`TBD-STI-01`) |
 
 ## 6. Limites de confiança

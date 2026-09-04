@@ -8,7 +8,7 @@ Procedimentos executáveis **hoje**, em ambiente local ou sintético. Cada runbo
 | 2. Deploy do frontend | não (exige credencial e ambiente) | decisão externa (`TBD-STI-01`, `TBD-STI-04`) |
 | 3. Rollback | parcial (banco sim, borda não) | parcialmente verificado |
 | 4. Backup e restauração | sim, em banco local/sintético | verificado em 2026-09-02, apenas localmente |
-| 5. Incidente | parcial | parcialmente verificado |
+| 5. Incidente | sim, em ambiente local/sintético | exercício executado em 2026-09-04; ver [incident-exercise.md](incident-exercise.md) |
 | 6. Bootstrap do primeiro `SUPERADMIN` | sim, contra projeto Supabase controlado | procedimento escrito, não executado nesta verificação |
 
 ## 1. Verificação completa
@@ -116,7 +116,12 @@ Os arquivos de backup contêm dados; trate-os com a mesma classificação do ban
 6. **Recuperar** — aplique rollback (runbook 3) ou restauração (runbook 4).
 7. **Causa raiz e ação corretiva** — registre no `CHANGELOG.md` quando houver mudança de código, e na matriz de [compliance.md](compliance.md) quando houver mudança de controle.
 
-Escalonamento, plantão, SIEM e alarmes automáticos ainda não existem: dependem de `TBD-STI-05` e `TBD-STI-07`.
+Os passos 1, 2, 3 e 6 foram exercitados de ponta a ponta em ambiente local e sintético em 2026-09-04, com evidência em [incident-exercise.md](incident-exercise.md). Duas lições do exercício entram no procedimento:
+
+- conter antes de resetar o MFA faz `begin_mfa_reset` retornar zero sessões revogadas; leia esse zero como confirmação da contenção, não como falha;
+- reativar a conta não devolve autoridade administrativa. É preciso registrar um novo fator MFA verificado, com quem confirma a identidade da pessoa.
+
+Escalonamento, plantão, SIEM e alarmes automáticos ainda não existem: dependem de `TBD-STI-05` e `TBD-STI-07`. A avaliação e a eventual comunicação de incidente com dado pessoal dependem do controlador e do encarregado (`TBD-GOV-01`).
 
 ## 6. Bootstrap do primeiro `SUPERADMIN`
 

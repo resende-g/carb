@@ -35,7 +35,7 @@ Não é factualmente correto afirmar que tudo depende apenas da STI-UFBA. Parte 
 
 ## 3. O que já não é decisão externa
 
-Está pronto e verificável no repositório e não depende de terceiros: esquema versionado, RLS deny-by-default, RBAC com AAL2, auditoria append-only, workflow editorial, Storage privado com liberação por estado, Edge Functions sem `service_role` no navegador, CI sem segredos, testes pgTAP e de frontend, e o contrato de métricas em [metrics.md](metrics.md). A matriz de evidências está em [compliance.md](compliance.md).
+Está pronto e verificável no repositório e não depende de terceiros: esquema versionado, RLS deny-by-default, RBAC com AAL2, auditoria append-only, workflow editorial, Storage privado com namespace e propriedade validados, revogação server-side de sessão administrativa, Edge Functions sem `service_role` no navegador, CI sem segredos e com varredura de dependências, atualização semanal por Dependabot, avaliação automática de acessibilidade com axe-core, exercício local de resposta a incidente em [incident-exercise.md](incident-exercise.md), testes pgTAP e de frontend, e o contrato de métricas em [metrics.md](metrics.md). A matriz de evidências está em [compliance.md](compliance.md).
 
 ## 4. Regra de honestidade
 

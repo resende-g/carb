@@ -1,5 +1,23 @@
 # Changelog
 
+## Não lançado
+
+Endurecimento pré-STI. Sem alteração de versão pública: a decisão de lançar é separada da técnica.
+
+### Adicionado
+
+- Migration `20260904011125_pre_sti_hardening.sql`: revogação de `admin_sessions` em logout global, reset de MFA, desativação de conta e transferência de custódia; bloqueio de autoridade administrativa enquanto não houver fator MFA verificado; trigger que impede quem solicita a remoção de decidir a própria solicitação; vínculo dos caminhos do Storage a namespace, proprietário e registro editorial; unicidade de `media_path`.
+- RPC `public.revoke_current_admin_sessions`, usada pelo painel para revogar no servidor antes do logout global.
+- Varredura de dependências no CI (`npm audit`, reprovando `high` e `critical`) e `.github/dependabot.yml` com atualização semanal de npm e actions, sem auto-merge.
+- Avaliação automática de acessibilidade com axe-core em `src/a11y.test.tsx`, cobrindo 16 cenários públicos e administrativos.
+- Checklist de validação manual de acessibilidade pré-STI em `docs/accessibility.md`, ainda não executada.
+- `docs/incident-exercise.md`: exercício de resposta a incidente executado em ambiente local com dados sintéticos.
+
+### Corrigido
+
+- Durante um reset de MFA de conta com mais de um fator, a remoção do primeiro fator reabria a autoridade administrativa até a remoção do último. O gatilho passou a apenas bloquear, nunca desbloquear.
+- O logout administrativo deixava a sessão local ativa quando a revogação no banco falhava. Agora a sessão local é sempre encerrada e o erro de revogação é reportado depois.
+
 ## 1.0.0 — 2026-09-02
 
 Primeiro lançamento público. As entradas 1.3.3 e anteriores permanecem como histórico do protótipo e continuam válidas para rastreabilidade.

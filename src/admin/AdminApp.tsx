@@ -6,7 +6,7 @@ import { reactionRows, type Metrics, type ReactionsByPost } from './metrics'
 import { signedUrl, supabase, supabaseConfigured } from '../supabase'
 import { invokeEdge } from './edgeFunctions'
 import { adminRoutes, avatarIssue, canDecideOwnable, confirmCustodyTransfer, operationalAccountState, passwordIssue, userActivationAction } from './rules'
-import { adminSessionDeadline, forgetAdminSession, rememberAdminSession } from './session'
+import { adminSessionDeadline, endAdminSessions, forgetAdminSession, rememberAdminSession, revokeAdminSessions } from './session'
 import { AdminIcon } from '../components/ui/admin-icon'
 import { Button } from '../components/ui/button'
 import { Toggle } from '../components/ui/toggle'
@@ -39,7 +39,7 @@ function route(path: string) {
   window.dispatchEvent(new PopStateEvent('popstate'))
 }
 
-function Login({ initialMessage = '' }: { initialMessage?: string }) {
+export function Login({ initialMessage = '' }: { initialMessage?: string }) {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [message, setMessage] = useState(initialMessage)
@@ -89,7 +89,7 @@ function PasswordSetup({ onDone }: { onDone: () => Promise<void> | void }) {
   return <main className="admin-login"><form className="admin-login-card" onSubmit={submit}><p className="eyebrow">Conta individual</p><h1>Defina sua senha</h1><label>Nova senha<input type="password" autoComplete="new-password" minLength={12} value={password} onChange={(event) => setPassword(event.target.value)} required /></label><label>Confirmar senha<input type="password" autoComplete="new-password" minLength={12} value={confirmation} onChange={(event) => setConfirmation(event.target.value)} required /></label><Button><AdminIcon name="save" /> Salvar senha</Button>{message && <p role="alert">{message}</p>}</form></main>
 }
 
-function MfaGate({ onVerified }: { onVerified: (verified: boolean) => void }) {
+function MfaGate({ session, onVerified }: { session: Session; onVerified: (verified: boolean) => void }) {
   const [factorId, setFactorId] = useState('')
   const [qr, setQr] = useState('')
   const [secret, setSecret] = useState('')
@@ -126,7 +126,7 @@ function MfaGate({ onVerified }: { onVerified: (verified: boolean) => void }) {
     if (error) setMessage(error.message)
     else onVerified(true)
   }
-  return <main className="admin-login"><form className="admin-login-card" onSubmit={verify}><p className="eyebrow">MFA obrigatório</p><h1>Verificação em duas etapas</h1>{qr && <img className="mfa-qr" src={qr} alt="QR code para cadastrar o Portal CARB no aplicativo autenticador" />}{secret && <p>Alternativa manual: <code>{secret}</code></p>}<p>{message}</p><label>Código TOTP<input inputMode="numeric" autoComplete="one-time-code" pattern="[0-9]{6}" maxLength={6} value={code} onChange={(event) => setCode(event.target.value.replace(/\D/g, ''))} required /></label><Button disabled={!factorId}><AdminIcon name="check" /> Verificar</Button><Button type="button" variant="outline" onClick={() => supabase?.auth.signOut()}><AdminIcon name="logout" /> Cancelar e sair</Button></form></main>
+  return <main className="admin-login"><form className="admin-login-card" onSubmit={verify}><p className="eyebrow">MFA obrigatório</p><h1>Verificação em duas etapas</h1>{qr && <img className="mfa-qr" src={qr} alt="QR code para cadastrar o Portal CARB no aplicativo autenticador" />}{secret && <p>Alternativa manual: <code>{secret}</code></p>}<p>{message}</p><label>Código TOTP<input inputMode="numeric" autoComplete="one-time-code" pattern="[0-9]{6}" maxLength={6} value={code} onChange={(event) => setCode(event.target.value.replace(/\D/g, ''))} required /></label><Button disabled={!factorId}><AdminIcon name="check" /> Verificar</Button><Button type="button" variant="outline" onClick={() => { if (supabase) void endAdminSessions(supabase, session.access_token).catch(() => setMessage('Não foi possível encerrar a sessão.')) }}><AdminIcon name="logout" /> Cancelar e sair</Button></form></main>
 }
 
 async function loadContext(): Promise<Context> {
@@ -359,7 +359,7 @@ export function ContentProfilesPage({ context, refresh }: { context: Context; re
   return <section><div className="admin-page-heading"><div><p className="eyebrow">Identidades públicas</p><h1>Perfis de conteúdo</h1></div></div><section className="admin-card"><form className="admin-form" onSubmit={create}><label>Nome<input value={name} onChange={(event) => setName(event.target.value)} required /></label><label>Slug<input pattern="[a-z0-9]+(?:-[a-z0-9]+)*" value={slug} onChange={(event) => setSlug(event.target.value)} required /></label><label>Descrição<textarea maxLength={500} value={description} onChange={(event) => setDescription(event.target.value)} /></label><button className="primary">Criar perfil</button></form><ul className="admin-list">{context.contentProfiles.map((profile) => <li key={profile.id}><span className="profile-summary">{profile.avatar_url && <img className="admin-avatar-preview" src={profile.avatar_url} alt={`Foto atual de ${profile.name}`} />}<span><strong>{profile.name}</strong><small>@{profile.slug} · {profile.active ? 'ativo' : 'inativo'} · {profile.avatar_path ? 'com foto' : 'sem foto'}</small></span></span><span className="row-actions"><label className="admin-file-button">{uploading === profile.id ? <><AdminIcon name="loading" /> Enviando…</> : <><AdminIcon name="image" /> Trocar foto</>}<input type="file" accept="image/jpeg,image/png,image/webp,image/gif" disabled={Boolean(uploading)} onChange={(event) => { const file = event.target.files?.[0]; if (file) void uploadAvatar(profile, file); event.currentTarget.value = '' }} /></label><Button variant="outline" onClick={() => update(profile)}><AdminIcon name="edit" /> Editar</Button><Toggle checked={profile.active} label="Ativo" ariaLabel={`Perfil ${profile.name} ativo`} onCheckedChange={() => void toggle(profile)} /></span></li>)}</ul>{message && <p role="status">{message}</p>}</section></section>
 }
 
-function DocumentsPage({ context, userId, refresh }: { context: Context; userId: string; refresh: () => Promise<void> }) {
+export function DocumentsPage({ context, userId, refresh }: { context: Context; userId: string; refresh: () => Promise<void> }) {
   const allowedIds = new Set(context.permissions.filter((permission) => permission.user_id === userId && permission.active && permission.can_publish).map((permission) => permission.content_profile_id))
   const canManage = context.assignments.some((assignment) => assignment.user_id === userId && assignment.role === 'SUPERADMIN' && assignment.active)
   const canModerate = canManage || context.assignments.some((assignment) => assignment.user_id === userId && assignment.role === 'ADMIN' && assignment.active)
@@ -502,12 +502,11 @@ export function SecurityPage({ session, context, superadmin, refresh }: { sessio
   useEffect(() => { void supabase?.auth.mfa.listFactors().then(({ data, error }) => { setFactors(data?.totp || []); setMessage(error?.message || '') }) }, [])
   const remove = async (id: string) => {
     if (!supabase || !window.confirm('Revogar este fator encerra a proteção atual e exigirá novo cadastro. Continuar?')) return
+    try { await revokeAdminSessions(supabase) } catch { return setMessage('Não foi possível revogar as sessões administrativas.') }
     const { error } = await supabase.auth.mfa.unenroll({ factorId: id })
+    forgetAdminSession(session.access_token)
+    await supabase.auth.signOut({ scope: 'global' })
     if (error) setMessage(error.message)
-    else {
-      forgetAdminSession(session.access_token)
-      await supabase.auth.signOut({ scope: 'global' })
-    }
   }
   const invoke = async (body: Record<string, unknown>) => {
     if (!supabase) return null
@@ -525,7 +524,7 @@ export function SecurityPage({ session, context, superadmin, refresh }: { sessio
     if (!assignment || !confirmCustodyTransfer((message) => window.confirm(message))) return
     if (await invoke({ action: 'transfer_custody', assignment_id: assignment.id, user_id: successorId, role: assignment.role, office: assignment.office })) await refresh()
   }
-  return <section><div className="admin-page-heading"><div><p className="eyebrow">Conta individual</p><h1>Segurança</h1></div></div><section className="admin-card"><h2>MFA</h2><p>{session.user.email}</p><ul className="admin-list">{factors.map((factor) => <li key={factor.id}><span>{factor.friendly_name || 'Aplicativo autenticador'} · {factor.status}</span><Button variant="destructive" onClick={() => remove(factor.id)}><AdminIcon name="lock" /> Revogar e reconfigurar</Button></li>)}</ul><Button variant="destructive" onClick={() => { forgetAdminSession(session.access_token); void supabase?.auth.signOut({ scope: 'global' }) }}><AdminIcon name="logout" /> Encerrar todas as minhas sessões</Button><p>Se o dispositivo for perdido, outro SUPERADM deve revogar o MFA. Não há segredo de recuperação armazenado pelo portal.</p></section>{superadmin && <div className="admin-two-columns"><section className="admin-card"><h2>Revogar MFA</h2><div className="admin-form"><label>Pessoa<select value={userId} onChange={(event) => setUserId(event.target.value)}>{context.profiles.map((profile) => <option key={profile.id} value={profile.id}>{profile.full_name}</option>)}</select></label><Button variant="destructive" onClick={revokeMfa}><AdminIcon name="lock" /> Revogar MFA</Button></div></section><section className="admin-card"><h2>Transferir custódia</h2><div className="admin-form"><label>Atribuição atual<select value={successionAssignmentId} onChange={(event) => setSuccessionAssignmentId(event.target.value)}>{context.assignments.filter(({ active }) => active).map((assignment) => <option key={assignment.id} value={assignment.id}>{context.profiles.find(({ id }) => id === assignment.user_id)?.full_name} · {assignment.role} · {labels[assignment.office]}</option>)}</select></label><label>Sucessor(a)<select value={successorId} onChange={(event) => setSuccessorId(event.target.value)}>{context.profiles.filter(({ active }) => active).map((profile) => <option key={profile.id} value={profile.id}>{profile.full_name}</option>)}</select></label><Button variant="destructive" onClick={transfer}><AdminIcon name="lock" /> Transferir e encerrar anterior</Button></div></section></div>}{message && <p className="admin-toast" role="status">{message}</p>}</section>
+  return <section><div className="admin-page-heading"><div><p className="eyebrow">Conta individual</p><h1>Segurança</h1></div></div><section className="admin-card"><h2>MFA</h2><p>{session.user.email}</p><ul className="admin-list">{factors.map((factor) => <li key={factor.id}><span>{factor.friendly_name || 'Aplicativo autenticador'} · {factor.status}</span><Button variant="destructive" onClick={() => remove(factor.id)}><AdminIcon name="lock" /> Revogar e reconfigurar</Button></li>)}</ul><Button variant="destructive" onClick={() => { if (supabase) void endAdminSessions(supabase, session.access_token).catch(() => setMessage('Não foi possível encerrar todas as sessões.')) }}><AdminIcon name="logout" /> Encerrar todas as minhas sessões</Button><p>Se o dispositivo for perdido, outro SUPERADM deve revogar o MFA. Não há segredo de recuperação armazenado pelo portal.</p></section>{superadmin && <div className="admin-two-columns"><section className="admin-card"><h2>Revogar MFA</h2><div className="admin-form"><label>Pessoa<select value={userId} onChange={(event) => setUserId(event.target.value)}>{context.profiles.map((profile) => <option key={profile.id} value={profile.id}>{profile.full_name}</option>)}</select></label><Button variant="destructive" onClick={revokeMfa}><AdminIcon name="lock" /> Revogar MFA</Button></div></section><section className="admin-card"><h2>Transferir custódia</h2><div className="admin-form"><label>Atribuição atual<select value={successionAssignmentId} onChange={(event) => setSuccessionAssignmentId(event.target.value)}>{context.assignments.filter(({ active }) => active).map((assignment) => <option key={assignment.id} value={assignment.id}>{context.profiles.find(({ id }) => id === assignment.user_id)?.full_name} · {assignment.role} · {labels[assignment.office]}</option>)}</select></label><label>Sucessor(a)<select value={successorId} onChange={(event) => setSuccessorId(event.target.value)}>{context.profiles.filter(({ active }) => active).map((profile) => <option key={profile.id} value={profile.id}>{profile.full_name}</option>)}</select></label><Button variant="destructive" onClick={transfer}><AdminIcon name="lock" /> Transferir e encerrar anterior</Button></div></section></div>}{message && <p className="admin-toast" role="status">{message}</p>}</section>
 }
 
 function AdminShell({ session }: { session: Session }) {
@@ -534,6 +533,7 @@ function AdminShell({ session }: { session: Session }) {
   const [message, setMessage] = useState('Carregando escopo administrativo…')
   useEffect(() => { const update = () => setPath(location.pathname); addEventListener('popstate', update); return () => removeEventListener('popstate', update) }, [])
   const refresh = async () => { try { setContext(await loadContext()); setMessage('') } catch (error) { setMessage(messageOf(error)) } }
+  const logout = () => { if (supabase) void endAdminSessions(supabase, session.access_token).catch(() => setMessage('Não foi possível encerrar a sessão.')) }
   useEffect(() => {
     let active = true
     void loadContext().then((data) => { if (active) { setContext(data); setMessage('') } }).catch((error) => { if (active) setMessage(messageOf(error)) })
@@ -551,7 +551,7 @@ function AdminShell({ session }: { session: Session }) {
   else if (path === '/admin/profiles' && superadmin) page = <ContentProfilesPage context={context} refresh={refresh} />
   else if (path === '/admin/users' && superadmin) page = <UsersPage context={context} refresh={refresh} />
   else if (path === '/admin/security') page = <SecurityPage session={session} context={context} superadmin={superadmin} refresh={refresh} />
-  return <><header className="admin-topbar"><a href="/" onClick={(event) => { event.preventDefault(); route('/') }}>CARB</a><div><span>{userRoles.join(' · ')}</span><Button variant="outline" onClick={() => { forgetAdminSession(session.access_token); void supabase?.auth.signOut() }}><AdminIcon name="logout" /> Sair</Button></div></header><div className="admin-layout"><aside><nav aria-label="Painel administrativo">{nav.map(([href, label]) => <a key={href} href={href} aria-current={path === href || (href === '/admin/posts' && path.startsWith('/admin/posts/')) ? 'page' : undefined} onClick={(event) => { event.preventDefault(); route(href) }}>{href === '/admin/security' && <AdminIcon name="settings" />}{label}</a>)}</nav></aside><main className="admin-content" id="conteudo">{page}{message && <p role="status">{message}</p>}</main></div></>
+  return <><header className="admin-topbar"><a href="/" onClick={(event) => { event.preventDefault(); route('/') }}>CARB</a><div><span>{userRoles.join(' · ')}</span><Button variant="outline" onClick={logout}><AdminIcon name="logout" /> Sair</Button></div></header><div className="admin-layout"><aside><nav aria-label="Painel administrativo">{nav.map(([href, label]) => <a key={href} href={href} aria-current={path === href || (href === '/admin/posts' && path.startsWith('/admin/posts/')) ? 'page' : undefined} onClick={(event) => { event.preventDefault(); route(href) }}>{href === '/admin/security' && <AdminIcon name="settings" />}{label}</a>)}</nav></aside><main className="admin-content" id="conteudo">{page}{message && <p role="status">{message}</p>}</main></div></>
 }
 
 export function AdminApp() {
@@ -598,6 +598,6 @@ export function AdminApp() {
     setNeedsPassword(false)
     setLoginMessage('Senha definida. Entre com sua conta individual e confirme o MFA.')
   }} />
-  if (!aal2) return <MfaGate onVerified={setAal2} />
+  if (!aal2) return <MfaGate session={session} onVerified={setAal2} />
   return <AdminShell session={session} />
 }
