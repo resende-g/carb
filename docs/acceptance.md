@@ -29,7 +29,10 @@ Este documento separa o que **o repositório pode provar** do que **só uma auto
 | `ACE-12` | Contraste da paleta ≥ 4.5:1 | `src/design-tokens.test.ts` | verificado |
 | `ACE-13` | Backup e restauração reproduzíveis | runbook 4 de [runbooks.md](runbooks.md), executado em banco local | parcialmente verificado |
 | `ACE-14` | Cabeçalhos de segurança na borda | `public/_headers` | parcialmente verificado (depende da borda de destino) |
-| `ACE-15` | Acessibilidade por teclado, leitor de tela e zoom | requisitos em [accessibility.md](accessibility.md) | parcialmente verificado |
+| `ACE-15` | Acessibilidade por teclado, leitor de tela e zoom | checklist de validação manual em [accessibility.md](accessibility.md), ainda não executada | parcialmente verificado |
+| `ACE-16` | Acessibilidade automatizável sem violação nos fluxos públicos e administrativos | `src/a11y.test.tsx` (axe-core sobre 16 cenários) | verificado |
+| `ACE-17` | Varredura de dependências no CI e atualização semanal | `.github/workflows/ci.yml` (`npm audit --audit-level=high`) e `.github/dependabot.yml` | verificado |
+| `ACE-18` | Exercício de resposta a incidente com evidência | [incident-exercise.md](incident-exercise.md), executado em banco local com dados sintéticos | parcialmente verificado (não substitui exercício institucional) |
 
 ## 3. Critérios que dependem de autoridade externa
 

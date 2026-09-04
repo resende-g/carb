@@ -12,8 +12,21 @@ Branches de trabalho fora dessa lista — por exemplo `clean-code` — não disp
 
 | Check | Evidência |
 |---|---|
-| `Frontend quality` | instalação reproduzível por `npm ci`, ESLint, TypeScript, 49 testes Vitest e build Vite |
-| `Supabase database` | banco PostgreSQL 17 local criado do zero, migrations e seed, 55 asserções pgTAP e advisors sem erro |
+| `Frontend quality` | instalação reproduzível por `npm ci`, varredura de dependências, ESLint, TypeScript, 67 testes Vitest e build Vite |
+| `Supabase database` | banco PostgreSQL 17 local criado do zero, migrations e seed, 89 asserções pgTAP e advisors sem erro |
+
+## Varredura de dependências
+
+O job `Frontend quality` executa, antes do lint:
+
+```bash
+npm audit --audit-level=moderate || true   # relatório completo, não bloqueia
+npm audit --audit-level=high               # bloqueia em high e critical
+```
+
+Política desta versão: `high` e `critical` reprovam o build; `moderate` e `low` aparecem no relatório sem bloquear. `npm audit fix --force` é proibido — ele troca versões maiores sem revisão. A correção é upgrade compatível, com a suíte completa reexecutada.
+
+`.github/dependabot.yml` abre pull requests semanais para `npm` e para as actions do GitHub, com limite de cinco PRs abertos por ecossistema e sem auto-merge: toda atualização passa por revisão e pelos mesmos checks.
 
 As actions externas são fixadas por SHA imutável. O workflow fixa Node.js 22 e Supabase CLI 2.116.0, evitando alterações silenciosas de ferramenta entre execuções.
 
@@ -21,6 +34,7 @@ As actions externas são fixadas por SHA imutável. O workflow fixa Node.js 22 e
 
 ```bash
 npm ci
+npm audit --audit-level=high
 npm run lint
 npm run typecheck
 npm test -- --run

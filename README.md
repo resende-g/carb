@@ -25,6 +25,7 @@ npm run lint
 npm run typecheck
 npm test -- --run
 npm run build
+npm audit --audit-level=high
 ```
 
 Para testar as migrations em banco local limpo, com Docker disponível:
@@ -82,6 +83,7 @@ O GitHub Actions executa a mesma validação em cada push e pull request das bra
 - [Contrato das métricas do dashboard](docs/metrics.md)
 - [Inventário técnico](docs/inventory.md)
 - [Runbooks operacionais](docs/runbooks.md)
+- [Exercício de resposta a incidente](docs/incident-exercise.md)
 - [Homologação e roteiro de demonstração](docs/acceptance.md)
 - [Decisões pendentes e responsáveis](docs/decisions.md)
 - [Histórico de versões](CHANGELOG.md)
