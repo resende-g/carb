@@ -42,7 +42,7 @@ describe('entrada administrativa', () => {
   })
 
   it('separa ações de usuários das ações sensíveis de segurança', () => {
-    const users = renderToStaticMarkup(<UsersPage context={context as never} refresh={refresh} />)
+    const users = renderToStaticMarkup(<UsersPage context={context as never} currentUserId="user-1" refresh={refresh} />)
     expect(users).toContain('admin-three-columns')
     expect(users.indexOf('Convidar pessoa')).toBeLessThan(users.indexOf('Contas e papéis'))
     expect(users).not.toContain('Revogar MFA')
@@ -59,12 +59,23 @@ describe('entrada administrativa', () => {
   })
 
   it('mostra onboarding com função e o estado correto para contas ativas e inativas', () => {
-    const users = renderToStaticMarkup(<UsersPage context={context as never} refresh={refresh} />)
+    const users = renderToStaticMarkup(<UsersPage context={context as never} currentUserId="user-1" refresh={refresh} />)
     expect(users).toContain('Enviar convite e conceder função')
     expect(users).toContain('Diretoria de Comunicação')
-    expect(users).toContain('aria-label="Conta de Pessoa sintética ativa" checked=""')
+    expect(users).toContain('Sua conta')
+    expect(users).toContain('A própria conta não pode ser desativada nem ter função revogada.')
+    expect(users).not.toContain('aria-label="Conta de Pessoa sintética ativa"')
+    expect(users).not.toContain('Revogar</button>')
     expect(users).toContain('aria-label="Conta de Pessoa inativa ativa"/>')
     expect(users).toContain('aria-label="Conta de Pessoa sem função ativa" checked=""')
+  })
+
+  it('oculta somente autorrevogação e autodesativação, mantendo ações sobre outras contas', () => {
+    const otherAssignment = { id: 'assignment-2', user_id: 'user-3', role: 'EDITOR', office: 'COMMUNICATION_DIRECTOR', active: true }
+    const users = renderToStaticMarkup(<UsersPage context={{ ...context, assignments: [...context.assignments, otherAssignment] } as never} currentUserId="user-1" refresh={refresh} />)
+    expect(users).not.toContain('aria-label="Conta de Pessoa sintética ativa"')
+    expect(users).toContain('aria-label="Conta de Pessoa sem função ativa" checked=""')
+    expect(users.match(/Revogar<\/button>/g)).toHaveLength(1)
   })
 })
 
