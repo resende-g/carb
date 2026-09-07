@@ -234,13 +234,25 @@ function RevisionForm({ post, context, refresh }: { post: Post; context: Context
   const [body, setBody] = useState(post.body)
   const [summary, setSummary] = useState('')
   const [hashtagIds, setHashtagIds] = useState(context.postHashtags.filter((item) => item.post_id === post.id).map((item) => item.hashtag_id))
+  const [media, setMedia] = useState<File | null>(null)
+  const [mediaAlt, setMediaAlt] = useState(post.media_alt || '')
+  const [removeMedia, setRemoveMedia] = useState(false)
+  const [mediaPreview, setMediaPreview] = useState('')
   const [message, setMessage] = useState('')
+  useEffect(() => () => { if (mediaPreview) URL.revokeObjectURL(mediaPreview) }, [mediaPreview])
   const submit = async (event: FormEvent) => {
     event.preventDefault(); if (!supabase) return
-    const { error } = await supabase.rpc('create_post_revision', { p_post_id: post.id, p_title: title, p_body: body, p_category: category, p_change_summary: summary, p_hashtag_ids: hashtagIds, p_media_path: post.media_path, p_media_alt: post.media_alt, p_media_mime_type: post.media_mime_type, p_media_size_bytes: post.media_size_bytes })
+    const path = removeMedia ? null : (media ? `posts/revisions/${crypto.randomUUID()}-${safeFilename(media.name)}` : post.media_path)
+    
+    if (media && path) {
+      const upload = await supabase.storage.from('editorial-assets').upload(path, media, { contentType: media.type, upsert: false })
+      if (upload.error) return setMessage(`Erro ao enviar mídia: ${upload.error.message}`)
+    }
+    
+    const { error } = await supabase.rpc('create_post_revision', { p_post_id: post.id, p_title: title, p_body: body, p_category: category, p_change_summary: summary, p_hashtag_ids: hashtagIds, p_media_path: path, p_media_alt: path ? mediaAlt : null, p_media_mime_type: removeMedia ? null : (media ? media.type : post.media_mime_type), p_media_size_bytes: removeMedia ? null : (media ? media.size : post.media_size_bytes) })
     setMessage(error?.message || 'Revisão submetida para aprovação.'); if (!error) await refresh()
   }
-  return <details className="revision-form"><summary>Propor revisão</summary><form className="admin-form" onSubmit={submit}><label>Título<input value={title} onChange={(event) => setTitle(event.target.value)} required /></label><label>Categoria<input value={category} onChange={(event) => setCategory(event.target.value)} required /></label><label>Texto<textarea value={body} onChange={(event) => setBody(event.target.value)} required /></label><fieldset className="hashtag-checkboxes"><legend>Hashtags</legend>{context.hashtags.filter(({ active }) => active).map((hashtag) => <label key={hashtag.id}><input type="checkbox" checked={hashtagIds.includes(hashtag.id)} onChange={() => setHashtagIds((current) => current.includes(hashtag.id) ? current.filter((id) => id !== hashtag.id) : [...current, hashtag.id])} />#{hashtag.name}</label>)}</fieldset><label>Resumo da mudança<textarea maxLength={500} value={summary} onChange={(event) => setSummary(event.target.value)} required /></label><button>Enviar revisão</button></form>{message && <p role="status">{message}</p>}</details>
+  return <details className="revision-form"><summary>Propor revisão</summary><form className="admin-form" onSubmit={submit}><label>Título<input value={title} onChange={(event) => setTitle(event.target.value)} required /></label><label>Categoria<input value={category} onChange={(event) => setCategory(event.target.value)} required /></label><label>Texto<textarea value={body} onChange={(event) => setBody(event.target.value)} required /></label><fieldset className="hashtag-checkboxes"><legend>Hashtags</legend>{context.hashtags.filter(({ active }) => active).map((hashtag) => <label key={hashtag.id}><input type="checkbox" checked={hashtagIds.includes(hashtag.id)} onChange={() => setHashtagIds((current) => current.includes(hashtag.id) ? current.filter((id) => id !== hashtag.id) : [...current, hashtag.id])} />#{hashtag.name}</label>)}</fieldset><label>Imagem ou GIF<input type="file" accept="image/jpeg,image/png,image/webp,image/gif" disabled={removeMedia} onChange={(event) => { const file = event.target.files?.[0] || null; setMedia(file); setMediaPreview(file ? URL.createObjectURL(file) : '') }} /></label>{mediaPreview && <img className="admin-media-preview" src={mediaPreview} alt="Pré-visualização do anexo selecionado" />}{post.media_path && <label className="remove-media-checkbox"><input type="checkbox" checked={removeMedia} onChange={(event) => setRemoveMedia(event.target.checked)} /> Remover imagem existente</label>}{(!removeMedia && (media || post.media_path)) && <label>Texto alternativo<input value={mediaAlt} onChange={(event) => setMediaAlt(event.target.value)} required /></label>}<label>Resumo da mudança<textarea maxLength={500} value={summary} onChange={(event) => setSummary(event.target.value)} required /></label><button>Enviar revisão</button></form>{message && <p role="status">{message}</p>}</details>
 }
 
 export function PostsPage({ context, userId, roles: userRoles, refresh, selectedId }: { context: Context; userId: string; roles: Role[]; refresh: () => Promise<void>; selectedId?: string }) {
