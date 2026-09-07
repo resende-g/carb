@@ -124,7 +124,7 @@ function ReactionButtons({ notice, reaction, onReact }: { notice: Notice; reacti
 function NoticeCard({ notice, profile, hashtags, reaction, onReact, onProfile, onHashtag }: { notice: Notice; profile: Profile; hashtags: Hashtag[]; reaction?: Reaction; onReact: (reaction: Reaction) => void; onProfile?: () => void; onHashtag: (hashtag: Hashtag) => void }) {
   const profileContent = <><Avatar profile={profile} /><span><strong>{profile.name}</strong><small>@{profile.handle} · {notice.date}</small></span></>
   return (
-    <article id={`aviso-${notice.id}`}>
+    <article id={`aviso-${notice.id}`} style={{ scrollMarginTop: '90px' }}>
       <Card className="card notice-card gap-0 py-0">
         {onProfile ? <button className="profile-link" type="button" onClick={onProfile}>{profileContent}</button> : <div className="profile-link">{profileContent}</div>}
         <div className="meta"><span>{notice.category}</span><span>{notice.state}</span></div>
@@ -423,6 +423,62 @@ export default function App() {
       document.removeEventListener('keydown', closeWithEscape)
     }
   }, [menuOpen])
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return
+
+    const handleDeepLink = () => {
+      const hash = window.location.hash
+      const params = new URLSearchParams(window.location.search)
+      let targetId: string | null = null
+
+      if (hash.startsWith('#aviso-')) {
+        targetId = hash.replace('#aviso-', '')
+      } else if (hash.startsWith('#') && hash.length > 1 && !hash.startsWith('#conteudo') && !hash.startsWith('#top') && !hash.startsWith('#site-search')) {
+        targetId = hash.slice(1)
+      } else {
+        targetId = params.get('aviso') || params.get('post')
+      }
+
+      if (!targetId) return
+
+      if (tab !== 'avisos') {
+        setTab('avisos')
+        const nextPath = '/'
+        if (window.location.pathname !== nextPath) history.pushState({}, '', nextPath)
+        setPath(nextPath)
+      }
+
+      const noticeIndex = siteNotices.findIndex((n) => n.id === targetId)
+      if (noticeIndex !== -1 && limit <= noticeIndex) {
+        setLimit(noticeIndex + 1)
+      }
+
+      const scrollToNotice = () => {
+        const element = document.getElementById(`aviso-${targetId}`)
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+        }
+      }
+
+      scrollToNotice()
+      const timer1 = setTimeout(scrollToNotice, 50)
+      const timer2 = setTimeout(scrollToNotice, 250)
+      return () => {
+        clearTimeout(timer1)
+        clearTimeout(timer2)
+      }
+    }
+
+    const cleanup = handleDeepLink()
+    window.addEventListener('popstate', handleDeepLink)
+    window.addEventListener('hashchange', handleDeepLink)
+    return () => {
+      if (cleanup) cleanup()
+      window.removeEventListener('popstate', handleDeepLink)
+      window.removeEventListener('hashchange', handleDeepLink)
+    }
+  }, [siteNotices, tab, limit])
 
   const react = async (noticeId: string, selected: Reaction) => {
     const previous = reactions
