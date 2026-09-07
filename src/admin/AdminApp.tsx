@@ -392,7 +392,7 @@ export function DocumentsPage({ context, userId, refresh }: { context: Context; 
   return <section><div className="admin-page-heading"><div><p className="eyebrow">Storage privado</p><h1>Documentos</h1></div></div><div className="admin-two-columns"><section className="admin-card"><h2>Novo documento</h2>{availableProfiles.length ? <form className="admin-form" onSubmit={submit}><label>Perfil<select value={profileId} onChange={(event) => setProfileId(event.target.value)}>{availableProfiles.map((profile) => <option key={profile.id} value={profile.id}>{profile.name}</option>)}</select></label><label>Título<input value={title} onChange={(event) => setTitle(event.target.value)} required /></label><label>Descrição<textarea value={description} onChange={(event) => setDescription(event.target.value)} required /></label><label>PDF<input type="file" accept="application/pdf,.pdf" onChange={(event) => setFile(event.target.files?.[0] || null)} required /></label><button className="primary">Salvar rascunho</button></form> : <p>Nenhum perfil público autorizado para esta pessoa.</p>}</section><section className="admin-card"><h2>Fila documental</h2><ul className="admin-list">{context.documents.map((document) => <li key={document.id}><span><strong>{document.title}</strong><small>{labels[document.status] || document.status} · {document.original_filename}</small></span><span className="row-actions">{document.status === 'DRAFT' && document.created_by === userId && <button onClick={() => transition(document, 'PENDING_APPROVAL')}>Submeter</button>}{document.status === 'PENDING_APPROVAL' && canDecideOwnable(canModerate, userId, document.created_by) && <><button onClick={() => transition(document, 'APPROVED')}>Aprovar</button><button onClick={() => transition(document, 'REJECTED')}>Rejeitar</button></>}</span></li>)}</ul></section></div>{message && <p className="admin-toast" role="status">{message}</p>}</section>
 }
 
-export function UsersPage({ context, refresh }: { context: Context; refresh: () => Promise<void> }) {
+export function UsersPage({ context, currentUserId, refresh }: { context: Context; currentUserId: string; refresh: () => Promise<void> }) {
   const [message, setMessage] = useState('')
   const [email, setEmail] = useState('')
   const [name, setName] = useState('')
@@ -441,9 +441,16 @@ export function UsersPage({ context, refresh }: { context: Context; refresh: () 
   const grant = async () => { if (!supabase) return; const { error } = await supabase.rpc('grant_role', { p_user_id: selectedUserId, p_role: role, p_office: office }); setMessage(error?.message || 'Papel concedido.'); if (!error) await refresh() }
   const permit = async () => { if (!supabase) return; const { error } = await supabase.rpc('set_content_profile_permission', { p_user_id: selectedUserId, p_content_profile_id: contentProfileId, p_can_publish: true, p_active: true }); setMessage(error?.message || 'Autorização editorial concedida.'); if (!error) await refresh() }
   const unpermit = async (permission: Permission) => { if (!supabase) return; const { error } = await supabase.rpc('set_content_profile_permission', { p_user_id: permission.user_id, p_content_profile_id: permission.content_profile_id, p_can_publish: false, p_active: false }); setMessage(error?.message || 'Autorização editorial removida.'); if (!error) await refresh() }
-  const revoke = async (id: string) => { if (!supabase) return; const { error } = await supabase.rpc('revoke_role', { p_assignment_id: id }); setMessage(error?.message || 'Papel revogado.'); if (!error) await refresh() }
+  const revoke = async (assignment: Assignment) => {
+    if (!supabase) return
+    if (assignment.user_id === currentUserId) return setMessage('A própria função não pode ser revogada.')
+    const { error } = await supabase.rpc('revoke_role', { p_assignment_id: assignment.id })
+    setMessage(error?.message || 'Papel revogado.')
+    if (!error) await refresh()
+  }
 
   const changeActive = async (profile: Profile, auth: AuthAccount | null) => {
+    if (profile.id === currentUserId) return setMessage('A própria conta não pode ser desativada.')
     const action = userActivationAction(profile, auth)
     if (!window.confirm(`${action.label} ${profile.full_name}?`)) return
     if (await invoke({ action: 'set_active', user_id: profile.id, active: action.activate }, action.activate ? 'Conta reativada.' : 'Conta desativada.')) await refresh()
@@ -482,12 +489,15 @@ export function UsersPage({ context, refresh }: { context: Context; refresh: () 
       const assignments = profile ? context.assignments.filter((assignment) => assignment.user_id === profile.id && assignment.active) : []
       const state = operationalAccountState(profile, assignments.length > 0, auth)
       const name = profile?.full_name || auth?.email || 'Conta não identificada'
+      const isCurrentUser = profile?.id === currentUserId
       return <li key={profile?.id || auth?.id}><span><strong>{name}</strong>
+        {isCurrentUser && <small><strong>Sua conta</strong></small>}
         {auth?.email && profile && <small>{auth.email}</small>}
         <small><strong>Estado: {state}</strong></small>
-        {assignments.map((assignment) => <small key={assignment.id}>{assignment.role} · {labels[assignment.office]} <Button size="xs" variant="destructive" onClick={() => revoke(assignment.id)}><AdminIcon name="lock" /> Revogar</Button></small>)}
+        {assignments.map((assignment) => <small key={assignment.id}>{assignment.role} · {labels[assignment.office]} {!isCurrentUser && <Button size="xs" variant="destructive" onClick={() => revoke(assignment)}><AdminIcon name="lock" /> Revogar</Button>}</small>)}
         {profile && context.permissions.filter((permission) => permission.user_id === profile.id && permission.active).map((permission) => <small key={permission.content_profile_id}>Pode publicar como {context.contentProfiles.find(({ id }) => id === permission.content_profile_id)?.name} <Button size="xs" variant="destructive" onClick={() => unpermit(permission)}><AdminIcon name="trash" /> Remover vínculo</Button></small>)}
-      </span><span className="row-actions">{profile && <Toggle checked={!userActivationAction(profile, auth).activate} label="Conta ativa" ariaLabel={`Conta de ${profile.full_name} ativa`} onCheckedChange={() => void changeActive(profile, auth)} />}</span></li>
+        {isCurrentUser && <small>A própria conta não pode ser desativada nem ter função revogada.</small>}
+      </span><span className="row-actions">{profile && !isCurrentUser && <Toggle checked={!userActivationAction(profile, auth).activate} label="Conta ativa" ariaLabel={`Conta de ${profile.full_name} ativa`} onCheckedChange={() => void changeActive(profile, auth)} />}</span></li>
     })}</ul></section>
     {message && <p className="admin-toast" role="status">{message}</p>}
   </section>
@@ -549,7 +559,7 @@ function AdminShell({ session }: { session: Session }) {
   else if (path === '/admin/documents') page = <DocumentsPage context={context} userId={session.user.id} refresh={refresh} />
   else if (path === '/admin/hashtags' && canModerate) page = <HashtagsPage context={context} refresh={refresh} />
   else if (path === '/admin/profiles' && superadmin) page = <ContentProfilesPage context={context} refresh={refresh} />
-  else if (path === '/admin/users' && superadmin) page = <UsersPage context={context} refresh={refresh} />
+  else if (path === '/admin/users' && superadmin) page = <UsersPage context={context} currentUserId={session.user.id} refresh={refresh} />
   else if (path === '/admin/security') page = <SecurityPage session={session} context={context} superadmin={superadmin} refresh={refresh} />
   return <><header className="admin-topbar"><a href="/" onClick={(event) => { event.preventDefault(); route('/') }}>CARB</a><div><span>{userRoles.join(' · ')}</span><Button variant="outline" onClick={logout}><AdminIcon name="logout" /> Sair</Button></div></header><div className="admin-layout"><aside><nav aria-label="Painel administrativo">{nav.map(([href, label]) => <a key={href} href={href} aria-current={path === href || (href === '/admin/posts' && path.startsWith('/admin/posts/')) ? 'page' : undefined} onClick={(event) => { event.preventDefault(); route(href) }}>{href === '/admin/security' && <AdminIcon name="settings" />}{label}</a>)}</nav></aside><main className="admin-content" id="conteudo">{page}{message && <p role="status">{message}</p>}</main></div></>
 }

@@ -1,6 +1,7 @@
 import { renderToStaticMarkup } from 'react-dom/server'
 import { describe, expect, it } from 'vitest'
 import App, { LinkedText } from './App'
+import { noticeShareData } from './share'
 
 describe('interface pública', () => {
   it('renderiza busca, Quem publica e Top trends com semântica acessível', () => {
@@ -30,5 +31,18 @@ describe('interface pública', () => {
     expect(html).toContain('>www.example.org/aviso</a>.')
     expect(html).not.toContain('href="javascript:')
     expect(html).toContain('&lt;b&gt;')
+  })
+
+  it('compartilha somente o permalink do aviso, sem URLs contidas no texto', () => {
+    const data = noticeShareData(
+      { id: 'post-1', title: 'Edital com link no corpo' },
+      { origin: 'https://carb.portal-carb-prototipo.workers.dev', pathname: '/' },
+    )
+    expect(data).toEqual({
+      title: 'Edital com link no corpo',
+      text: 'Confira este aviso no Portal CARB.',
+      url: 'https://carb.portal-carb-prototipo.workers.dev/#aviso-post-1',
+    })
+    expect(JSON.stringify(data)).not.toContain('example.org')
   })
 })

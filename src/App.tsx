@@ -12,6 +12,7 @@ import { documents, hashtags as initialHashtags, notices, profiles as initialPro
 import { filterNotices, recentPostingProfiles, trendingHashtags } from './feed'
 import { meetingLabel, selectionIssue, TIME_ROWS, type ClassOffering, type SelectionIssue, type Semester, type Shift } from './planner'
 import { REACTION_OPTIONS, type Reaction } from './reactions'
+import { noticeShareData } from './share'
 import { anonymousReactionId, loadPublicData, persistReaction, PUBLIC_DATA_REFRESH_MS, supabaseConfigured } from './supabase'
 
 type Tab = 'avisos' | 'sistemas' | 'planejador' | 'acervo'
@@ -91,11 +92,11 @@ function ReactionButtons({ notice, reaction, onReact }: { notice: Notice; reacti
   const [shareMessage, setShareMessage] = useState('')
 
   const share = async () => {
-    const url = `${window.location.origin}${window.location.pathname}#aviso-${notice.id}`
+    const data = noticeShareData(notice, window.location)
     const nativeShare = (navigator as unknown as { share?: (data?: ShareData) => Promise<void> }).share
     try {
-      if (nativeShare) await nativeShare.call(navigator, { title: notice.title, text: notice.text, url })
-      else await navigator.clipboard.writeText(url)
+      if (nativeShare) await nativeShare.call(navigator, data)
+      else await navigator.clipboard.writeText(data.url || '')
       setShareMessage(nativeShare ? 'Compartilhamento aberto.' : 'Link copiado.')
     } catch (error) {
       if ((error as DOMException).name !== 'AbortError') setShareMessage('Não foi possível compartilhar o link.')

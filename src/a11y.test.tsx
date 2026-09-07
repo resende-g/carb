@@ -97,7 +97,7 @@ describe('acessibilidade automatizável do painel administrativo', () => {
     ['acervo administrativo', () => <DocumentsPage context={context as never} userId="user-1" refresh={refresh} />],
     ['hashtags e paleta de cores', () => <HashtagsPage context={context as never} refresh={refresh} />],
     ['perfis de conteúdo', () => <ContentProfilesPage context={context as never} refresh={refresh} />],
-    ['contas e papéis', () => <UsersPage context={context as never} refresh={refresh} />],
+    ['contas e papéis', () => <UsersPage context={context as never} currentUserId="user-1" refresh={refresh} />],
     ['segurança da conta', () => <SecurityPage session={session as never} context={context as never} superadmin refresh={refresh} />],
     ['gráfico de interações', () => <InteractionChart posts={chartPosts} windowLabel="últimos 7 dias" />],
     ['gráfico de reações', () => <ReactionChart posts={chartPosts} windowLabel="últimos 7 dias" />],
