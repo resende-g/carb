@@ -44,5 +44,11 @@ describe('interface pública', () => {
       url: 'https://carb.portal-carb-prototipo.workers.dev/#aviso-post-1',
     })
     expect(JSON.stringify(data)).not.toContain('example.org')
+
+    const subpageData = noticeShareData(
+      { id: 'post-1', title: 'Edital com link no corpo' },
+      { origin: 'https://carb.portal-carb-prototipo.workers.dev', pathname: '/sistemas' },
+    )
+    expect(subpageData.url).toBe('https://carb.portal-carb-prototipo.workers.dev/#aviso-post-1')
   })
 })
