@@ -28,7 +28,7 @@
     "tailwind-merge": "^3.6.0",
     "tailwindcss": "^4.3.3",
     "typescript": "^5.9.2",
-    "vite": "^8.2.2"
+    "vite": "^8.3.5"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
@@ -42,6 +42,6 @@
     "globals": "^17.12.0",
     "jsdom": "^30.0.1",
     "typescript-eslint": "^8.69.0",
-    "vitest": "^4.1.11"
+    "vitest": "^4.1.12"
   }
 }
